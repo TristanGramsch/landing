@@ -1,0 +1,19 @@
+{
+  "name": "tristan-systems-landing",
+  "version": "0.1.0",
+  "private": true,
+  "description": "tristan.systems — a terminal-themed landing page for essays and projects.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "start": "vite --host 127.0.0.1",
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1"
+  },
+  "dependencies": {
+    "pg": "^8.13.0",
+    "vite": "latest"
+  },
+  "devDependencies": {}
+}

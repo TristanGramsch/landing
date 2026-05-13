@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.forge/
+# What is this
+*.bak.*
+.env

@@ -1,0 +1,13 @@
+Permítame relatarle la historia que tengo con Optoelectrónica Icalma, la empresa de mi familia, a la cual le tengo mucho cariño y en la cual trabajé formalmente entre 2025 y 2026.
+En Optoelectrónica trabajé de cerca con mi padre, lo cuál fue sencillo y entretenido. 
+Nuestros proyectos, a pesar de que no teníamos todo conversado, resultaron muy bien, porque ambos comprendíamos nuestra labor. 
+Entonces, a pesar de que no sabíamos los métodos ni las maneras en que cada uno iba a hacer su parte, ambas partes quedan de alta calidad. y es sencillo juntarlas. 
+Uno de nuestros clientes fue Ecolab, la empresa procesadora de aguas.
+Ecolab necesitaba un cartel que mostrara la cantidad de días sin accidentes de la empresa. Con el requisito de ser electrónico y controlado desde una aplicación web. 
+Mi padre creó un circuito electrónico para mostrar la cuenta en números led grandes. Reforzó el circuito dentro de un pequeño panel. Y junto a Franco Puebla, quién trabaja en la empresa, instalaron el producto dentro de un panel más grande que diseñó Ecolab. 
+El circuito viene con un Raspberry Pi que lee los datos en ecolab.optoelectronica.cl, applicación que yo creé, que vive en los servidores de Google.
+El Raspberry (o "Rascaberry" por su baja potencia y consumo) está conectado al internet de Ecolab. Y actualiza el número led contínuamente. 
+Por si le interesa, guardo las instrucciones en inglés de cómo crear la applicación web.
+Feliz las comparto. 
+
+Finalmente, aquí hay unas fotitos para su disfrute. En la foto puede apreciar también el Solmáforo, producto principal en la empresa, que Ecolab ya tenía instalado. 
