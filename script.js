@@ -104,20 +104,22 @@ function homeTemplate() {
         <h1 class="hero-title">
           <span id="home-hello-text"></span><span id="home-hello-cursor" class="cursor is-hidden">_</span>
         </h1>
-        <p class="lede lede-home">Choose a path of your interest.</p>
-      </section>
+        <div class="home-paths" aria-label="Choose a path">
+          <p class="lede lede-home">Choose a path of your interest.</p>
 
-      <section class="bubble-grid" aria-label="Choose a path">
-        <button class="bubble" type="button" data-nav="/sociological">
-          <span class="bubble-frame">
-            <span class="bubble-label">Sociological</span>
-          </span>
-        </button>
-        <button class="bubble" type="button" data-nav="/technological">
-          <span class="bubble-frame">
-            <span class="bubble-label">Technological</span>
-          </span>
-        </button>
+          <section class="bubble-grid" aria-label="Choose a path">
+            <button class="bubble" type="button" data-nav="/sociological">
+              <span class="bubble-frame">
+                <span class="bubble-label">Sociological</span>
+              </span>
+            </button>
+            <button class="bubble" type="button" data-nav="/technological">
+              <span class="bubble-frame">
+                <span class="bubble-label">Technological</span>
+              </span>
+            </button>
+          </section>
+        </div>
       </section>
     </main>
   `;
@@ -181,12 +183,39 @@ function renderRoute(path) {
   }
 
   window.scrollTo({ top: 0, behavior: "instant" });
+
+  // When boot is complete (e.g. navigating back), make sure the home
+  // "paths" section is visible.
+  if (route === "home" && isBooted) {
+    const homePaths = document.querySelector(".home-paths");
+    homePaths?.classList.add("is-visible");
+  }
+
+  // When navigating back to the home route after boot, re-run the
+  // "Hello friend_" typing so it doesn't appear blank.
+  if (isBooted && route === "home") {
+    void animateHomeHelloFriend();
+  }
 }
 
 function pulseWholePage() {
   document.body.classList.remove("page-pulse");
   void document.body.offsetWidth;
   document.body.classList.add("page-pulse");
+}
+
+async function animateHomeHelloFriend() {
+  const homeHelloText = document.querySelector("#home-hello-text");
+  const homeHelloCursor = document.querySelector("#home-hello-cursor");
+
+  if (!homeHelloText || !homeHelloCursor) {
+    return;
+  }
+
+  // Ensure cursor is visible (and blinking) during/after typing.
+  homeHelloCursor.classList.remove("is-hidden");
+  await typeInto(homeHelloText, BOOT_TEXT, BOOT_TYPE_SPEED_MS);
+  homeHelloCursor.classList.remove("is-hidden");
 }
 
 async function playSelectionSound() {
@@ -216,7 +245,7 @@ async function playSelectionSound() {
 
   const toneGain = audioContext.createGain();
   toneGain.gain.setValueAtTime(0.0001, now);
-  toneGain.gain.exponentialRampToValueAtTime(0.03, now + 0.03);
+  toneGain.gain.exponentialRampToValueAtTime(0.05, now + 0.03);
   toneGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.48);
 
   const primary = audioContext.createOscillator();
@@ -254,7 +283,7 @@ async function playSelectionSound() {
   harmonic.stop(now + 0.5);
   transient.stop(now + 0.2);
 
-  master.gain.exponentialRampToValueAtTime(0.7, now + 0.02);
+  master.gain.exponentialRampToValueAtTime(1.0, now + 0.02);
   master.gain.exponentialRampToValueAtTime(0.0001, now + 0.55);
 }
 
@@ -306,6 +335,13 @@ async function boot() {
   bootScreen.classList.add("is-hidden");
   document.body.classList.remove("booting");
   document.body.classList.add("boot-complete");
+
+  // Reveal home paths after the hello text is ready.
+  if (currentPath === "/") {
+    const homePaths = document.querySelector(".home-paths");
+    homePaths?.classList.add("is-visible");
+  }
+
   isBooted = true;
   trackPageView(currentPath);
 }

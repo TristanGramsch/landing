@@ -134,18 +134,18 @@ body.boot-complete #app {
 
 .hero-title {
   max-width: 12ch;
-  font-size: clamp(2.8rem, 10vw, 6.8rem);
-  line-height: 0.92;
-  letter-spacing: -0.07em;
-  text-shadow: 0 0 22px rgba(57, 255, 20, 0.24);
+  font-size: clamp(2.8rem, 11vw, 8rem);
+  line-height: 1.02;
+  letter-spacing: -0.06em;
+  text-shadow: 0 0 12px rgba(57, 255, 20, 0.8), 0 0 28px rgba(57, 255, 20, 0.35);
 }
 
 .section-title {
   max-width: 12ch;
   font-size: clamp(2.4rem, 8vw, 4.8rem);
-  line-height: 0.94;
+  line-height: 1.02;
   letter-spacing: -0.06em;
-  text-shadow: 0 0 16px rgba(57, 255, 20, 0.2);
+  text-shadow: 0 0 10px rgba(57, 255, 20, 0.65), 0 0 24px rgba(57, 255, 20, 0.28);
 }
 
 .lede {
@@ -157,6 +157,22 @@ body.boot-complete #app {
 
 .lede-home {
   font-size: clamp(1.2rem, 3.2vw, 1.55rem);
+}
+
+.home-paths {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 520ms ease, transform 520ms ease;
+}
+
+.home-paths.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 180ms;
 }
 
 .bubble-grid {
@@ -197,6 +213,7 @@ body.boot-complete #app {
   font-size: clamp(1.2rem, 3vw, 2rem);
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(57, 255, 20, 0.35), 0 0 24px rgba(57, 255, 20, 0.18);
 }
 
 body.page-pulse *,
