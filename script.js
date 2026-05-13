@@ -1,4 +1,4 @@
-const BOOT_TEXT = "Hello friend.";
+const BOOT_TEXT = "Hello friend";
 const BOOT_TYPE_SPEED_MS = 92;
 const BOOT_HOLD_MS = 900;
 const PULSE_MS = 760;
@@ -101,8 +101,10 @@ function homeTemplate() {
   return `
     <main class="home-shell">
       <section class="hero hero-centered" aria-label="Welcome">
-        <h1 class="hero-title">Hello friend.</h1>
-        <p class="lede">Choose a path of your interest.</p>
+        <h1 class="hero-title">
+          <span id="home-hello-text"></span><span id="home-hello-cursor" class="cursor is-hidden">_</span>
+        </h1>
+        <p class="lede lede-home">Choose a path of your interest.</p>
       </section>
 
       <section class="bubble-grid" aria-label="Choose a path">
@@ -286,8 +288,20 @@ async function navigateTo(path, { replace = false } = {}) {
 async function boot() {
   document.body.classList.add("booting");
   renderRoute(currentPath);
-  await typeInto(bootText, BOOT_TEXT, BOOT_TYPE_SPEED_MS);
+
+  const homeHelloText = document.querySelector("#home-hello-text");
+  const homeHelloCursor = document.querySelector("#home-hello-cursor");
+
+  await Promise.all([
+    typeInto(bootText, BOOT_TEXT, BOOT_TYPE_SPEED_MS),
+    homeHelloText ? typeInto(homeHelloText, BOOT_TEXT, BOOT_TYPE_SPEED_MS) : Promise.resolve(),
+  ]);
+
   bootCursor.classList.remove("is-hidden");
+  if (homeHelloCursor) {
+    homeHelloCursor.classList.remove("is-hidden");
+  }
+
   await sleep(BOOT_HOLD_MS);
   bootScreen.classList.add("is-hidden");
   document.body.classList.remove("booting");
