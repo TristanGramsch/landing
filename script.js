@@ -1,3 +1,9 @@
+import govFlexibilityText from "./Government flexibility.txt?raw";
+import optoelectronicaText from "./Optoelectronica.txt?raw";
+
+import equipoImageSrc from "./equipo.jpeg";
+import instalacionImageSrc from "./instalación.jpeg";
+
 const BOOT_TEXT = "Hello friend";
 const BOOT_TYPE_SPEED_MS = 92;
 const BOOT_HOLD_MS = 900;
@@ -14,35 +20,11 @@ const CONTENT = {
     label: "Sociological",
     subtitle: "Sociology & Ideas",
     description: "A collection of written essays.",
-    items: [
-      {
-        title: "Ser",
-        type: "Essay placeholder",
-        description: 'Tristan\'s ideas on the concept of "Ser" (Spanish: "to be").',
-      },
-      {
-        title: "On the Art of Bureaucracy",
-        type: "Essay placeholder",
-        description: "A book review.",
-      },
-    ],
   },
   technological: {
     label: "Technological",
     subtitle: "Computers / Product Manager Work",
     description: "A collection of professional technical projects.",
-    items: [
-      {
-        title: "Opto",
-        type: "Project placeholder",
-        description: "Work done with Opto.",
-      },
-      {
-        title: "Whoop",
-        type: "Project placeholder",
-        description: "Work done with Whoop.",
-      },
-    ],
   },
 };
 
@@ -125,32 +107,228 @@ function homeTemplate() {
   `;
 }
 
-function sectionTemplate(key) {
-  const section = CONTENT[key];
+function escapeHtml(text) {
+  return text.replace(/[&<>"']/g, (char) => {
+    switch (char) {
+      case "&":
+        return "&amp;";
+      case "<":
+        return "&lt;";
+      case ">":
+        return "&gt;";
+      case '"':
+        return "&quot;";
+      case "'":
+        return "&#39;";
+      default:
+        return char;
+    }
+  });
+}
+
+const GOVERNMENT_TITLE_PAIN_POINTS = "The pains of inflexibility at local public health";
+const GOVERNMENT_TITLE_INCENTIVIZE = "Incentivizing flexibility at local public health";
+
+function parseGovernmentFlexibility(text) {
+  const lines = text
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  const idx1 = lines.indexOf(GOVERNMENT_TITLE_PAIN_POINTS);
+  const idx2 = lines.indexOf(GOVERNMENT_TITLE_INCENTIVIZE);
+
+  if (idx1 === -1 || idx2 === -1 || idx2 <= idx1) {
+    return {
+      lead: lines,
+      sections: [],
+    };
+  }
+
+  return {
+    lead: lines.slice(0, idx1),
+    sections: [
+      {
+        title: GOVERNMENT_TITLE_PAIN_POINTS,
+        paragraphs: lines.slice(idx1 + 1, idx2),
+      },
+      {
+        title: GOVERNMENT_TITLE_INCENTIVIZE,
+        paragraphs: lines.slice(idx2 + 1),
+      },
+    ],
+  };
+}
+
+function parseOptoelectronica(text) {
+  const paragraphs = text
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  return { paragraphs };
+}
+
+const governmentArticle = parseGovernmentFlexibility(govFlexibilityText);
+const optoelectronicaArticle = parseOptoelectronica(optoelectronicaText);
+
+function governmentFlexibilityArticleTemplate() {
+  const lead = governmentArticle.lead
+    .map((p) => `<p class="anim-text">${escapeHtml(p)}</p>`)
+    .join("");
+
+  const sections = governmentArticle.sections
+    .map(
+      (section) => `
+        <h2 class="article-title anim-text">${escapeHtml(section.title)}</h2>
+        ${section.paragraphs
+          .map((p) => `<p class="anim-text">${escapeHtml(p)}</p>`)
+          .join("")}
+      `,
+    )
+    .join("");
+
+  return `
+    <article class="article-shell" aria-label="Government flexibility">
+      ${lead}
+      ${sections}
+    </article>
+  `;
+}
+
+function optoelectronicaArticleTemplate() {
+  return `
+    <article class="article-shell" aria-label="Optoelectronica">
+      ${optoelectronicaArticle.paragraphs
+        .map((p) => `<p class="anim-text">${escapeHtml(p)}</p>`)
+        .join("")}
+
+      <section class="article-images" aria-label="Photos">
+        <figure class="article-figure">
+          <img
+            src="${equipoImageSrc}"
+            alt="Equipo de Optoelectrónica"
+            loading="lazy"
+          />
+          <figcaption>Equipo de trabajo en Optoelectrónica.</figcaption>
+        </figure>
+
+        <figure class="article-figure">
+          <img
+            src="${instalacionImageSrc}"
+            alt="Instalación del panel"
+            loading="lazy"
+          />
+          <figcaption>Instalación del panel y montaje del sistema.</figcaption>
+        </figure>
+      </section>
+    </article>
+  `;
+}
+
+function sociologicalTemplate() {
+  const section = CONTENT.sociological;
 
   return `
     <main class="section-shell">
       <a class="back-link" href="/" data-nav>&lt; back</a>
       <section class="hero section-hero" aria-label="${section.label}">
         <h1 class="section-title">${section.label}</h1>
+        <p class="lede">${section.subtitle}</p>
         <p class="lede">${section.description}</p>
       </section>
-      <section class="item-list" aria-label="${section.subtitle}">
-        ${section.items
-          .map(
-            (item) => `
-              <article class="item-card">
-                <span class="meta">${item.type}</span>
-                <h2>${item.title}</h2>
-                <p>${item.description}</p>
-              </article>
-            `,
-          )
-          .join("")}
-      </section>
+      ${governmentFlexibilityArticleTemplate()}
     </main>
   `;
 }
+
+function technologicalTemplate() {
+  const section = CONTENT.technological;
+
+  return `
+    <main class="section-shell">
+      <a class="back-link" href="/" data-nav>&lt; back</a>
+      <section class="hero section-hero" aria-label="${section.label}">
+        <h1 class="section-title">${section.label}</h1>
+        <p class="lede">${section.subtitle}</p>
+        <p class="lede">${section.description}</p>
+      </section>
+      ${optoelectronicaArticleTemplate()}
+    </main>
+  `;
+}
+
+let activeTextAnimationId = 0;
+let pendingRouteAnimation = null;
+
+function prefersReducedMotion() {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
+
+const SCRAMBLE_CHARS =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+function randomScrambleChar() {
+  return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+}
+
+function scrambleText(finalText, keepProbability) {
+  return [...finalText]
+    .map((char) => {
+      if (char === " " || char === "\n" || char === "\t") return char;
+
+      if (keepProbability <= 0) return randomScrambleChar();
+      if (keepProbability >= 1) return char;
+
+      return Math.random() < keepProbability ? char : randomScrambleChar();
+    })
+    .join("");
+}
+
+async function animateTextTransform(
+  elements,
+  { iterations = 3, stepMs = 180 } = {}
+) {
+  const animationId = ++activeTextAnimationId;
+
+  if (prefersReducedMotion()) {
+    return;
+  }
+
+  const finalByEl = new Map(elements.map((el) => [el, el.textContent || ""]));
+
+  for (let step = 0; step < iterations; step++) {
+    if (animationId !== activeTextAnimationId) return;
+
+    const keepProbability = iterations === 1 ? 1 : step / (iterations - 1);
+
+    for (const el of elements) {
+      const finalText = finalByEl.get(el) ?? "";
+      el.textContent = scrambleText(finalText, keepProbability);
+    }
+
+    if (step < iterations - 1) {
+      await sleep(stepMs);
+    }
+  }
+
+  if (animationId === activeTextAnimationId) {
+    for (const el of elements) {
+      el.textContent = finalByEl.get(el) ?? "";
+    }
+  }
+}
+
+async function animateCurrentRouteText() {
+  const elements = Array.from(app.querySelectorAll(".anim-text"));
+  if (elements.length === 0) return;
+  await animateTextTransform(elements, { iterations: 3, stepMs: 180 });
+}
+
 
 function notFoundTemplate() {
   return `
@@ -169,15 +347,29 @@ function renderRoute(path) {
   const route = getRoute(currentPath);
 
   if (route === "home") {
+    pendingRouteAnimation = null;
     app.innerHTML = homeTemplate();
     document.title = "tristan.systems";
   } else if (route === "sociological") {
-    app.innerHTML = sectionTemplate("sociological");
+    app.innerHTML = sociologicalTemplate();
     document.title = "tristan.systems — Sociological";
+
+    if (isBooted) {
+      void animateCurrentRouteText();
+    } else {
+      pendingRouteAnimation = "sociological";
+    }
   } else if (route === "technological") {
-    app.innerHTML = sectionTemplate("technological");
+    app.innerHTML = technologicalTemplate();
     document.title = "tristan.systems — Technological";
+
+    if (isBooted) {
+      void animateCurrentRouteText();
+    } else {
+      pendingRouteAnimation = "technological";
+    }
   } else {
+    pendingRouteAnimation = null;
     app.innerHTML = notFoundTemplate();
     document.title = "tristan.systems — 404";
   }
@@ -344,6 +536,17 @@ async function boot() {
 
   isBooted = true;
   trackPageView(currentPath);
+
+  if (pendingRouteAnimation) {
+    const routeToAnimate = pendingRouteAnimation;
+    pendingRouteAnimation = null;
+
+    // Ensure the current DOM still corresponds to the route we
+    // intended to animate.
+    if (getRoute(currentPath) === routeToAnimate) {
+      void animateCurrentRouteText();
+    }
+  }
 }
 
 app.addEventListener("click", (event) => {
