@@ -227,30 +227,18 @@ function optoelectronicaArticleTemplate() {
 }
 
 function sociologicalTemplate() {
-  const section = CONTENT.sociological;
-
   return `
     <main class="section-shell">
       <a class="back-link" href="/" data-nav>&lt; back</a>
-      <section class="hero section-hero" aria-label="${section.label}">
-        <h1 class="section-title">${section.label}</h1>
-        <p class="lede">${section.subtitle}</p>
-        <p class="lede">${section.description}</p>
-      </section>
       ${governmentFlexibilityArticleTemplate()}
     </main>
   `;
 }
 
 function technologicalTemplate() {
-  const section = CONTENT.technological;
-
   return `
     <main class="section-shell">
       <a class="back-link" href="/" data-nav>&lt; back</a>
-      <section class="hero section-hero" aria-label="${section.label}">
-        <h1 class="section-title">${section.label}</h1>
-      </section>
       ${optoelectronicaArticleTemplate()}
     </main>
   `;
@@ -286,7 +274,7 @@ function scrambleText(finalText, keepProbability) {
     .join("");
 }
 
-async function rerenderTextElement(el, { iterations = 2, stepMs = 90 } = {}) {
+async function rerenderTextElement(el, { iterations = 3, stepMs = 90 } = {}) {
   if (prefersReducedMotion()) {
     return;
   }
