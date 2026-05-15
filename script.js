@@ -250,16 +250,13 @@ function technologicalTemplate() {
       <a class="back-link" href="/" data-nav>&lt; back</a>
       <section class="hero section-hero" aria-label="${section.label}">
         <h1 class="section-title">${section.label}</h1>
-        <p class="lede">${section.subtitle}</p>
-        <p class="lede">${section.description}</p>
       </section>
       ${optoelectronicaArticleTemplate()}
     </main>
   `;
 }
 
-let activeTextAnimationId = 0;
-let pendingRouteAnimation = null;
+let activeScrollObserver = null;
 
 function prefersReducedMotion() {
   return (
@@ -289,44 +286,66 @@ function scrambleText(finalText, keepProbability) {
     .join("");
 }
 
-async function animateTextTransform(
-  elements,
-  { iterations = 3, stepMs = 180 } = {}
-) {
-  const animationId = ++activeTextAnimationId;
-
+async function rerenderTextElement(el, { iterations = 2, stepMs = 90 } = {}) {
   if (prefersReducedMotion()) {
     return;
   }
 
-  const finalByEl = new Map(elements.map((el) => [el, el.textContent || ""]));
+  const finalText = el.dataset.finalText ?? el.textContent ?? "";
 
   for (let step = 0; step < iterations; step++) {
-    if (animationId !== activeTextAnimationId) return;
-
     const keepProbability = iterations === 1 ? 1 : step / (iterations - 1);
-
-    for (const el of elements) {
-      const finalText = finalByEl.get(el) ?? "";
-      el.textContent = scrambleText(finalText, keepProbability);
-    }
+    el.textContent = scrambleText(finalText, keepProbability);
 
     if (step < iterations - 1) {
       await sleep(stepMs);
     }
   }
 
-  if (animationId === activeTextAnimationId) {
-    for (const el of elements) {
-      el.textContent = finalByEl.get(el) ?? "";
-    }
-  }
+  el.textContent = finalText;
 }
 
-async function animateCurrentRouteText() {
+function disconnectScrollTextRerender() {
+  activeScrollObserver?.disconnect();
+  activeScrollObserver = null;
+}
+
+function setupScrollTextRerender() {
+  disconnectScrollTextRerender();
+
+  if (prefersReducedMotion()) {
+    return;
+  }
+
   const elements = Array.from(app.querySelectorAll(".anim-text"));
-  if (elements.length === 0) return;
-  await animateTextTransform(elements, { iterations: 3, stepMs: 180 });
+  if (elements.length === 0) {
+    return;
+  }
+
+  for (const el of elements) {
+    el.dataset.finalText = el.textContent ?? "";
+  }
+
+  const done = new Set();
+
+  activeScrollObserver = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+
+        const el = entry.target;
+        if (done.has(el)) continue;
+
+        done.add(el);
+        void rerenderTextElement(el);
+      }
+    },
+    { threshold: 0.25 },
+  );
+
+  for (const el of elements) {
+    activeScrollObserver.observe(el);
+  }
 }
 
 
@@ -346,30 +365,37 @@ function renderRoute(path) {
   currentPath = normalizePath(path);
   const route = getRoute(currentPath);
 
+  disconnectScrollTextRerender();
+
   if (route === "home") {
-    pendingRouteAnimation = null;
     app.innerHTML = homeTemplate();
     document.title = "tristan.systems";
+
+    // When navigating back to home after boot, don't re-type.
+    // Just show the final text + blinking cursor.
+    if (isBooted) {
+      const homeHelloText = document.querySelector("#home-hello-text");
+      const homeHelloCursor = document.querySelector("#home-hello-cursor");
+      if (homeHelloText) {
+        homeHelloText.textContent = BOOT_TEXT;
+      }
+      homeHelloCursor?.classList.remove("is-hidden");
+    }
   } else if (route === "sociological") {
     app.innerHTML = sociologicalTemplate();
     document.title = "tristan.systems — Sociological";
 
     if (isBooted) {
-      void animateCurrentRouteText();
-    } else {
-      pendingRouteAnimation = "sociological";
+      setupScrollTextRerender();
     }
   } else if (route === "technological") {
     app.innerHTML = technologicalTemplate();
     document.title = "tristan.systems — Technological";
 
     if (isBooted) {
-      void animateCurrentRouteText();
-    } else {
-      pendingRouteAnimation = "technological";
+      setupScrollTextRerender();
     }
   } else {
-    pendingRouteAnimation = null;
     app.innerHTML = notFoundTemplate();
     document.title = "tristan.systems — 404";
   }
@@ -381,12 +407,6 @@ function renderRoute(path) {
   if (route === "home" && isBooted) {
     const homePaths = document.querySelector(".home-paths");
     homePaths?.classList.add("is-visible");
-  }
-
-  // When navigating back to the home route after boot, re-run the
-  // "Hello friend_" typing so it doesn't appear blank.
-  if (isBooted && route === "home") {
-    void animateHomeHelloFriend();
   }
 }
 
@@ -537,15 +557,11 @@ async function boot() {
   isBooted = true;
   trackPageView(currentPath);
 
-  if (pendingRouteAnimation) {
-    const routeToAnimate = pendingRouteAnimation;
-    pendingRouteAnimation = null;
-
-    // Ensure the current DOM still corresponds to the route we
-    // intended to animate.
-    if (getRoute(currentPath) === routeToAnimate) {
-      void animateCurrentRouteText();
-    }
+  // If we landed directly on an article route, enable scroll-triggered
+  // text re-rendering now that boot is complete.
+  const route = getRoute(currentPath);
+  if (route === "sociological" || route === "technological") {
+    setupScrollTextRerender();
   }
 }
 
