@@ -285,7 +285,7 @@ function systemHealthTemplate() {
       <article class="article-shell" aria-label="System Health Log">
         <div id="health-prompt"></div>
         <div id="health-cursor" class="cursor is-hidden">_</div>
-        <div id="health-log-content" class="health-log-content"></div>
+        <div id="health-log-content" class="health-log-content anim-text"></div>
       </article>
     </main>
   `;
@@ -399,16 +399,9 @@ async function initSystemHealthFetch() {
   // Load and display health log
   const logContent = await fetchHealthLog();
   
-  // Split log into lines and render each as anim-text for scroll animation
-  const lines = logContent
-    .split('\n')
-    .map(line => line.trim())
-    .filter(line => line.length > 0);
-  
-  logContentEl.innerHTML = lines
-    .map(line => `<div class="anim-text">${escapeHtml(line)}</div>`)
-    .join('');
-  
+  // Render the whole log as plain text (preserve indentation/blank lines).
+  // Mark it as anim-text (in the template) so scroll-based scrambling still works.
+  logContentEl.textContent = logContent;
   // Setup scroll animations for the log
   setupScrollTextRerender();
 }
