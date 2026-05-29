@@ -13,6 +13,8 @@ const ROUTES = {
   "/": "home",
   "/sociological": "sociological",
   "/technological": "technological",
+  "/technological/optoelectronica": "optoelectronica",
+  "/technological/system-health": "system-health",
 };
 
 const CONTENT = {
@@ -226,6 +228,19 @@ function optoelectronicaArticleTemplate() {
   `;
 }
 
+async function fetchHealthLog() {
+  try {
+    const response = await fetch('/api/health-log');
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    return await response.text();
+  } catch (error) {
+    console.error('Failed to fetch health log:', error);
+    return 'Health log unavailable. Run diagnose.sh manually.';
+  }
+}
+
 function sociologicalTemplate() {
   return `
     <main class="section-shell">
@@ -237,9 +252,41 @@ function sociologicalTemplate() {
 
 function technologicalTemplate() {
   return `
+    <main class="home-shell">
+      <section class="bubble-grid" aria-label="Technological routes">
+        <a class="bubble tech-box" href="/technological/optoelectronica" data-nav>
+          <span class="bubble-frame">
+            <span class="bubble-label">Optoelectrónica Icalma</span>
+          </span>
+        </a>
+        <a class="bubble tech-box" href="/technological/system-health" data-nav>
+          <span class="bubble-frame">
+            <span class="bubble-label">System Health</span>
+          </span>
+        </a>
+      </section>
+    </main>
+  `;
+}
+
+function optoelectronicaTemplate() {
+  return `
     <main class="section-shell">
-      <a class="back-link" href="/" data-nav>&lt; back</a>
+      <a class="back-link" href="/technological" data-nav>&lt; back</a>
       ${optoelectronicaArticleTemplate()}
+    </main>
+  `;
+}
+
+function systemHealthTemplate() {
+  return `
+    <main class="section-shell">
+      <a class="back-link" href="/technological" data-nav>&lt; back</a>
+      <article class="article-shell" aria-label="System Health Log">
+        <div id="health-prompt"></div>
+        <div id="health-cursor" class="cursor is-hidden">_</div>
+        <div id="health-log-content" class="health-log-content"></div>
+      </article>
     </main>
   `;
 }
@@ -336,6 +383,36 @@ function setupScrollTextRerender() {
   }
 }
 
+async function initSystemHealthFetch() {
+  const promptEl = document.querySelector('#health-prompt');
+  const cursorEl = document.querySelector('#health-cursor');
+  const logContentEl = document.querySelector('#health-log-content');
+  
+  if (!promptEl || !cursorEl) {
+    return;
+  }
+  
+  cursorEl.classList.remove('is-hidden');
+  await typeInto(promptEl, "$ fetch('/api/health-log')", 60);
+  cursorEl.classList.add('is-hidden');
+  
+  // Load and display health log
+  const logContent = await fetchHealthLog();
+  
+  // Split log into lines and render each as anim-text for scroll animation
+  const lines = logContent
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0);
+  
+  logContentEl.innerHTML = lines
+    .map(line => `<div class="anim-text">${escapeHtml(line)}</div>`)
+    .join('');
+  
+  // Setup scroll animations for the log
+  setupScrollTextRerender();
+}
+
 
 function notFoundTemplate() {
   return `
@@ -382,6 +459,20 @@ function renderRoute(path) {
 
     if (isBooted) {
       setupScrollTextRerender();
+    }
+  } else if (route === "optoelectronica") {
+    app.innerHTML = optoelectronicaTemplate();
+    document.title = "tristan.systems — Optoelectrónica Icalma";
+
+    if (isBooted) {
+      setupScrollTextRerender();
+    }
+  } else if (route === "system-health") {
+    app.innerHTML = systemHealthTemplate();
+    document.title = "tristan.systems — System Health";
+
+    if (isBooted) {
+      initSystemHealthFetch();
     }
   } else {
     app.innerHTML = notFoundTemplate();
@@ -545,10 +636,12 @@ async function boot() {
   isBooted = true;
   trackPageView(currentPath);
 
-  // If we landed directly on an article route, enable scroll-triggered
+  // If we landed directly on an article/system-health route, enable scroll-triggered
   // text re-rendering now that boot is complete.
   const route = getRoute(currentPath);
-  if (route === "sociological" || route === "technological") {
+  if (route === "system-health") {
+    initSystemHealthFetch();
+  } else if (route === "sociological" || route === "technological") {
     setupScrollTextRerender();
   }
 }

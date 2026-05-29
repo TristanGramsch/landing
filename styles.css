@@ -270,6 +270,72 @@ body.page-pulse {
   line-height: 1.55;
 }
 
+.tech-content {
+  width: min(100%, var(--max-width));
+  margin: 0 auto;
+}
+
+.tech-content pre {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.item-card-title {
+  margin: 0 0 0.8rem;
+  font-size: clamp(1.3rem, 2.5vw, 1.6rem);
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 8px rgba(57, 255, 20, 0.35);
+}
+
+.tech-card-content {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.system-health-content {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.health-metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.7rem;
+  border-left: 2px solid var(--terminal-green-dim);
+  background: rgba(57, 255, 20, 0.03);
+}
+
+.health-label {
+  color: var(--terminal-green-dim);
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.health-value {
+  color: var(--terminal-green-soft);
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-shadow: 0 0 6px rgba(57, 255, 20, 0.25);
+}
+
+.health-running {
+  color: #39ff14;
+}
+
+.health-stopped {
+  color: #ff6b6b;
+}
+
+.system-health-error {
+  color: #ff6b6b;
+  padding: 0.7rem;
+  border-left: 2px solid #ff6b6b;
+  background: rgba(255, 107, 107, 0.08);
+}
+
 .article-shell {
   display: grid;
   gap: 1rem;
@@ -281,6 +347,21 @@ body.page-pulse {
   color: var(--terminal-green-soft);
   line-height: 1.7;
   font-size: clamp(1rem, 2.2vw, 1.1rem);
+}
+
+.health-log-content {
+  display: grid;
+  gap: 0.3rem;
+  font-family: 'Share Tech Mono', monospace;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.health-log-content .anim-text {
+  margin: 0;
+  color: var(--terminal-green-soft);
 }
 
 .article-title {
