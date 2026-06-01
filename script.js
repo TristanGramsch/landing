@@ -1,5 +1,6 @@
 import govFlexibilityText from "./Government flexibility.txt?raw";
 import optoelectronicaText from "./Optoelectronica.txt?raw";
+import aoPrompt80Text from "./AO-prompt-80.txt?raw";
 
 import equipoImageSrc from "./equipo.jpeg";
 import instalacionImageSrc from "./instalación.jpeg";
@@ -12,6 +13,8 @@ const PULSE_MS = 760;
 const ROUTES = {
   "/": "home",
   "/sociological": "sociological",
+  "/sociological/ao-prompt-80": "ao-prompt-80",
+  "/sociological/government-flexibility": "government-flexibility",
   "/technological": "technological",
   "/technological/optoelectronica": "optoelectronica",
   "/technological/system-health": "system-health",
@@ -243,9 +246,42 @@ async function fetchHealthLog() {
 
 function sociologicalTemplate() {
   return `
-    <main class="section-shell">
+    <main class="home-shell">
       <a class="back-link" href="/" data-nav>&lt; back</a>
+      <section class="bubble-grid" aria-label="Sociological routes">
+        <a class="bubble tech-box" href="/sociological/government-flexibility" data-nav>
+          <span class="bubble-frame">
+            <span class="bubble-label">Government flexibility</span>
+          </span>
+        </a>
+        <a class="bubble tech-box" href="/sociological/ao-prompt-80" data-nav>
+          <span class="bubble-frame">
+            <span class="bubble-label">AO-Prompt-80</span>
+          </span>
+        </a>
+      </section>
+    </main>
+  `;
+}
+
+function governmentFlexibilityRouteTemplate() {
+  return `
+    <main class="section-shell">
+      <a class="back-link" href="/sociological" data-nav>&lt; back</a>
       ${governmentFlexibilityArticleTemplate()}
+    </main>
+  `;
+}
+
+function aoPrompt80Template() {
+  return `
+    <main class="section-shell">
+      <a class="back-link" href="/sociological" data-nav>&lt; back</a>
+      <article class="article-shell" aria-label="AO-Prompt-80">
+        <div class="tech-content">
+          <pre class="anim-text">${escapeHtml(aoPrompt80Text)}</pre>
+        </div>
+      </article>
     </main>
   `;
 }
@@ -253,6 +289,7 @@ function sociologicalTemplate() {
 function technologicalTemplate() {
   return `
     <main class="home-shell">
+      <a class="back-link" href="/" data-nav>&lt; back</a>
       <section class="bubble-grid" aria-label="Technological routes">
         <a class="bubble tech-box" href="/technological/optoelectronica" data-nav>
           <span class="bubble-frame">
@@ -446,6 +483,20 @@ function renderRoute(path) {
     if (isBooted) {
       setupScrollTextRerender();
     }
+  } else if (route === "government-flexibility") {
+    app.innerHTML = governmentFlexibilityRouteTemplate();
+    document.title = "tristan.systems — Government flexibility";
+
+    if (isBooted) {
+      setupScrollTextRerender();
+    }
+  } else if (route === "ao-prompt-80") {
+    app.innerHTML = aoPrompt80Template();
+    document.title = "tristan.systems — AO-Prompt-80";
+
+    if (isBooted) {
+      setupScrollTextRerender();
+    }
   } else if (route === "technological") {
     app.innerHTML = technologicalTemplate();
     document.title = "tristan.systems — Technological";
@@ -634,7 +685,7 @@ async function boot() {
   const route = getRoute(currentPath);
   if (route === "system-health") {
     initSystemHealthFetch();
-  } else if (route === "sociological" || route === "technological") {
+  } else {
     setupScrollTextRerender();
   }
 }
