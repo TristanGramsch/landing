@@ -1,6 +1,6 @@
 import govFlexibilityText from "./Government flexibility.txt?raw";
 import optoelectronicaText from "./Optoelectronica.txt?raw";
-import aoPrompt80Text from "./AO-prompt-80.txt?raw";
+import dittoPitch80Text from "./Ditto-pitch-80.txt?raw";
 
 import equipoImageSrc from "./equipo.jpeg";
 import instalacionImageSrc from "./instalación.jpeg";
@@ -13,7 +13,7 @@ const PULSE_MS = 760;
 const ROUTES = {
   "/": "home",
   "/sociological": "sociological",
-  "/sociological/ao-prompt-80": "ao-prompt-80",
+  "/sociological/ditto-pitch-80": "ditto-pitch-80",
   "/sociological/government-flexibility": "government-flexibility",
   "/technological": "technological",
   "/technological/optoelectronica": "optoelectronica",
@@ -254,9 +254,9 @@ function sociologicalTemplate() {
             <span class="bubble-label">Government flexibility</span>
           </span>
         </a>
-        <a class="bubble tech-box" href="/sociological/ao-prompt-80" data-nav>
+        <a class="bubble tech-box" href="/sociological/ditto-pitch-80" data-nav>
           <span class="bubble-frame">
-            <span class="bubble-label">AO-Prompt-80</span>
+            <span class="bubble-label">Ditto-Pitch-80</span>
           </span>
         </a>
       </section>
@@ -273,13 +273,148 @@ function governmentFlexibilityRouteTemplate() {
   `;
 }
 
-function aoPrompt80Template() {
+function dittoPitch80Template() {
   return `
     <main class="section-shell">
       <a class="back-link" href="/sociological" data-nav>&lt; back</a>
-      <article class="article-shell" aria-label="AO-Prompt-80">
+      <article class="article-shell" aria-label="Ditto-Pitch-80">
         <div class="tech-content">
-          <pre class="anim-text">${escapeHtml(aoPrompt80Text)}</pre>
+          <pre class="anim-text">${escapeHtml(dittoPitch80Text)}</pre>
+        </div>
+      </article>
+    </main>
+  `;
+}
+
+const DITTO_PITCH_80_PASSWORD = "justice";
+const DITTO_PITCH_80_UNLOCK_KEY = "ditto-pitch-80-unlocked";
+
+function isDittoPitch80Unlocked() {
+  try {
+    return sessionStorage.getItem(DITTO_PITCH_80_UNLOCK_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function setDittoPitch80Unlocked(unlocked) {
+  try {
+    if (unlocked) {
+      sessionStorage.setItem(DITTO_PITCH_80_UNLOCK_KEY, "1");
+    } else {
+      sessionStorage.removeItem(DITTO_PITCH_80_UNLOCK_KEY);
+    }
+} catch {
+    // Ignore storage errors; this is best-effort privacy.
+  }
+}
+
+let dittoPitch80TwitchTimeout = null;
+let dittoPitch80LastKeyTwitchAt = 0;
+
+function stopDittoPitch80Twitch() {
+  if (dittoPitch80TwitchTimeout) {
+    window.clearTimeout(dittoPitch80TwitchTimeout);
+    dittoPitch80TwitchTimeout = null;
+  }
+}
+
+function triggerDittoPitch80Twitch() {
+  const input = document.querySelector("#ditto-password-input");
+  if (!input) return;
+
+  if (isDittoPitch80Unlocked()) {
+    return;
+  }
+
+  dittoPitch80LastKeyTwitchAt = Date.now();
+
+  input.classList.remove("ditto-auth-twitch");
+  void input.offsetWidth;
+  input.classList.add("ditto-auth-twitch");
+
+  window.setTimeout(() => {
+    input.classList.remove("ditto-auth-twitch");
+  }, 160);
+}
+
+function bindDittoPitch80KeyTwitch() {
+  const input = document.querySelector("#ditto-password-input");
+  if (!input) return;
+
+  if (input.dataset.dittoKeyBound === "1") {
+    return;
+  }
+
+  input.dataset.dittoKeyBound = "1";
+
+  input.addEventListener(
+    "keydown",
+    () => {
+      if (isDittoPitch80Unlocked()) return;
+      triggerDittoPitch80Twitch();
+    },
+    { passive: true },
+  );
+}
+
+function startDittoPitch80Twitch() {
+  stopDittoPitch80Twitch();
+
+  const scheduleNext = () => {
+    const delayMs = 250 + Math.random() * 250;
+
+    dittoPitch80TwitchTimeout = window.setTimeout(() => {
+      if (!isBooted || currentPath !== "/sociological/ditto-pitch-80" || isDittoPitch80Unlocked()) {
+        stopDittoPitch80Twitch();
+        return;
+      }
+
+      const input = document.querySelector("#ditto-password-input");
+      if (!input) {
+        stopDittoPitch80Twitch();
+        return;
+      }
+
+      triggerDittoPitch80Twitch();
+
+      scheduleNext();
+    }, delayMs);
+  };
+
+  scheduleNext();
+}
+
+function dittoPitch80UnlockedTemplate() {
+  return `
+    <main class="section-shell">
+      <a class="back-link" href="/sociological" data-nav>&lt; back</a>
+      <article class="article-shell" aria-label="Ditto-Pitch-80">
+        <div class="tech-content">
+          <pre class="anim-text">${escapeHtml(dittoPitch80Text)}</pre>
+        </div>
+      </article>
+    </main>
+  `;
+}
+
+function dittoPitch80LockedTemplate() {
+  return `
+    <main class="section-shell">
+      <a class="back-link" href="/sociological" data-nav>&lt; back</a>
+      <article class="article-shell" aria-label="Ditto-Pitch-80 (locked)">
+        <div class="ditto-auth-shell">
+          <form class="ditto-auth-form" data-ditto-auth="unlock" autocomplete="off">
+            <input
+              id="ditto-password-input"
+              name="password"
+              class="ditto-auth-input"
+              type="password"
+              autocomplete="off"
+              spellcheck="false"
+              inputmode="text"
+            />
+          </form>
         </div>
       </article>
     </main>
@@ -490,12 +625,25 @@ function renderRoute(path) {
     if (isBooted) {
       setupScrollTextRerender();
     }
-  } else if (route === "ao-prompt-80") {
-    app.innerHTML = aoPrompt80Template();
-    document.title = "tristan.systems — AO-Prompt-80";
+  } else if (route === "ditto-pitch-80") {
+    stopDittoPitch80Twitch();
 
-    if (isBooted) {
+    if (isDittoPitch80Unlocked()) {
+      app.innerHTML = dittoPitch80UnlockedTemplate();
+    } else {
+      app.innerHTML = dittoPitch80LockedTemplate();
+    }
+    document.title = "tristan.systems — Ditto-Pitch-80";
+
+    if (isBooted && isDittoPitch80Unlocked()) {
       setupScrollTextRerender();
+    }
+
+    if (isBooted && !isDittoPitch80Unlocked()) {
+      const passwordInput = document.querySelector("#ditto-password-input");
+      passwordInput?.focus();
+      bindDittoPitch80KeyTwitch();
+      startDittoPitch80Twitch();
     }
   } else if (route === "technological") {
     app.innerHTML = technologicalTemplate();
@@ -689,6 +837,32 @@ async function boot() {
     setupScrollTextRerender();
   }
 }
+
+app.addEventListener("submit", (event) => {
+  const unlockForm = event.target?.closest?.('form[data-ditto-auth="unlock"]');
+  if (!unlockForm) {
+    return;
+  }
+
+  event.preventDefault();
+
+  const inputEl = unlockForm.querySelector('input[name="password"]');
+  const entered = (inputEl?.value ?? "").trim();
+
+  if (entered === DITTO_PITCH_80_PASSWORD) {
+    setDittoPitch80Unlocked(true);
+    inputEl && (inputEl.value = "");
+    renderRoute(currentPath);
+    return;
+  }
+
+  setDittoPitch80Unlocked(false);
+  inputEl && (inputEl.value = "");
+  renderRoute(currentPath);
+
+  const passwordInput = document.querySelector("#ditto-password-input");
+  passwordInput?.focus();
+});
 
 app.addEventListener("click", (event) => {
   const navTarget = event.target.closest("[data-nav]");
