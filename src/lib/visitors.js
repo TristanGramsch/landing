@@ -12,18 +12,23 @@ function formatVisitors(n) {
   }
 }
 
-function spawnFireworks({ containerEl, originEl, sparkCount = 22 }) {
+function spawnFireworksBurst({
+  containerEl,
+  originEl,
+  sparkCount = 22,
+  originOffsetX = 0,
+  originOffsetY = 0,
+}) {
   if (!containerEl) return;
-
-  // Clear any previous burst.
-  containerEl.innerHTML = '';
 
   const containerRect = containerEl.getBoundingClientRect();
   const originRect = originEl?.getBoundingClientRect?.() ?? containerRect;
 
   // Place the origin point relative to the container.
-  const originX = originRect.left - containerRect.left + originRect.width / 2;
-  const originY = originRect.top - containerRect.top + originRect.height / 2;
+  const originX =
+    originRect.left - containerRect.left + originRect.width / 2 + originOffsetX;
+  const originY =
+    originRect.top - containerRect.top + originRect.height / 2 + originOffsetY;
 
   for (let i = 0; i < sparkCount; i++) {
     const spark = document.createElement('span');
@@ -46,11 +51,6 @@ function spawnFireworks({ containerEl, originEl, sparkCount = 22 }) {
 
     containerEl.appendChild(spark);
   }
-
-  // Remove sparks after the animation.
-  window.setTimeout(() => {
-    if (containerEl) containerEl.innerHTML = '';
-  }, 1750);
 }
 
 export async function initVisitors({ appEl } = {}) {
@@ -78,8 +78,33 @@ export async function initVisitors({ appEl } = {}) {
     countEl.textContent = Number.isFinite(visitors) ? formatVisitors(visitors) : '—';
 
     if (!reduced) {
-      // Trigger the burst after the number is painted.
-      spawnFireworks({ containerEl: fireworksEl, originEl, sparkCount: 26 });
+      // Fire 3–5 bursts so it feels like a cluster, and randomize origin
+      // offsets so they don't land on the same exact spot.
+      const burstCount = Math.floor(3 + Math.random() * 3); // 3..5
+
+      fireworksEl.innerHTML = '';
+
+      for (let i = 0; i < burstCount; i++) {
+        const delayMs = i * 220;
+        const originOffsetX = (Math.random() - 0.5) * 28;
+        const originOffsetY = (Math.random() - 0.5) * 22;
+        const sparkCount = 18 + Math.floor(Math.random() * 10);
+
+        window.setTimeout(() => {
+          spawnFireworksBurst({
+            containerEl: fireworksEl,
+            originEl,
+            sparkCount,
+            originOffsetX,
+            originOffsetY,
+          });
+        }, delayMs);
+      }
+
+      // Clear after the last burst finishes.
+      window.setTimeout(() => {
+        if (fireworksEl) fireworksEl.innerHTML = '';
+      }, 1750 + (burstCount - 1) * 220 + 160);
     }
   } catch {
     countEl.textContent = '—';
