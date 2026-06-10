@@ -129,7 +129,7 @@ body.boot-complete #app {
 
 .hero {
   display: grid;
-  gap: 0.9rem;
+  gap: 0.6rem;
   justify-items: center;
 }
 
@@ -172,7 +172,7 @@ body.boot-complete #app {
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-top: -0.85rem;
+  margin-top: -1.35rem;
 }
 
 .visitors-widget {
