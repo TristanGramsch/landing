@@ -8,6 +8,7 @@ import {
   setupScrollTextRerender,
 } from "./lib/scrollTextRerender.js";
 import { initSystemHealthFetch } from "./lib/health.js";
+import { initVisitors } from "./lib/visitors.js";
 
 import {
   DITTO_PITCH_80_PASSWORD,
@@ -67,6 +68,10 @@ function renderRoute(path) {
         homeHelloText.textContent = BOOT_TEXT;
       }
       homeHelloCursor?.classList.remove("is-hidden");
+    }
+
+    if (isBooted) {
+      initVisitors({ appEl: app });
     }
   } else if (route === "sociological") {
     app.innerHTML = sociologicalTemplate();
@@ -214,6 +219,10 @@ async function boot() {
     initSystemHealthFetch({ appEl: app });
   } else {
     setupScrollTextRerender({ appEl: app });
+  }
+
+  if (route === "home") {
+    initVisitors({ appEl: app });
   }
 }
 

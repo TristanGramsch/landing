@@ -167,6 +167,88 @@ body.boot-complete #app {
   font-size: clamp(1.2rem, 3.2vw, 1.55rem);
 }
 
+.home-visitors-shell {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: -0.25rem;
+}
+
+.visitors-widget {
+  z-index: 2;
+  display: inline-flex;
+  gap: 0.55rem;
+  align-items: baseline;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--terminal-green-dim);
+  background: linear-gradient(
+    180deg,
+    rgba(57, 255, 20, 0.08),
+    rgba(57, 255, 20, 0.02)
+  );
+  box-shadow: 0 0 26px rgba(57, 255, 20, 0.07);
+  border-radius: 0.6rem;
+}
+
+.visitors-prefix,
+.visitors-suffix {
+  color: var(--terminal-green-soft);
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  text-shadow: 0 0 12px rgba(57, 255, 20, 0.25);
+}
+
+.visitors-count {
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+  text-shadow: 0 0 16px rgba(57, 255, 20, 0.35), 0 0 36px rgba(57, 255, 20, 0.14);
+}
+
+.visitors-fireworks {
+  z-index: 1;
+  position: absolute;
+  inset: -1.2rem -1.2rem -2rem -1.2rem;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.visitors-firework-spark {
+  position: absolute;
+  left: var(--ox);
+  top: var(--oy);
+  width: 3px;
+  height: 3px;
+  background: var(--terminal-green);
+  border-radius: 999px;
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.85), 0 0 24px rgba(57, 255, 20, 0.18);
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  animation: visitors-spark-explode 1200ms ease-out forwards;
+}
+
+@keyframes visitors-spark-explode {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translate(0, 0) scale(1);
+  }
+  55% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate(var(--dx), var(--dy)) scale(0.2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .visitors-fireworks {
+    display: none;
+  }
+  .visitors-firework-spark {
+    animation: none !important;
+  }
+}
 .home-paths {
   display: flex;
   flex-direction: column;

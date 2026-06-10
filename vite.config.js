@@ -1,6 +1,26 @@
 import { defineConfig } from 'vite'
 import fs from 'fs'
 import path from 'path'
+import { execFile } from 'child_process'
+
+function parseEnvFile(filePath) {
+  try {
+    const raw = fs.readFileSync(filePath, 'utf8')
+    const out = {}
+    for (const line of raw.split(/\r?\n/)) {
+      const trimmed = line.trim()
+      if (!trimmed || trimmed.startsWith('#')) continue
+      const idx = trimmed.indexOf('=')
+      if (idx === -1) continue
+      const key = trimmed.slice(0, idx).trim()
+      const value = trimmed.slice(idx + 1).trim()
+      out[key] = value
+    }
+    return out
+  } catch {
+    return {}
+  }
+}
 
 export default defineConfig({
   server: {
@@ -63,6 +83,71 @@ export default defineConfig({
             res.setHeader('Content-Type', 'text/plain');
             res.statusCode = 404;
             res.end('Health log not found. Diagnose has not run yet.');
+          }
+        });
+      },
+    },
+    {
+      name: 'umami-visitors-api',
+      configureServer(server) {
+        let cache = null;
+        let cacheAt = 0;
+        const CACHE_MS = 60 * 1000;
+
+        const configEnvPath = '/home/tristan/tristan-systems/config.env';
+        const umamiEnvPath = '/opt/tristan-systems/umami/.env';
+        const containerName = process.env.UMAMI_POSTGRES_CONTAINER || 'umami-postgres-1';
+
+        server.middlewares.use('/api/umami-visitors', async (req, res, next) => {
+          try {
+            if (cache && Date.now() - cacheAt < CACHE_MS) {
+              res.setHeader('Content-Type', 'application/json; charset=utf-8');
+              res.end(JSON.stringify(cache));
+              return;
+            }
+
+            const stackEnv = parseEnvFile(configEnvPath);
+            const umamiEnv = parseEnvFile(umamiEnvPath);
+
+            const websiteId = process.env.UMAMI_WEBSITE_ID || stackEnv.UMAMI_WEBSITE_ID;
+            const postgresPassword = process.env.UMAMI_POSTGRES_PASSWORD || umamiEnv.POSTGRES_PASSWORD;
+
+            if (!websiteId || !postgresPassword) {
+              res.setHeader('Content-Type', 'application/json; charset=utf-8');
+              res.end(JSON.stringify({ visitors: null }));
+              return;
+            }
+
+            const postgresUser = process.env.UMAMI_POSTGRES_USER || 'umami';
+            const postgresDb = process.env.UMAMI_POSTGRES_DB || 'umami';
+
+            const sql = `select count(distinct distinct_id) as visitors\nfrom public.session\nwhere website_id='${websiteId}'`;
+            const cmd = `PGPASSWORD='${postgresPassword}' psql -U '${postgresUser}' -d '${postgresDb}' -tAc "${sql.replace(/"/g, '\\"')}"`;
+
+            execFile(
+              'docker',
+              ['exec', containerName, 'bash', '-lc', cmd],
+              { timeout: 15_000 },
+              (err, stdout, stderr) => {
+                if (err) {
+                  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+                  res.end(JSON.stringify({ visitors: null }));
+                  return;
+                }
+
+                const raw = String(stdout || '').trim();
+                const visitors = Number(raw);
+                const payload = { visitors: Number.isFinite(visitors) ? visitors : null };
+                cache = payload;
+                cacheAt = Date.now();
+
+                res.setHeader('Content-Type', 'application/json; charset=utf-8');
+                res.end(JSON.stringify(payload));
+              }
+            );
+          } catch {
+            res.setHeader('Content-Type', 'application/json; charset=utf-8');
+            res.end(JSON.stringify({ visitors: null }));
           }
         });
       },
