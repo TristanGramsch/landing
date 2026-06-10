@@ -87,8 +87,8 @@ export async function initVisitors({ appEl } = {}) {
       for (let i = 0; i < burstCount; i++) {
         // First burst fires immediately; subsequent bursts are delayed
         // progressively with additional randomness.
-        const baseDelayMs = i * 220;
-        const jitterMs = Math.floor(Math.random() * 180); // 0..179
+        const baseDelayMs = i * 320;
+        const jitterMs = Math.floor(Math.random() * 260); // 0..259
         const delayMs = baseDelayMs + jitterMs;
 
         const originOffsetX = (Math.random() - 0.5) * 28;
@@ -108,10 +108,10 @@ export async function initVisitors({ appEl } = {}) {
 
       // Clear after the last burst finishes.
       // Account for the maximum jitter on the last scheduled burst.
-      const maxJitterMs = 179;
+      const maxJitterMs = 259;
       window.setTimeout(() => {
         if (fireworksEl) fireworksEl.innerHTML = '';
-      }, 1750 + (burstCount - 1) * 220 + 160 + maxJitterMs);
+      }, 1750 + (burstCount - 1) * 320 + 160 + maxJitterMs);
     }
   } catch {
     countEl.textContent = '—';
