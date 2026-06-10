@@ -13,4 +13,3 @@ Ditto is a team of 5.
 -Appraisal learning engineer: appraises properties. 
 -Exemptions engineer: exempts properties. 
 -Transparency expert: Educates the public. Publishes the tax roll.
-
