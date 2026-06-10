@@ -26,18 +26,22 @@ export function homeTemplate() {
   return `
     <main class="home-shell">
       <section class="hero hero-centered" aria-label="Welcome">
-        <h1 class="hero-title">
-          <span id="home-hello-text"></span><span id="home-hello-cursor" class="cursor is-hidden">_</span>
-        </h1>
-
-        <div class="home-visitors-shell" aria-label="All-time visitors">
+        <div class="home-visitors-shell" aria-label="Visitors">
           <div class="visitors-widget">
-            <span class="visitors-prefix">All-time</span>
             <span id="visitors-count" class="visitors-count" aria-live="polite">—</span>
             <span class="visitors-suffix">visitors</span>
           </div>
-          <div id="visitors-fireworks" class="visitors-fireworks" aria-hidden="true"></div>
+          <div
+            id="visitors-fireworks"
+            class="visitors-fireworks"
+            aria-hidden="true"
+          ></div>
         </div>
+
+        <h1 class="hero-title">
+          <span id="home-hello-text"></span
+          ><span id="home-hello-cursor" class="cursor is-hidden">_</span>
+        </h1>
 
         <div class="home-paths" aria-label="Choose a path">
           <p class="lede lede-home">Choose a path of your interest.</p>

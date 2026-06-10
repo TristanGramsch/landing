@@ -180,15 +180,11 @@ body.boot-complete #app {
   display: inline-flex;
   gap: 0.55rem;
   align-items: baseline;
-  padding: 0.35rem 0.75rem;
-  border: 1px solid var(--terminal-green-dim);
-  background: linear-gradient(
-    180deg,
-    rgba(57, 255, 20, 0.08),
-    rgba(57, 255, 20, 0.02)
-  );
-  box-shadow: 0 0 26px rgba(57, 255, 20, 0.07);
-  border-radius: 0.6rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
 }
 
 .visitors-prefix,
@@ -224,7 +220,7 @@ body.boot-complete #app {
   box-shadow: 0 0 10px rgba(57, 255, 20, 0.85), 0 0 24px rgba(57, 255, 20, 0.18);
   opacity: 0;
   transform: translate(-50%, -50%);
-  animation: visitors-spark-explode 1200ms ease-out forwards;
+  animation: visitors-spark-explode 1750ms ease-out forwards;
 }
 
 @keyframes visitors-spark-explode {

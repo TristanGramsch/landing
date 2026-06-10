@@ -12,7 +12,7 @@ function formatVisitors(n) {
   }
 }
 
-function spawnFireworks({ containerEl, originEl, sparkCount = 14 }) {
+function spawnFireworks({ containerEl, originEl, sparkCount = 22 }) {
   if (!containerEl) return;
 
   // Clear any previous burst.
@@ -29,8 +29,9 @@ function spawnFireworks({ containerEl, originEl, sparkCount = 14 }) {
     const spark = document.createElement('span');
     spark.className = 'visitors-firework-spark';
 
-    const angle = (Math.PI * 2 * i) / sparkCount + (Math.random() - 0.5) * 0.35;
-    const radius = 64 + Math.random() * 88;
+    const angle =
+      (Math.PI * 2 * i) / sparkCount + (Math.random() - 0.5) * 0.35;
+    const radius = 64 + Math.random() * 98;
 
     const dx = Math.cos(angle) * radius;
     const dy = Math.sin(angle) * radius;
@@ -41,7 +42,7 @@ function spawnFireworks({ containerEl, originEl, sparkCount = 14 }) {
     spark.style.setProperty('--dy', `${dy}px`);
 
     // Stagger slightly so the burst feels more organic.
-    spark.style.animationDelay = `${Math.random() * 120}ms`;
+    spark.style.animationDelay = `${Math.random() * 160}ms`;
 
     containerEl.appendChild(spark);
   }
@@ -49,7 +50,7 @@ function spawnFireworks({ containerEl, originEl, sparkCount = 14 }) {
   // Remove sparks after the animation.
   window.setTimeout(() => {
     if (containerEl) containerEl.innerHTML = '';
-  }, 1200);
+  }, 1750);
 }
 
 export async function initVisitors({ appEl } = {}) {
@@ -78,7 +79,7 @@ export async function initVisitors({ appEl } = {}) {
 
     if (!reduced) {
       // Trigger the burst after the number is painted.
-      spawnFireworks({ containerEl: fireworksEl, originEl, sparkCount: 16 });
+      spawnFireworks({ containerEl: fireworksEl, originEl, sparkCount: 26 });
     }
   } catch {
     countEl.textContent = '—';
