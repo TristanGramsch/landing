@@ -172,7 +172,7 @@ body.boot-complete #app {
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-top: -1.35rem;
+  margin-top: 0;
 }
 
 .visitors-widget {
@@ -185,6 +185,25 @@ body.boot-complete #app {
   background: none;
   box-shadow: none;
   border-radius: 0;
+}
+
+.visitors-widget .visitors-count,
+.visitors-widget .visitors-suffix--header {
+  transition: opacity 720ms ease, transform 720ms ease;
+}
+
+.visitors-widget.is-loading .visitors-count,
+.visitors-widget.is-loading .visitors-suffix--header {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+.visitors-widget.is-fireworks-ended .visitors-count,
+.visitors-widget.is-fireworks-ended .visitors-suffix--header,
+.visitors-count.is-fireworks-ended,
+.visitors-suffix--header.is-fireworks-ended {
+  transition: none;
+  animation: visitors-glitch-fade 820ms ease forwards;
 }
 
 .visitors-prefix,
@@ -236,6 +255,69 @@ body.boot-complete #app {
     transform: translate(-50%, -50%) translate(var(--dx), var(--dy)) scale(0.2);
   }
 }
+
+@keyframes visitors-glitch-fade {
+  0% {
+    opacity: 1;
+    transform: translateY(0) translateX(0) skewX(0deg);
+    filter: none;
+    text-shadow: none;
+  }
+
+  /* Burst of jitter */
+  6% {
+    opacity: 1;
+    transform: translateY(-3px) translateX(4px) skewX(-18deg);
+    filter: hue-rotate(35deg) saturate(1.4);
+    text-shadow:
+      5px 0 rgba(57, 255, 20, 0.7),
+      -4px 0 rgba(57, 255, 20, 0.3);
+  }
+  14% {
+    opacity: 0.95;
+    transform: translateY(2px) translateX(-5px) skewX(22deg);
+    filter: hue-rotate(-40deg) saturate(1.6);
+    text-shadow:
+      -6px 0 rgba(57, 255, 20, 0.65),
+      6px 0 rgba(57, 255, 20, 0.25);
+  }
+  22% {
+    opacity: 1;
+    transform: translateY(-2px) translateX(6px) skewX(-26deg);
+    filter: hue-rotate(55deg) saturate(1.8);
+  }
+  32% {
+    opacity: 0.85;
+    transform: translateY(3px) translateX(-7px) skewX(18deg);
+    filter: hue-rotate(-25deg) saturate(1.5);
+  }
+  42% {
+    opacity: 1;
+    transform: translateY(-1px) translateX(3px) skewX(-10deg);
+    filter: hue-rotate(30deg);
+  }
+
+  /* Final kick into fade */
+  60% {
+    opacity: 0.35;
+    transform: translateY(7px) translateX(0) skewX(0deg);
+    filter: none;
+    text-shadow: none;
+  }
+
+  76% {
+    opacity: 0.08;
+    transform: translateY(10px) translateX(0) skewX(0deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(12px) translateX(0) skewX(0deg);
+    filter: none;
+    text-shadow: none;
+  }
+}
+
 
 @media (prefers-reduced-motion: reduce) {
   .visitors-fireworks {

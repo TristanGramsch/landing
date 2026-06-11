@@ -1,5 +1,3 @@
-let didInit = false;
-
 function prefersReducedMotion() {
   return window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
 }
@@ -54,20 +52,28 @@ function spawnFireworksBurst({
 }
 
 export async function initVisitors({ appEl } = {}) {
-  if (didInit) return;
-  didInit = true;
-
-  const countEl = appEl?.querySelector?.('#visitors-count') ?? document.querySelector('#visitors-count');
-  const fireworksEl = appEl?.querySelector?.('#visitors-fireworks') ?? document.querySelector('#visitors-fireworks');
-  const originEl = appEl?.querySelector?.('.home-visitors-shell') ?? document.querySelector('.home-visitors-shell');
+  const countEl =
+    appEl?.querySelector?.('#visitors-count') ?? document.querySelector('#visitors-count');
+  const visitorsSuffixEl =
+    appEl?.querySelector?.('.visitors-suffix--header') ?? document.querySelector('.visitors-suffix--header');
+  const fireworksEl =
+    appEl?.querySelector?.('#visitors-fireworks') ?? document.querySelector('#visitors-fireworks');
+  const originEl =
+    appEl?.querySelector?.('.home-visitors-shell') ?? document.querySelector('.home-visitors-shell');
+  const visitorsWidgetEl =
+    originEl?.querySelector?.('.visitors-widget') ??
+    appEl?.querySelector?.('.visitors-widget') ??
+    document.querySelector('.visitors-widget');
 
   if (!countEl) return;
 
+  // Ensure we start fresh for each home render.
+  visitorsWidgetEl?.classList?.remove?.('is-fireworks-ended');
+  visitorsWidgetEl?.classList?.add?.('is-loading');
+  countEl.textContent = '';
+
   // Reduced motion: still fetch and display the number, but skip fireworks.
   const reduced = prefersReducedMotion();
-
-  // Start in a neutral state.
-  countEl.textContent = '—';
 
   try {
     const res = await fetch('/api/umami-visitors', { credentials: 'same-origin' });
@@ -76,6 +82,8 @@ export async function initVisitors({ appEl } = {}) {
 
     const visitors = Number(data?.visitors);
     countEl.textContent = Number.isFinite(visitors) ? formatVisitors(visitors) : '—';
+
+    visitorsWidgetEl?.classList?.remove?.('is-loading');
 
     if (!reduced) {
       // Fire 3–5 bursts so it feels like a cluster, and randomize origin
@@ -110,10 +118,19 @@ export async function initVisitors({ appEl } = {}) {
       // Account for the maximum jitter on the last scheduled burst.
       const maxJitterMs = 519;
       window.setTimeout(() => {
+        if (visitorsWidgetEl) {
+          visitorsWidgetEl.classList.add('is-fireworks-ended');
+        } else {
+          // Fallback: fade the individual nodes.
+          countEl?.classList?.add?.('is-fireworks-ended');
+          visitorsSuffixEl?.classList?.add?.('is-fireworks-ended');
+        }
+
         if (fireworksEl) fireworksEl.innerHTML = '';
       }, 1750 + (burstCount - 1) * 640 + 160 + maxJitterMs);
     }
   } catch {
     countEl.textContent = '—';
+    visitorsWidgetEl?.classList?.remove?.('is-loading');
   }
 }
