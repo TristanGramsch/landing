@@ -163,6 +163,12 @@ async function navigateTo(path, { replace = false } = {}) {
   }
 
   trackTimeOnPage({ path: currentPath, pageEnteredAt });
+
+  // Prevent the home visitors widget from flashing while we wait to
+  // replace the DOM.
+  const homeVisitorsShell = document.querySelector('.home-visitors-shell');
+  homeVisitorsShell?.classList?.add('is-nav-hiding');
+
   pulseWholePage();
   await playSelectionSound();
   await sleep(PULSE_MS);
@@ -177,6 +183,8 @@ async function navigateTo(path, { replace = false } = {}) {
   pageEnteredAt = Date.now();
   trackPageView(currentPath);
   document.body.classList.remove("page-pulse");
+
+  document.querySelector('.home-visitors-shell')?.classList?.remove('is-nav-hiding');
 }
 
 async function boot() {

@@ -27,7 +27,7 @@ export function homeTemplate() {
     <main class="home-shell">
       <section class="hero hero-centered" aria-label="Welcome">
         <div class="home-visitors-shell" aria-label="Visitors">
-          <h2 class="visitors-header" aria-label="Visitors">
+          <h2 class="visitors-header visitors-widget is-loading" aria-label="Visitors">
             <span id="visitors-count" class="visitors-count" aria-live="polite">—</span>
             <span class="visitors-suffix visitors-suffix--header">visitors</span>
           </h2>

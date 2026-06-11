@@ -175,6 +175,21 @@ body.boot-complete #app {
   margin-top: 0;
 }
 
+.home-visitors-shell.is-nav-hiding .visitors-widget,
+.home-visitors-shell.is-nav-hiding .visitors-count,
+.home-visitors-shell.is-nav-hiding .visitors-suffix--header {
+  opacity: 0 !important;
+}
+
+.home-visitors-shell.is-nav-hiding .visitors-widget * {
+  transition: none !important;
+  animation: none !important;
+}
+
+.home-visitors-shell.is-nav-hiding .visitors-fireworks {
+  display: none;
+}
+
 .visitors-widget {
   z-index: 2;
   display: inline-flex;
