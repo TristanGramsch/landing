@@ -1,5 +1,6 @@
 node_modules/
 dist/
 .forge/
-2026-05-13_18-12-29-dump.json
+# What is this
 *.bak.*
+.env
