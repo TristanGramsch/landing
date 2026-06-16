@@ -1,6 +1,3 @@
--Plausible out.
--Readme as txt.
--Fix index harcoded Umami. 
 -Add AssessingAgents.
 -Add Sociedad Morbosa. 
 
