@@ -1,32 +1,13 @@
 tristan.systems
 
-A terminal-themed personal landing page (no frameworks) for essays and small technical projects.
-
-What you can visit
-
 Routes are implemented client-side (single-page app behavior via pushState).
 
-- / — home (boot typing animation + entry points)
-- /sociological — entry point for sociology/ideas
-- /sociological/government-flexibility — “Government flexibility” essay
-- /sociological/ditto-pitch-80 — “Ditto-Pitch-80” (password-gated)
-- /technological — entry point for technical work
-- /technological/optoelectronica — “Optoelectrónica Icalma” project page
-- /technological/system-health — shows the latest run of /api/health-log
-
-Text animates when scrolled into view: scramble → final.
+Text animates when scrolled into view: scramble to final.
 
 Local development
-
 npm install
 npm run dev
-
-For production builds:
-
 npm run build
-npm run preview
-
-Opinionated code organization (general → specific)
 
 1) App wiring and behavior
 - src/main.js: boot flow, routing dispatch, navigation + analytics events, and event listeners.

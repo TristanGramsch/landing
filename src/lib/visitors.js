@@ -72,65 +72,56 @@ export async function initVisitors({ appEl } = {}) {
   visitorsWidgetEl?.classList?.add?.('is-loading');
   countEl.textContent = '';
 
-  // Reduced motion: still fetch and display the number, but skip fireworks.
+  // Reduced motion: still show the number, but skip fireworks.
   const reduced = prefersReducedMotion();
 
-  try {
-    const res = await fetch('/api/umami-visitors', { credentials: 'same-origin' });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
+  // Visitors count is fixed for now (instead of calling /api/umami-visitors).
+  const visitors = 100;
+  countEl.textContent = formatVisitors(visitors);
+  visitorsWidgetEl?.classList?.remove?.('is-loading');
 
-    const visitors = Number(data?.visitors);
-    countEl.textContent = Number.isFinite(visitors) ? formatVisitors(visitors) : '—';
+  if (!reduced) {
+    // Fire 3–5 bursts so it feels like a cluster, and randomize origin
+    // offsets so they don't land on the same exact spot.
+    const burstCount = Math.floor(3 + Math.random() * 3); // 3..5
 
-    visitorsWidgetEl?.classList?.remove?.('is-loading');
+    fireworksEl.innerHTML = '';
 
-    if (!reduced) {
-      // Fire 3–5 bursts so it feels like a cluster, and randomize origin
-      // offsets so they don't land on the same exact spot.
-      const burstCount = Math.floor(3 + Math.random() * 3); // 3..5
+    for (let i = 0; i < burstCount; i++) {
+      // First burst fires immediately; subsequent bursts are delayed
+      // progressively with additional randomness.
+      const baseDelayMs = i * 640;
+      const jitterMs = Math.floor(Math.random() * 520); // 0..519
+      const delayMs = baseDelayMs + jitterMs;
 
-      fireworksEl.innerHTML = '';
+      const originOffsetX = (Math.random() - 0.5) * 28;
+      const originOffsetY = (Math.random() - 0.5) * 22;
+      const sparkCount = 18 + Math.floor(Math.random() * 10);
 
-      for (let i = 0; i < burstCount; i++) {
-        // First burst fires immediately; subsequent bursts are delayed
-        // progressively with additional randomness.
-        const baseDelayMs = i * 640;
-        const jitterMs = Math.floor(Math.random() * 520); // 0..519
-        const delayMs = baseDelayMs + jitterMs;
+      window.setTimeout(() => {
+        spawnFireworksBurst({
+          containerEl: fireworksEl,
+          originEl,
+          sparkCount,
+          originOffsetX,
+          originOffsetY,
+        });
+      }, delayMs);
+    }
 
-        const originOffsetX = (Math.random() - 0.5) * 28;
-        const originOffsetY = (Math.random() - 0.5) * 22;
-        const sparkCount = 18 + Math.floor(Math.random() * 10);
-
-        window.setTimeout(() => {
-          spawnFireworksBurst({
-            containerEl: fireworksEl,
-            originEl,
-            sparkCount,
-            originOffsetX,
-            originOffsetY,
-          });
-        }, delayMs);
+    // Clear after the last burst finishes.
+    // Account for the maximum jitter on the last scheduled burst.
+    const maxJitterMs = 519;
+    window.setTimeout(() => {
+      if (visitorsWidgetEl) {
+        visitorsWidgetEl.classList.add('is-fireworks-ended');
+      } else {
+        // Fallback: fade the individual nodes.
+        countEl?.classList?.add?.('is-fireworks-ended');
+        visitorsSuffixEl?.classList?.add?.('is-fireworks-ended');
       }
 
-      // Clear after the last burst finishes.
-      // Account for the maximum jitter on the last scheduled burst.
-      const maxJitterMs = 519;
-      window.setTimeout(() => {
-        if (visitorsWidgetEl) {
-          visitorsWidgetEl.classList.add('is-fireworks-ended');
-        } else {
-          // Fallback: fade the individual nodes.
-          countEl?.classList?.add?.('is-fireworks-ended');
-          visitorsSuffixEl?.classList?.add?.('is-fireworks-ended');
-        }
-
-        if (fireworksEl) fireworksEl.innerHTML = '';
-      }, 1750 + (burstCount - 1) * 640 + 160 + maxJitterMs);
-    }
-  } catch {
-    countEl.textContent = '—';
-    visitorsWidgetEl?.classList?.remove?.('is-loading');
+      if (fireworksEl) fireworksEl.innerHTML = '';
+    }, 1750 + (burstCount - 1) * 640 + 160 + maxJitterMs);
   }
 }
