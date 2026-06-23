@@ -31,7 +31,8 @@ import {
   notFoundTemplate,
 } from "./routes.js";
 
-import hanoIfcUnit44Url from "../42-hano-ifc-unit44.ifc?url";
+import hanoIfcUrl from "../44_hano.ifc?url";
+import hanoPngUrl from "../44-hano.png?url";
 
 import { dittoPitch80Text } from "./content.js";
 
@@ -74,7 +75,7 @@ async function loadDittoExtraTxt({
   const placeholder = appEl?.querySelector?.("#ditto-extra-txt");
   if (!placeholder) return;
 
-  const url = getDittoExtraTxtUrl() ?? hanoIfcUnit44Url;
+  const url = getDittoExtraTxtUrl() ?? hanoIfcUrl;
   if (!url) return;
 
   placeholder.innerHTML = "";
@@ -88,8 +89,14 @@ async function loadDittoExtraTxt({
     const pre = document.createElement("pre");
     pre.className = "anim-text";
     pre.textContent = text;
-
     placeholder.appendChild(pre);
+
+    const img = document.createElement("img");
+    img.className = "ditto-hano-image";
+    img.src = hanoPngUrl;
+    img.alt = "44 Hano (IFC preview image)";
+    img.loading = "lazy";
+    placeholder.appendChild(img);
 
     if (enableScrollRerender) {
       setupScrollTextRerender({ appEl });

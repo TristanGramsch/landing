@@ -689,6 +689,15 @@ body.page-pulse {
   color: var(--terminal-green-soft);
 }
 
+.ditto-extra-txt .ditto-hano-image {
+  display: block;
+  width: min(100%, 720px);
+  margin: 0.8rem auto 0;
+  border: 1px solid var(--terminal-green-dim);
+  box-shadow: var(--shadow);
+  image-rendering: auto;
+}
+
 /* Ditto Pitch 80 password gate */
 .ditto-auth-box {
   width: min(720px, 100%);
