@@ -281,9 +281,34 @@ async function boot() {
   isBooted = true;
   trackPageView(currentPath);
 
+  const route = getRoute(currentPath);
+
+  // If we landed directly on the AssessingAgents route, we may need to
+  // load the IFC/preview image now that boot is complete. renderRoute()
+  // was already called once during boot while isBooted === false.
+  if (route === "assessing-agents") {
+    const isUnlocked = isAssessingAgentsUnlocked();
+
+    if (isUnlocked) {
+      void loadAssessingAgentsExtraTxt({
+        appEl: app,
+        enableScrollRerender: true,
+      });
+    } else {
+      const passwordInput = document.querySelector(
+        "#assessing-agents-password-input",
+      );
+      passwordInput?.focus();
+      bindAssessingAgentsKeyTwitch();
+      startAssessingAgentsTwitch({
+        getIsBooted: () => isBooted,
+        getCurrentPath: () => currentPath,
+      });
+    }
+  }
+
   // If we landed directly on an article/system-health route, enable scroll-triggered
   // text re-rendering now that boot is complete.
-  const route = getRoute(currentPath);
   if (route === "system-health") {
     initSystemHealthFetch({ appEl: app });
   } else {
