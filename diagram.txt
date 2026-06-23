@@ -60,7 +60,7 @@ B) Plausible (optional)
 +---------------------------------------------------+
 |                 Client-side Security Gate         |
 +---------------------------------------------------+
-| /sociological/ditto-pitch-80 (AssessingAgents)
+| /sociological/assessing-agents (AssessingAgents)
 | - Password gate is implemented in the browser.
 | - Unlock state stored in sessionStorage.
 | - No server-side verification.

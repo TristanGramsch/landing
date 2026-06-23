@@ -1,4 +1,4 @@
-import { governmentArticle, optoelectronicaArticle, dittoPitch80Text } from "./content.js";
+import { governmentArticle, optoelectronicaArticle, assessingAgentsText } from "./content.js";
 
 import equipoImageSrc from "./assets/equipo.jpeg";
 import instalacionImageSrc from "./assets/instalación.jpeg";
@@ -74,7 +74,7 @@ export function sociologicalTemplate() {
             <span class="bubble-label">Government flexibility</span>
           </span>
         </a>
-        <a class="bubble tech-box" href="/sociological/ditto-pitch-80" data-nav>
+        <a class="bubble tech-box" href="/sociological/assessing-agents" data-nav>
           <span class="bubble-frame">
             <span class="bubble-label">AssessingAgents</span>
           </span>
@@ -117,31 +117,31 @@ export function governmentFlexibilityRouteTemplate() {
   `;
 }
 
-export function dittoPitch80UnlockedTemplate() {
+export function assessingAgentsUnlockedTemplate() {
   return `
     <main class="section-shell">
       <a class="back-link" href="/sociological" data-nav>&lt; back</a>
       <article class="article-shell" aria-label="AssessingAgents">
         <div class="tech-content">
-          <pre class="anim-text">${escapeHtml(dittoPitch80Text)}</pre>
+          <pre class="anim-text">${escapeHtml(assessingAgentsText)}</pre>
         </div>
-        <div id="ditto-extra-txt" class="ditto-extra-txt"></div>
+        <div id="assessing-agents-extra-txt" class="assessing-agents-extra-txt"></div>
       </article>
     </main>
   `;
 }
 
-export function dittoPitch80LockedTemplate() {
+export function assessingAgentsLockedTemplate() {
   return `
     <main class="section-shell">
       <a class="back-link" href="/sociological" data-nav>&lt; back</a>
       <article class="article-shell" aria-label="AssessingAgents (locked)">
-        <div class="ditto-auth-shell">
-          <form class="ditto-auth-form" data-ditto-auth="unlock" autocomplete="off">
+        <div class="assessing-agents-auth-shell">
+          <form class="assessing-agents-auth-form" data-assessing-agents-auth="unlock" autocomplete="off">
             <input
-              id="ditto-password-input"
+              id="assessing-agents-password-input"
               name="password"
-              class="ditto-auth-input"
+              class="assessing-agents-auth-input"
               type="password"
               autocomplete="off"
               spellcheck="false"
@@ -149,7 +149,7 @@ export function dittoPitch80LockedTemplate() {
             />
           </form>
         </div>
-        <div id="ditto-extra-txt" class="ditto-extra-txt"></div>
+        <div id="assessing-agents-extra-txt" class="assessing-agents-extra-txt"></div>
       </article>
     </main>
   `;

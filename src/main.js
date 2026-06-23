@@ -11,20 +11,20 @@ import { initSystemHealthFetch } from "./lib/health.js";
 import { initVisitors } from "./lib/visitors.js";
 
 import {
-  DITTO_PITCH_80_PASSWORD,
-  bindDittoPitch80KeyTwitch,
-  isDittoPitch80Unlocked,
-  setDittoPitch80Unlocked,
-  startDittoPitch80Twitch,
-  stopDittoPitch80Twitch,
-} from "./lib/dittoGate.js";
+  ASSESSING_AGENTS_PASSWORD,
+  bindAssessingAgentsKeyTwitch,
+  isAssessingAgentsUnlocked,
+  setAssessingAgentsUnlocked,
+  startAssessingAgentsTwitch,
+  stopAssessingAgentsTwitch,
+} from "./lib/assessingAgentsGate.js";
 
 import {
   homeTemplate,
   sociologicalTemplate,
   governmentFlexibilityRouteTemplate,
-  dittoPitch80UnlockedTemplate,
-  dittoPitch80LockedTemplate,
+  assessingAgentsUnlockedTemplate,
+  assessingAgentsLockedTemplate,
   technologicalTemplate,
   optoelectronicaTemplate,
   systemHealthTemplate,
@@ -34,7 +34,7 @@ import {
 import hanoIfcUrl from "./assets/44_hano.ifc?url";
 import hanoPngUrl from "./assets/44-hano.png?url";
 
-import { dittoPitch80Text } from "./content.js";
+
 
 const BOOT_TEXT = "Hello friend";
 const BOOT_TYPE_SPEED_MS = 92;
@@ -54,28 +54,28 @@ function sleep(ms) {
   return new Promise((resolve) => window.setTimeout(resolve, ms));
 }
 
-function getDittoExtraTxtUrl() {
+function getAssessingAgentsExtraTxtUrl() {
   try {
     const urlParam = new URLSearchParams(window.location.search).get(
-      "dittoTxt",
+      "assessingAgentsTxt",
     );
 
     if (urlParam) return urlParam;
 
-    return window.sessionStorage.getItem("ditto-extra-txt-url");
+    return window.sessionStorage.getItem("assessing-agents-extra-txt-url");
   } catch {
     return null;
   }
 }
 
-async function loadDittoExtraTxt({
+async function loadAssessingAgentsExtraTxt({
   appEl,
   enableScrollRerender = false,
 } = {}) {
-  const placeholder = appEl?.querySelector?.("#ditto-extra-txt");
+  const placeholder = appEl?.querySelector?.("#assessing-agents-extra-txt");
   if (!placeholder) return;
 
-  const url = getDittoExtraTxtUrl() ?? hanoIfcUrl;
+  const url = getAssessingAgentsExtraTxtUrl() ?? hanoIfcUrl;
   if (!url) return;
 
   placeholder.innerHTML = "";
@@ -87,7 +87,7 @@ async function loadDittoExtraTxt({
     const text = await res.text();
 
     const img = document.createElement("img");
-    img.className = "ditto-hano-image";
+    img.className = "assessing-agents-hano-image";
     img.src = hanoPngUrl;
     img.alt = "44 Hano (IFC preview image)";
     img.loading = "lazy";
@@ -143,30 +143,30 @@ function renderRoute(path) {
     if (isBooted) {
       setupScrollTextRerender({ appEl: app });
     }
-  } else if (route === "ditto-pitch-80") {
-    stopDittoPitch80Twitch();
+  } else if (route === "assessing-agents") {
+    stopAssessingAgentsTwitch();
 
-    const isUnlocked = isDittoPitch80Unlocked();
+    const isUnlocked = isAssessingAgentsUnlocked();
 
     if (isUnlocked) {
-      app.innerHTML = dittoPitch80UnlockedTemplate();
+      app.innerHTML = assessingAgentsUnlockedTemplate();
     } else {
-      app.innerHTML = dittoPitch80LockedTemplate();
+      app.innerHTML = assessingAgentsLockedTemplate();
     }
     document.title = "tristan.systems — AssessingAgents";
 
     if (isBooted) {
-      void loadDittoExtraTxt({
+      void loadAssessingAgentsExtraTxt({
         appEl: app,
         enableScrollRerender: isUnlocked,
       });
     }
 
     if (isBooted && !isUnlocked) {
-      const passwordInput = document.querySelector("#ditto-password-input");
+      const passwordInput = document.querySelector("#assessing-agents-password-input");
       passwordInput?.focus();
-      bindDittoPitch80KeyTwitch();
-      startDittoPitch80Twitch({
+      bindAssessingAgentsKeyTwitch();
+      startAssessingAgentsTwitch({
         getIsBooted: () => isBooted,
         getCurrentPath: () => currentPath,
       });
@@ -296,7 +296,7 @@ async function boot() {
 }
 
 app.addEventListener("submit", (event) => {
-  const unlockForm = event.target?.closest?.('form[data-ditto-auth="unlock"]');
+  const unlockForm = event.target?.closest?.('form[data-assessing-agents-auth="unlock"]');
   if (!unlockForm) return;
 
   event.preventDefault();
@@ -304,18 +304,21 @@ app.addEventListener("submit", (event) => {
   const inputEl = unlockForm.querySelector('input[name="password"]');
   const entered = (inputEl?.value ?? "").trim();
 
-  if (entered === DITTO_PITCH_80_PASSWORD) {
-    setDittoPitch80Unlocked(true);
+  const enteredNormalized = entered.toLowerCase();
+  const expectedNormalized = (ASSESSING_AGENTS_PASSWORD ?? "").toLowerCase();
+
+  if (enteredNormalized === expectedNormalized) {
+    setAssessingAgentsUnlocked(true);
     inputEl && (inputEl.value = "");
     renderRoute(currentPath);
     return;
   }
 
-  setDittoPitch80Unlocked(false);
+  setAssessingAgentsUnlocked(false);
   inputEl && (inputEl.value = "");
   renderRoute(currentPath);
 
-  const passwordInput = document.querySelector("#ditto-password-input");
+  const passwordInput = document.querySelector("#assessing-agents-password-input");
   passwordInput?.focus();
 });
 

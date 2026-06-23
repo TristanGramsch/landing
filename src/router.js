@@ -1,7 +1,7 @@
 export const ROUTES = {
   "/": "home",
   "/sociological": "sociological",
-  "/sociological/ditto-pitch-80": "ditto-pitch-80",
+  "/sociological/assessing-agents": "assessing-agents",
   "/sociological/government-flexibility": "government-flexibility",
   "/technological": "technological",
   "/technological/optoelectronica": "optoelectronica",

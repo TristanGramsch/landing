@@ -668,18 +668,18 @@ body.page-pulse {
 }
 
 /* AssessingAgents password gate */
-.ditto-auth-shell {
+.assessing-agents-auth-shell {
   display: grid;
   justify-items: center;
   width: 100%;
 }
 
-.ditto-extra-txt {
+.assessing-agents-extra-txt {
   width: min(100%, var(--max-width));
   margin: 0.8rem auto 0;
 }
 
-.ditto-extra-txt pre {
+.assessing-agents-extra-txt pre {
   margin: 0;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -689,7 +689,7 @@ body.page-pulse {
   color: var(--terminal-green-soft);
 }
 
-.ditto-extra-txt .ditto-hano-image {
+.assessing-agents-extra-txt .assessing-agents-hano-image {
   display: block;
   width: min(100%, 720px);
   margin: 0.8rem auto 0.8rem;
@@ -699,7 +699,7 @@ body.page-pulse {
 }
 
 /* AssessingAgents password gate */
-.ditto-auth-box {
+.assessing-agents-auth-box {
   width: min(720px, 100%);
   padding: 1.2rem;
   border: 1px solid var(--terminal-green-dim);
@@ -707,32 +707,32 @@ body.page-pulse {
   box-shadow: var(--shadow);
 }
 
-.ditto-auth-title {
+.assessing-agents-auth-title {
   margin: 0;
   font-size: clamp(1.4rem, 3vw, 2rem);
   letter-spacing: -0.04em;
   text-shadow: 0 0 10px rgba(57, 255, 20, 0.45), 0 0 22px rgba(57, 255, 20, 0.2);
 }
 
-.ditto-auth-lede {
+.assessing-agents-auth-lede {
   margin: 0.7rem 0 1rem;
   color: var(--terminal-green-soft);
   line-height: 1.55;
 }
 
-.ditto-auth-form {
+.assessing-agents-auth-form {
   display: grid;
   gap: 0.8rem;
 }
 
-.ditto-auth-label {
+.assessing-agents-auth-label {
   color: var(--terminal-green-dim);
   font-size: 0.95rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 
-.ditto-auth-input {
+.assessing-agents-auth-input {
   width: min(420px, 100%);
   display: block;
   margin: 0.6rem auto 0;
@@ -744,16 +744,16 @@ body.page-pulse {
   font: inherit;
 }
 
-.ditto-auth-input::placeholder {
+.assessing-agents-auth-input::placeholder {
   color: var(--terminal-green-dim);
 }
 
-.ditto-auth-input:focus-visible {
+.assessing-agents-auth-input:focus-visible {
   outline: 1px solid var(--terminal-green);
   outline-offset: 0;
 }
 
-@keyframes ditto-auth-twitch {
+@keyframes assessing-agents-auth-twitch {
   0% {
     border-color: var(--terminal-green-dim);
     box-shadow: none;
@@ -785,17 +785,17 @@ body.page-pulse {
   }
 }
 
-.ditto-auth-input.ditto-auth-twitch {
-  animation: ditto-auth-twitch 180ms ease-in-out 1;
+.assessing-agents-auth-input.assessing-agents-auth-twitch {
+  animation: assessing-agents-auth-twitch 180ms ease-in-out 1;
 }
 
-.ditto-auth-actions {
+.assessing-agents-auth-actions {
   display: flex;
   gap: 0.8rem;
   justify-content: flex-end;
 }
 
-.ditto-auth-button {
+.assessing-agents-auth-button {
   border: 1px solid var(--terminal-green-dim);
   background: rgba(57, 255, 20, 0.06);
   color: var(--terminal-green);
@@ -809,13 +809,13 @@ body.page-pulse {
     background-color 180ms ease;
 }
 
-.ditto-auth-button:hover {
+.assessing-agents-auth-button:hover {
   transform: translateY(-1px);
   border-color: var(--terminal-green-soft);
   box-shadow: 0 0 30px rgba(57, 255, 20, 0.14), var(--shadow);
 }
 
-.ditto-auth-button-primary {
+.assessing-agents-auth-button-primary {
   background: linear-gradient(135deg, rgba(57, 255, 20, 0.14), rgba(57, 255, 20, 0.05));
 }
 

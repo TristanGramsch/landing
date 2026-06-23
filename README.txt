@@ -28,7 +28,7 @@ npm run build
 - src/lib/audio.js: selection sound.
 - src/lib/analytics.js: Plausible pageview + Time on Page.
 - src/lib/health.js + src/lib/healthTransport.js: /api/health-log fetch and UI initialization.
-- src/lib/dittoGate.js: password gate + the “twitch” effect while locked.
+- src/lib/assessingAgentsGate.js: password gate + the “twitch” effect while locked.
 
 Content authoring
 
@@ -51,9 +51,9 @@ The frontend integration is in src/lib/health.js (called from src/main.js).
 
 Security note (AssessingAgents gate)
 
-/sociological/ditto-pitch-80 (AssessingAgents) is gated client-side.
+/sociological/assessing-agents (AssessingAgents) is gated client-side.
 
-- The unlock password is hardcoded in src/lib/dittoGate.js.
+- The unlock password is hardcoded in src/lib/assessingAgentsGate.js.
 - Unlock state is stored in sessionStorage.
 
 This is obfuscation/privacy-by-convention, not cryptographic security.
