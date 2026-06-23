@@ -31,8 +31,8 @@ import {
   notFoundTemplate,
 } from "./routes.js";
 
-import hanoIfcUrl from "../44_hano.ifc?url";
-import hanoPngUrl from "../44-hano.png?url";
+import hanoIfcUrl from "./assets/44_hano.ifc?url";
+import hanoPngUrl from "./assets/44-hano.png?url";
 
 import { dittoPitch80Text } from "./content.js";
 
