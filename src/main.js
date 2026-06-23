@@ -31,6 +31,10 @@ import {
   notFoundTemplate,
 } from "./routes.js";
 
+import hanoIfcUnit44Url from "../42-hano-ifc-unit44.ifc?url";
+
+import { dittoPitch80Text } from "./content.js";
+
 const BOOT_TEXT = "Hello friend";
 const BOOT_TYPE_SPEED_MS = 92;
 const BOOT_HOLD_MS = 900;
@@ -49,6 +53,52 @@ function sleep(ms) {
   return new Promise((resolve) => window.setTimeout(resolve, ms));
 }
 
+function getDittoExtraTxtUrl() {
+  try {
+    const urlParam = new URLSearchParams(window.location.search).get(
+      "dittoTxt",
+    );
+
+    if (urlParam) return urlParam;
+
+    return window.sessionStorage.getItem("ditto-extra-txt-url");
+  } catch {
+    return null;
+  }
+}
+
+async function loadDittoExtraTxt({
+  appEl,
+  enableScrollRerender = false,
+} = {}) {
+  const placeholder = appEl?.querySelector?.("#ditto-extra-txt");
+  if (!placeholder) return;
+
+  const url = getDittoExtraTxtUrl() ?? hanoIfcUnit44Url;
+  if (!url) return;
+
+  placeholder.innerHTML = "";
+
+  try {
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) return;
+
+    const text = await res.text();
+
+    const pre = document.createElement("pre");
+    pre.className = "anim-text";
+    pre.textContent = text;
+
+    placeholder.appendChild(pre);
+
+    if (enableScrollRerender) {
+      setupScrollTextRerender({ appEl });
+    }
+  } catch {
+    // Ignore fetch errors; leaving content empty is safer.
+  }
+}
+
 function renderRoute(path) {
   currentPath = normalizePath(path);
   const route = getRoute(currentPath);
@@ -57,7 +107,6 @@ function renderRoute(path) {
 
   if (route === "home") {
     app.innerHTML = homeTemplate();
-    document.title = "tristan.systems";
 
     // When navigating back to home after boot, don't re-type.
     // Just show the final text + blinking cursor.
@@ -90,18 +139,23 @@ function renderRoute(path) {
   } else if (route === "ditto-pitch-80") {
     stopDittoPitch80Twitch();
 
-    if (isDittoPitch80Unlocked()) {
+    const isUnlocked = isDittoPitch80Unlocked();
+
+    if (isUnlocked) {
       app.innerHTML = dittoPitch80UnlockedTemplate();
     } else {
       app.innerHTML = dittoPitch80LockedTemplate();
     }
     document.title = "tristan.systems — Ditto-Pitch-80";
 
-    if (isBooted && isDittoPitch80Unlocked()) {
-      setupScrollTextRerender({ appEl: app });
+    if (isBooted) {
+      void loadDittoExtraTxt({
+        appEl: app,
+        enableScrollRerender: isUnlocked,
+      });
     }
 
-    if (isBooted && !isDittoPitch80Unlocked()) {
+    if (isBooted && !isUnlocked) {
       const passwordInput = document.querySelector("#ditto-password-input");
       passwordInput?.focus();
       bindDittoPitch80KeyTwitch();

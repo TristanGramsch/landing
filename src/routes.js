@@ -125,6 +125,7 @@ export function dittoPitch80UnlockedTemplate() {
         <div class="tech-content">
           <pre class="anim-text">${escapeHtml(dittoPitch80Text)}</pre>
         </div>
+        <div id="ditto-extra-txt" class="ditto-extra-txt"></div>
       </article>
     </main>
   `;
@@ -148,6 +149,7 @@ export function dittoPitch80LockedTemplate() {
             />
           </form>
         </div>
+        <div id="ditto-extra-txt" class="ditto-extra-txt"></div>
       </article>
     </main>
   `;

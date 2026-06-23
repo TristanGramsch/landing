@@ -674,6 +674,22 @@ body.page-pulse {
   width: 100%;
 }
 
+.ditto-extra-txt {
+  width: min(100%, var(--max-width));
+  margin: 0.8rem auto 0;
+}
+
+.ditto-extra-txt pre {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--terminal-green-soft);
+}
+
+/* Ditto Pitch 80 password gate */
 .ditto-auth-box {
   width: min(720px, 100%);
   padding: 1.2rem;
