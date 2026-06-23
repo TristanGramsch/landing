@@ -284,16 +284,16 @@ async function boot() {
   const route = getRoute(currentPath);
 
   // If we landed directly on the AssessingAgents route, we may need to
-  // load the IFC/preview image now that boot is complete. renderRoute()
+  // load/refresh the IFC/preview image now that boot is complete. renderRoute()
   // was already called once during boot while isBooted === false.
   if (route === "assessing-agents") {
     const isUnlocked = isAssessingAgentsUnlocked();
 
     if (isUnlocked) {
-      void loadAssessingAgentsExtraTxt({
-        appEl: app,
-        enableScrollRerender: true,
-      });
+      // Ensure the unlocked template is swapped in on direct URL loads.
+      // Without this, we can end up stuck on the locked template UI
+      // even if unlock state is already present.
+      renderRoute(currentPath);
     } else {
       const passwordInput = document.querySelector(
         "#assessing-agents-password-input",
