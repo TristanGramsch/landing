@@ -1,15 +1,52 @@
 The assessment process is broken. Furthering inequality.
 Burdening those who need a relief. And boosting those who don't need. 
-Ditto is an agentic Assessor's office team. 
+AssessingAgents is an agentic Assessor's office team. 
 Here to independently appraise and exempt properties. 
 Producing a justice seeking simulation, meant to meaningfully inform the real assessment. 
 
-In other words, Ditto simulates appraisal and exemption.
+In other words, AssessingAgents simulates appraisal and exemption.
 You decide when and were. 
 
-Ditto is a team of 5. 
+AssessingAgents is a team of 5. 
 -Chief assessor: Orchestrator who oversees the team. Talks to the client. 
 -Appraisal data engineer: collects data.
 -Appraisal learning engineer: appraises properties. 
 -Exemptions engineer: exempts properties. 
 -Transparency expert: Educates the public. Publishes the tax roll.
+
+--Why AssessingAgents 
+
+Assessment is a delicate hard job. Assessor's need the power of simulations to perform better. 
+
+--AssessingAgents's culture.
+
+Quick iteration. Ship a lot. Hack. Pitch first.
+
+--AssessingAgents's plan
+
+Complete AssessingAgents for 1 property. Publish results. 
+
+--Real Assessor's Office.
+
+Assessor's Office collect tons of data: 
+	Boundaries. 
+	Building classifications.
+	Building characteristics. 
+	Sales.
+	Demographics (and social conditions).
+	Environmental conditions (and quality of living). 
+
+Assessor's Office then build pipelines to store and transform their data. Including:
+	Statistical models. 
+	Databases and stores. 
+	
+Assessor's Office then open exemptions with:
+	Communication channels. 
+	Stages.
+	Rules. 
+
+And finnally Assessor's Office educate the public:
+	Publish standarized studies.
+	Organize events. 
+	
+The final output is the tax roll.  
