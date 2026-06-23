@@ -77,7 +77,7 @@ export function startAssessingAgentsTwitch({ getIsBooted, getCurrentPath } = {})
   stopAssessingAgentsTwitchInternal();
 
   const scheduleNext = () => {
-    const delayMs = 30_000 + Math.random() * 5_000;
+    const delayMs = 7_000 + Math.random() * 1_000;
 
     assessingAgentsTwitchTimeout = window.setTimeout(() => {
       const isBooted = getIsBooted?.() ?? false;
