@@ -1,27 +1,48 @@
 const ASSESSING_AGENTS_PASSWORD = "justice";
 const ASSESSING_AGENTS_UNLOCK_KEY = "assessing-agents-unlocked";
 
+// The lock state used to be sessionStorage-only, which means it resets
+// when opening a new tab/window or when navigating to the page via a
+// fresh browser context. To make direct URL loads behave consistently,
+// we treat localStorage as a fallback and write to both.
+const ASSESSING_AGENTS_UNLOCK_STORAGE = ["sessionStorage", "localStorage"];
+
 const ASSESSING_AGENTS_PATH = "/sociological/assessing-agents";
 
 let assessingAgentsTwitchTimeout = null;
 
-export function isAssessingAgentsUnlocked() {
-  try {
-    return sessionStorage.getItem(ASSESSING_AGENTS_UNLOCK_KEY) === "1";
-  } catch {
-    return false;
+function getAssessingAgentsUnlockedFromStorage() {
+  for (const storageName of ASSESSING_AGENTS_UNLOCK_STORAGE) {
+    try {
+      const storage = window?.[storageName];
+      if (!storage) continue;
+      if (storage.getItem(ASSESSING_AGENTS_UNLOCK_KEY) === "1") return true;
+    } catch {
+      // Ignore storage errors; best-effort privacy.
+    }
   }
+  return false;
+}
+
+export function isAssessingAgentsUnlocked() {
+  return getAssessingAgentsUnlockedFromStorage();
 }
 
 export function setAssessingAgentsUnlocked(unlocked) {
-  try {
-    if (unlocked) {
-      sessionStorage.setItem(ASSESSING_AGENTS_UNLOCK_KEY, "1");
-    } else {
-      sessionStorage.removeItem(ASSESSING_AGENTS_UNLOCK_KEY);
+  const value = unlocked ? "1" : null;
+
+  for (const storageName of ASSESSING_AGENTS_UNLOCK_STORAGE) {
+    try {
+      const storage = window?.[storageName];
+      if (!storage) continue;
+      if (value) {
+        storage.setItem(ASSESSING_AGENTS_UNLOCK_KEY, value);
+      } else {
+        storage.removeItem(ASSESSING_AGENTS_UNLOCK_KEY);
+      }
+    } catch {
+      // Ignore storage errors; this is best-effort privacy.
     }
-  } catch {
-    // Ignore storage errors; this is best-effort privacy.
   }
 }
 
