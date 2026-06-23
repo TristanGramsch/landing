@@ -76,7 +76,7 @@ export function sociologicalTemplate() {
         </a>
         <a class="bubble tech-box" href="/sociological/ditto-pitch-80" data-nav>
           <span class="bubble-frame">
-            <span class="bubble-label">Ditto-Pitch-80</span>
+            <span class="bubble-label">AssessingAgents</span>
           </span>
         </a>
       </section>
@@ -121,7 +121,7 @@ export function dittoPitch80UnlockedTemplate() {
   return `
     <main class="section-shell">
       <a class="back-link" href="/sociological" data-nav>&lt; back</a>
-      <article class="article-shell" aria-label="Ditto-Pitch-80">
+      <article class="article-shell" aria-label="AssessingAgents">
         <div class="tech-content">
           <pre class="anim-text">${escapeHtml(dittoPitch80Text)}</pre>
         </div>
@@ -135,7 +135,7 @@ export function dittoPitch80LockedTemplate() {
   return `
     <main class="section-shell">
       <a class="back-link" href="/sociological" data-nav>&lt; back</a>
-      <article class="article-shell" aria-label="Ditto-Pitch-80 (locked)">
+      <article class="article-shell" aria-label="AssessingAgents (locked)">
         <div class="ditto-auth-shell">
           <form class="ditto-auth-form" data-ditto-auth="unlock" autocomplete="off">
             <input

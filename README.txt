@@ -49,9 +49,9 @@ The backend for this page is in vite.config.js:
 
 The frontend integration is in src/lib/health.js (called from src/main.js).
 
-Security note (Ditto gate)
+Security note (AssessingAgents gate)
 
-/sociological/ditto-pitch-80 is gated client-side.
+/sociological/ditto-pitch-80 (AssessingAgents) is gated client-side.
 
 - The unlock password is hardcoded in src/lib/dittoGate.js.
 - Unlock state is stored in sessionStorage.

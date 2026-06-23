@@ -86,17 +86,17 @@ async function loadDittoExtraTxt({
 
     const text = await res.text();
 
-    const pre = document.createElement("pre");
-    pre.className = "anim-text";
-    pre.textContent = text;
-    placeholder.appendChild(pre);
-
     const img = document.createElement("img");
     img.className = "ditto-hano-image";
     img.src = hanoPngUrl;
     img.alt = "44 Hano (IFC preview image)";
     img.loading = "lazy";
     placeholder.appendChild(img);
+
+    const pre = document.createElement("pre");
+    pre.className = "anim-text";
+    pre.textContent = text;
+    placeholder.appendChild(pre);
 
     if (enableScrollRerender) {
       setupScrollTextRerender({ appEl });
@@ -153,7 +153,7 @@ function renderRoute(path) {
     } else {
       app.innerHTML = dittoPitch80LockedTemplate();
     }
-    document.title = "tristan.systems — Ditto-Pitch-80";
+    document.title = "tristan.systems — AssessingAgents";
 
     if (isBooted) {
       void loadDittoExtraTxt({
