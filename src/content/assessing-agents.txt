@@ -1,52 +1,77 @@
-The assessment process is broken. Furthering inequality.
-Burdening those who need a relief. And boosting those who don't need. 
-AssessingAgents is an agentic Assessor's office team. 
-Here to independently appraise and exempt properties. 
-Producing a justice seeking simulation, meant to meaningfully inform the real assessment. 
+Hello family and friends, I bring a topic of technology. I'm hoping to hear your voices on this. This is my (hand written) adventure with AssessingAgents, and where I think it can reach. 
 
-In other words, AssessingAgents simulates appraisal and exemption.
-You decide when and were. 
+AssessingAgents is a series of instructions ran by computer agents. To appraise and exempt properties. Just as a real Assessor's Office would do. 
 
-AssessingAgents is a team of 5. 
--Chief assessor: Orchestrator who oversees the team. Talks to the client. 
--Appraisal data engineer: collects data.
--Appraisal learning engineer: appraises properties. 
--Exemptions engineer: exempts properties. 
--Transparency expert: Educates the public. Publishes the tax roll.
+AssessingAgents achieves excellent results on small very clean simulated data. I think it can do the same for real data. 
 
---Why AssessingAgents 
+AssessingAgents is open source. Meant for everyday assessors. People who want to see competing tax rolls. And choose the best. 
 
-Assessment is a delicate hard job. Assessor's need the power of simulations to perform better. 
+This is my contribution to equality. I hope to impact property assessment. Fairer tax rolls for all. 
 
---AssessingAgents's culture.
+-- In more detail. 
 
-Quick iteration. Ship a lot. Hack. Pitch first.
+It all started working at the Cook County Assessor's Office, CCAO. I hold a great memory of it. The CCAO is modern and transparent Assessor's office. And even them show errors in fairness. Their tax roll is on of the best, and still regressive.
 
---AssessingAgents's plan
+Owners of inexpensive property carry the load. They pay more taxes in percentage. 
 
-Complete AssessingAgents for 1 property. Publish results. 
+The CCAO is relatively large. And it has a state of the art workflow. 
 
---Real Assessor's Office.
+Here is my hipothesis. I believe small, low budget Assessor's Office don't have state of the art workflows.
 
-Assessor's Office collect tons of data: 
-	Boundaries. 
-	Building classifications.
-	Building characteristics. 
-	Sales.
-	Demographics (and social conditions).
-	Environmental conditions (and quality of living). 
+This is painful. They are too slow in producing tax rolls. And decisions are obscure.  
 
-Assessor's Office then build pipelines to store and transform their data. Including:
-	Statistical models. 
-	Databases and stores. 
-	
-Assessor's Office then open exemptions with:
-	Communication channels. 
-	Stages.
-	Rules. 
+They could use cheap, open source software. That can produce n tax rolls for m money.
 
-And finnally Assessor's Office educate the public:
-	Publish standarized studies.
-	Organize events. 
-	
-The final output is the tax roll.  
+Assessors need to pick and choose the best tax roll. AssesingAgents wants to put tax rolls in a coliseum. And highlight best qualities.
+
+I think assessors are willing to pay for it. Albeit not all their budget. 
+
+So now I look to connect. With assessors who want to try agentic infrastrucutre. Or AssessingAgents in general. I look to learn about their needs.  
+
+There are plnety of small Assessors'. MA has around 350. Many potential clients. 
+
+Finally, there is no open source solution. I think it's a great time for it. 
+
+--Going deeper.
+
+AssessingAgents offers appraisal and exemption. You just feed it data. AssessingAgents looks at the data. describes a plan, runs calculations, and outputs a tax roll. Focusing on fairness and client notes. 
+
+I have produced excellentlly fair tax rolls, and demonstrated guardrails. By running AssessingAgents on Tralaland. A well describe quadrant of 20 properties. Feed good data to AssessingAgents and you will get a fair tax roll. 
+
+Under the hood we have 6 Forge agents doing tasks sequantially. See the repo at https://github.com/TristanGramsch/AssessingAgents. 
+
+Languages play a big role, I believe. The more the better. 
+
+Tralaland can be expressed in standard languages. .gml (including citygml), .geojason, and .ifc in the future. 
+
+There is no standard for social conditions. That's a challenge. Ownership and sale history is a .yalm. 
+
+--More research
+
+In my effort to understand the world of assessment I stumbled into .ifc and into regressivity in Allston. .ifc is a file format representing the Industry Foundation Classes. Allston is where I live. 
+
+.ifc is probably the most detailed standard way to describe a property. Providing standard pricing. Can assessors use it?
+
+Below, an image of an .ifc 3d model of my house (abstract as you can note). Easy to make. 
+
+I also stumbled and I tried fixing the (slightly) regressive assessment in Allston.
+
+I downloaded and parsed real assessment data of Boston. Sales of 2024, and assessed values of 2025. I filtered for Allston. 
+I removed Boston's official assessment values (most importantly TOTAL_VALUE of the property). And calculated my own in a clean slate. I inferred an almost flat tax rate (but this step can be simplified). 
+
+Then I (with gpt) measured whether properties with higher sale prices tend to have lower (or higher) effective tax rate. corr(log(sale_price), effective_tax_rate)
+
+A negative correlation means that as log(sale_price) increases (i.e., as sale price gets larger),the effective tax rate tends to be lower on average.
+
+REAL assessor data:
+corr(log(sale_price), effective_tax_rate): -0.03550
+Slightly regressive. 
+
+My version (Ridge regression predicted total value and recomputed tax):
+corr(log(sale_price), effective_tax_rate): -0.35899 
+Regressive!
+
+We are to iterate until we beat this. We can:
+-Add more data.
+-Model in a simpler way.
+-Reduce the scope (only worrying about assessed values, and not taxation). 
