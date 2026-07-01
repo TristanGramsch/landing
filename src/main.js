@@ -31,8 +31,8 @@ import {
   notFoundTemplate,
 } from "./routes.js";
 
-import hanoIfcUrl from "./assets/44_hano.ifc?url";
 import hanoPngUrl from "./assets/44-hano.png?url";
+
 
 
 
@@ -75,23 +75,25 @@ async function loadAssessingAgentsExtraTxt({
   const placeholder = appEl?.querySelector?.("#assessing-agents-extra-txt");
   if (!placeholder) return;
 
-  const url = getAssessingAgentsExtraTxtUrl() ?? hanoIfcUrl;
-  if (!url) return;
-
   placeholder.innerHTML = "";
+
+  // Always display the image
+  const img = document.createElement("img");
+  img.className = "assessing-agents-hano-image";
+  img.src = hanoPngUrl;
+  img.alt = "44 Hano (image)";
+  img.loading = "lazy";
+  placeholder.appendChild(img);
+
+  // Load external content if URL is available
+  const url = getAssessingAgentsExtraTxtUrl();
+  if (!url) return;
 
   try {
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) return;
 
     const text = await res.text();
-
-    const img = document.createElement("img");
-    img.className = "assessing-agents-hano-image";
-    img.src = hanoPngUrl;
-    img.alt = "44 Hano (IFC preview image)";
-    img.loading = "lazy";
-    placeholder.appendChild(img);
 
     const pre = document.createElement("pre");
     pre.className = "anim-text";

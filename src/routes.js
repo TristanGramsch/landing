@@ -1,4 +1,4 @@
-import { governmentArticle, optoelectronicaArticle, assessingAgentsText, triedFixingAllstonText } from "./content.js";
+import { governmentArticle, optoelectronicaArticle, assessingAgentsText } from "./content.js";
 
 import equipoImageSrc from "./assets/equipo.jpeg";
 import instalacionImageSrc from "./assets/instalación.jpeg";
@@ -123,9 +123,6 @@ export function assessingAgentsUnlockedTemplate() {
       <a class="back-link" href="/sociological" data-nav>&lt; back</a>
       <article class="article-shell" aria-label="AssessingAgents">
         <div class="tech-content">
-          <pre class="anim-text">${escapeHtml(triedFixingAllstonText)}</pre>
-        </div>
-        <div class="tech-content">
           <pre class="anim-text">${escapeHtml(assessingAgentsText)}</pre>
         </div>
         <div id="assessing-agents-extra-txt" class="assessing-agents-extra-txt"></div>
@@ -139,9 +136,6 @@ export function assessingAgentsLockedTemplate() {
     <main class="section-shell">
       <a class="back-link" href="/sociological" data-nav>&lt; back</a>
       <article class="article-shell" aria-label="AssessingAgents (locked)">
-        <div class="tech-content">
-          <pre class="anim-text">${escapeHtml(triedFixingAllstonText)}</pre>
-        </div>
         <div class="assessing-agents-auth-shell">
           <form class="assessing-agents-auth-form" data-assessing-agents-auth="unlock" autocomplete="off">
             <input
