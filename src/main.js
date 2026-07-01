@@ -31,11 +31,6 @@ import {
   notFoundTemplate,
 } from "./routes.js";
 
-import hanoPngUrl from "./assets/44-hano.png?url";
-
-
-
-
 const BOOT_TEXT = "Hello friend";
 const BOOT_TYPE_SPEED_MS = 92;
 const BOOT_HOLD_MS = 900;
@@ -54,59 +49,7 @@ function sleep(ms) {
   return new Promise((resolve) => window.setTimeout(resolve, ms));
 }
 
-function getAssessingAgentsExtraTxtUrl() {
-  try {
-    const urlParam = new URLSearchParams(window.location.search).get(
-      "assessingAgentsTxt",
-    );
 
-    if (urlParam) return urlParam;
-
-    return window.sessionStorage.getItem("assessing-agents-extra-txt-url");
-  } catch {
-    return null;
-  }
-}
-
-async function loadAssessingAgentsExtraTxt({
-  appEl,
-  enableScrollRerender = false,
-} = {}) {
-  const placeholder = appEl?.querySelector?.("#assessing-agents-extra-txt");
-  if (!placeholder) return;
-
-  placeholder.innerHTML = "";
-
-  // Always display the image
-  const img = document.createElement("img");
-  img.className = "assessing-agents-hano-image";
-  img.src = hanoPngUrl;
-  img.alt = "44 Hano (image)";
-  img.loading = "lazy";
-  placeholder.appendChild(img);
-
-  // Load external content if URL is available
-  const url = getAssessingAgentsExtraTxtUrl();
-  if (!url) return;
-
-  try {
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) return;
-
-    const text = await res.text();
-
-    const pre = document.createElement("pre");
-    pre.className = "anim-text";
-    pre.textContent = text;
-    placeholder.appendChild(pre);
-
-    if (enableScrollRerender) {
-      setupScrollTextRerender({ appEl });
-    }
-  } catch {
-    // Ignore fetch errors; leaving content empty is safer.
-  }
-}
 
 function renderRoute(path) {
   currentPath = normalizePath(path);
@@ -156,13 +99,6 @@ function renderRoute(path) {
       app.innerHTML = assessingAgentsLockedTemplate();
     }
     document.title = "tristan.systems — AssessingAgents";
-
-    if (isBooted) {
-      void loadAssessingAgentsExtraTxt({
-        appEl: app,
-        enableScrollRerender: isUnlocked,
-      });
-    }
 
     if (isBooted && !isUnlocked) {
       const passwordInput = document.querySelector("#assessing-agents-password-input");

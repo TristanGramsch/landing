@@ -1,7 +1,8 @@
-import { governmentArticle, optoelectronicaArticle, assessingAgentsText } from "./content.js";
+import { governmentArticle, optoelectronicaArticle, assessingAgentsText, privateAssessingAgentsText } from "./content.js";
 
 import equipoImageSrc from "./assets/equipo.jpeg";
 import instalacionImageSrc from "./assets/instalación.jpeg";
+import hanoPngUrl from "./assets/44-hano.png?url";
 
 function escapeHtml(text) {
   return text.replace(/[&<>"']/g, (char) => {
@@ -125,7 +126,10 @@ export function assessingAgentsUnlockedTemplate() {
         <div class="tech-content">
           <pre class="anim-text">${escapeHtml(assessingAgentsText)}</pre>
         </div>
-        <div id="assessing-agents-extra-txt" class="assessing-agents-extra-txt"></div>
+        <img class="assessing-agents-hano-image" src="${hanoPngUrl}" alt="44 Hano (image)" loading="lazy" />
+        <div class="tech-content">
+          <pre class="anim-text">${escapeHtml(privateAssessingAgentsText)}</pre>
+        </div>
       </article>
     </main>
   `;
@@ -136,6 +140,10 @@ export function assessingAgentsLockedTemplate() {
     <main class="section-shell">
       <a class="back-link" href="/sociological" data-nav>&lt; back</a>
       <article class="article-shell" aria-label="AssessingAgents (locked)">
+        <div class="tech-content">
+          <pre class="anim-text">${escapeHtml(assessingAgentsText)}</pre>
+        </div>
+        <img class="assessing-agents-hano-image" src="${hanoPngUrl}" alt="44 Hano (image)" loading="lazy" />
         <div class="assessing-agents-auth-shell">
           <form class="assessing-agents-auth-form" data-assessing-agents-auth="unlock" autocomplete="off">
             <input
@@ -149,7 +157,6 @@ export function assessingAgentsLockedTemplate() {
             />
           </form>
         </div>
-        <div id="assessing-agents-extra-txt" class="assessing-agents-extra-txt"></div>
       </article>
     </main>
   `;

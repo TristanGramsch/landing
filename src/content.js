@@ -1,6 +1,7 @@
 import govFlexibilityText from "./content/government-flexibility.txt?raw";
 import optoelectronicaText from "./content/optoelectronica.txt?raw";
 import assessingAgentsText from "./content/assessing-agents.txt?raw";
+import privateAssessingAgentsText from "./content/private-assessing-agents.txt?raw";
 
 const GOVERNMENT_TITLE_PAIN_POINTS =
   "The pains of inflexibility at local public health";
@@ -49,4 +50,4 @@ function parseOptoelectronica(text) {
 
 export const governmentArticle = parseGovernmentFlexibility(govFlexibilityText);
 export const optoelectronicaArticle = parseOptoelectronica(optoelectronicaText);
-export { assessingAgentsText };
+export { assessingAgentsText, privateAssessingAgentsText };
