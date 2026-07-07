@@ -1,67 +1,23 @@
-TRISTAN.SYSTEMS — INFRASTRUCTURE DIAGRAM (diagram.txt)
+CURRENT:
 
-+---------------------------+
-|        Users / Browser    |
-+---------------------------+
-              |
-              | HTTPS
-              v
-+---------------------------------------------------+
-|                 Vite Server (Node)               |
-|  - Serves index.html + built assets (Single-Page Application shell) |
-|  - Client-side routing via pushState            |
-|  - Custom middleware endpoints (API routes)     |
-+----------------------------+----------------------+
-                             |
-                             | GET /api/health-log
-                             v
-              +----------------------------------+
-              | health-log-api middleware        |
-              | (in vite.config.js)              |
-              |                                  |
-              | 1) Reads file on server File System:     |
-              |    ~/.local/state/stack-health.log
-              |    (or $HOME; fallback uses /root)
-              | 2) Extracts latest run:
-              |    "############ Stack Health Check"
-              |    ... "############ END ############"
-              | 3) Strips ANSI escape sequences
-              | 4) Returns text/plain           |
-              +----------------------------------+
-                             |
-                             | response: plain text log
-                             v
-              +----------------------------------+
-              | Browser Single-Page Application (system-health route) |
-              | initSystemHealthFetch()            |
-              | -> types the fetched log into UI |
-              +----------------------------------+
+Hello Friends
+├── Sociological
+│   ├── Government Flexibility
+│   └── AssessingAgents
+└── Technological
+    ├── Optoelectrónica Icalma
+    └── Health Check
 
-                             |
-                             | renders visitor count widget (hard-coded 100)
-                             v
-              +----------------------------------+
-              | Browser Single-Page Application (home route)         |
-              | -> optionally animates fireworks |
-              +----------------------------------+
+DESIRED:
 
-+---------------------------------------------------+
-|                External Services / Assets         |
-+---------------------------------------------------+
-
-A) Umami (self-hosted analytics)
-   Browser loads:
-     <script src="/umami/script.js">
-   Umami records analytics events (e.g. pageviews and time-on-page). 
-B) Plausible (optional)
-   Browser code calls window.plausible(...) if it exists
-   (pageview + time-on-page events).
-
-+---------------------------------------------------+
-|                 Client-side Security Gate         |
-+---------------------------------------------------+
-| /sociological/ditto-pitch-80
-| - Password gate is implemented in the browser.
-| - Unlock state stored in sessionStorage.
-| - No server-side verification.
-+---------------------------------------------------+
+Hello Friends
+├── Sociological
+│   ├── Needle Icon
+│   │   ├── Thesis (new content)
+│   │   └── Government Flexibility
+│   └── Book Icon
+│       └── Sociedad morbosa (new content)
+└── Technological
+    ├── Optoelectrónica Icalma
+    │   └── Computer Fun (Health Assessment rework)
+    └── AssessingAgents

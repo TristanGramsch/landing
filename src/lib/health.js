@@ -1,6 +1,18 @@
 import { typeInto } from "./animation.js";
-import { fetchHealthLog } from "./healthTransport.js";
 import { setupScrollTextRerender } from "./scrollTextRerender.js";
+
+async function fetchHealthLog() {
+  try {
+    const response = await fetch("/api/health-log");
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    return await response.text();
+  } catch (error) {
+    console.error("Failed to fetch health log:", error);
+    return "Health log unavailable. Run diagnose.sh manually.";
+  }
+}
 
 export async function initSystemHealthFetch({ appEl } = {}) {
   const promptEl = document.querySelector("#health-prompt");

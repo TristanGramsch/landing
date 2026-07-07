@@ -1,7 +1,6 @@
 import { normalizePath, getRoute } from "./router.js";
 
-import { typeInto } from "./lib/animation.js";
-import { trackPageView, trackTimeOnPage } from "./lib/analytics.js";
+import { sleep, typeInto } from "./lib/animation.js";
 import { playSelectionSound } from "./lib/audio.js";
 import {
   disconnectScrollTextRerender,
@@ -11,20 +10,20 @@ import { initSystemHealthFetch } from "./lib/health.js";
 import { initVisitors } from "./lib/visitors.js";
 
 import {
-  DITTO_PITCH_80_PASSWORD,
-  bindDittoPitch80KeyTwitch,
-  isDittoPitch80Unlocked,
-  setDittoPitch80Unlocked,
-  startDittoPitch80Twitch,
-  stopDittoPitch80Twitch,
-} from "./lib/dittoGate.js";
+  ASSESSING_AGENTS_PASSWORD,
+  bindAssessingAgentsKeyTwitch,
+  isAssessingAgentsUnlocked,
+  setAssessingAgentsUnlocked,
+  startAssessingAgentsTwitch,
+  stopAssessingAgentsTwitch,
+} from "./lib/assessingAgentsGate.js";
 
 import {
   homeTemplate,
   sociologicalTemplate,
   governmentFlexibilityRouteTemplate,
-  dittoPitch80UnlockedTemplate,
-  dittoPitch80LockedTemplate,
+  assessingAgentsUnlockedTemplate,
+  assessingAgentsLockedTemplate,
   technologicalTemplate,
   optoelectronicaTemplate,
   systemHealthTemplate,
@@ -45,9 +44,89 @@ let currentPath = normalizePath(window.location.pathname);
 let pageEnteredAt = Date.now();
 let isBooted = false;
 
-function sleep(ms) {
-  return new Promise((resolve) => window.setTimeout(resolve, ms));
-}
+// ── Route config ──────────────────────────────────────────────
+// Each route maps to { template, title?, onRender? }.
+// `onRender` is called after the template is injected into the DOM.
+
+const ROUTE_CONFIG = {
+  home: {
+    template: homeTemplate,
+    onRender() {
+      if (isBooted) {
+        const homeHelloText = document.querySelector("#home-hello-text");
+        const homeHelloCursor = document.querySelector("#home-hello-cursor");
+        if (homeHelloText) {
+          homeHelloText.textContent = BOOT_TEXT;
+        }
+        homeHelloCursor?.classList.remove("is-hidden");
+        initVisitors({ appEl: app });
+      }
+    },
+  },
+
+  sociological: {
+    template: sociologicalTemplate,
+    title: "tristan.systems — Sociological",
+    onRender() {
+      if (isBooted) setupScrollTextRerender({ appEl: app });
+    },
+  },
+
+  "government-flexibility": {
+    template: governmentFlexibilityRouteTemplate,
+    title: "tristan.systems — Government flexibility",
+    onRender() {
+      if (isBooted) setupScrollTextRerender({ appEl: app });
+    },
+  },
+
+  "assessing-agents": {
+    template() {
+      stopAssessingAgentsTwitch();
+      return isAssessingAgentsUnlocked()
+        ? assessingAgentsUnlockedTemplate()
+        : assessingAgentsLockedTemplate();
+    },
+    title: "tristan.systems — Assessing Agents",
+    onRender() {
+      if (isBooted && !isAssessingAgentsUnlocked()) {
+        const passwordInput = document.querySelector("#assessing-agents-password-input");
+        passwordInput?.focus();
+        bindAssessingAgentsKeyTwitch();
+        startAssessingAgentsTwitch({
+          getIsBooted: () => isBooted,
+          getCurrentPath: () => currentPath,
+        });
+      }
+    },
+  },
+
+  technological: {
+    template: technologicalTemplate,
+    title: "tristan.systems — Technological",
+    onRender() {
+      if (isBooted) setupScrollTextRerender({ appEl: app });
+    },
+  },
+
+  optoelectronica: {
+    template: optoelectronicaTemplate,
+    title: "tristan.systems — Optoelectrónica Icalma",
+    onRender() {
+      if (isBooted) setupScrollTextRerender({ appEl: app });
+    },
+  },
+
+  "system-health": {
+    template: systemHealthTemplate,
+    title: "tristan.systems — System Health",
+    onRender() {
+      if (isBooted) initSystemHealthFetch({ appEl: app });
+    },
+  },
+};
+
+// ── Render ─────────────────────────────────────────────────────
 
 function renderRoute(path) {
   currentPath = normalizePath(path);
@@ -55,82 +134,11 @@ function renderRoute(path) {
 
   disconnectScrollTextRerender();
 
-  if (route === "home") {
-    app.innerHTML = homeTemplate();
-    document.title = "tristan.systems";
-
-    // When navigating back to home after boot, don't re-type.
-    // Just show the final text + blinking cursor.
-    if (isBooted) {
-      const homeHelloText = document.querySelector("#home-hello-text");
-      const homeHelloCursor = document.querySelector("#home-hello-cursor");
-      if (homeHelloText) {
-        homeHelloText.textContent = BOOT_TEXT;
-      }
-      homeHelloCursor?.classList.remove("is-hidden");
-    }
-
-    if (isBooted) {
-      initVisitors({ appEl: app });
-    }
-  } else if (route === "sociological") {
-    app.innerHTML = sociologicalTemplate();
-    document.title = "tristan.systems — Sociological";
-
-    if (isBooted) {
-      setupScrollTextRerender({ appEl: app });
-    }
-  } else if (route === "government-flexibility") {
-    app.innerHTML = governmentFlexibilityRouteTemplate();
-    document.title = "tristan.systems — Government flexibility";
-
-    if (isBooted) {
-      setupScrollTextRerender({ appEl: app });
-    }
-  } else if (route === "ditto-pitch-80") {
-    stopDittoPitch80Twitch();
-
-    if (isDittoPitch80Unlocked()) {
-      app.innerHTML = dittoPitch80UnlockedTemplate();
-    } else {
-      app.innerHTML = dittoPitch80LockedTemplate();
-    }
-    document.title = "tristan.systems — Ditto-Pitch-80";
-
-    if (isBooted && isDittoPitch80Unlocked()) {
-      setupScrollTextRerender({ appEl: app });
-    }
-
-    if (isBooted && !isDittoPitch80Unlocked()) {
-      const passwordInput = document.querySelector("#ditto-password-input");
-      passwordInput?.focus();
-      bindDittoPitch80KeyTwitch();
-      startDittoPitch80Twitch({
-        getIsBooted: () => isBooted,
-        getCurrentPath: () => currentPath,
-      });
-    }
-  } else if (route === "technological") {
-    app.innerHTML = technologicalTemplate();
-    document.title = "tristan.systems — Technological";
-
-    if (isBooted) {
-      setupScrollTextRerender({ appEl: app });
-    }
-  } else if (route === "optoelectronica") {
-    app.innerHTML = optoelectronicaTemplate();
-    document.title = "tristan.systems — Optoelectrónica Icalma";
-
-    if (isBooted) {
-      setupScrollTextRerender({ appEl: app });
-    }
-  } else if (route === "system-health") {
-    app.innerHTML = systemHealthTemplate();
-    document.title = "tristan.systems — System Health";
-
-    if (isBooted) {
-      initSystemHealthFetch({ appEl: app });
-    }
+  const config = ROUTE_CONFIG[route];
+  if (config) {
+    app.innerHTML = config.template();
+    if (config.title) document.title = config.title;
+    config.onRender?.();
   } else {
     app.innerHTML = notFoundTemplate();
     document.title = "tristan.systems — 404";
@@ -162,10 +170,7 @@ async function navigateTo(path, { replace = false } = {}) {
     return;
   }
 
-  trackTimeOnPage({ path: currentPath, pageEnteredAt });
-
-  // Prevent the home visitors widget from flashing while we wait to
-  // replace the DOM.
+  // Prevent the visitors widget from flashing during navigation.
   const homeVisitorsShell = document.querySelector('.home-visitors-shell');
   homeVisitorsShell?.classList?.add('is-nav-hiding');
 
@@ -181,7 +186,6 @@ async function navigateTo(path, { replace = false } = {}) {
 
   renderRoute(nextRoute ? nextPath : "/");
   pageEnteredAt = Date.now();
-  trackPageView(currentPath);
   document.body.classList.remove("page-pulse");
 
   document.querySelector('.home-visitors-shell')?.classList?.remove('is-nav-hiding');
@@ -218,11 +222,35 @@ async function boot() {
   }
 
   isBooted = true;
-  trackPageView(currentPath);
+
+  const route = getRoute(currentPath);
+
+  // If we landed directly on the AssessingAgents route, we may need to
+  // load/refresh the IFC/preview image now that boot is complete. renderRoute()
+  // was already called once during boot while isBooted === false.
+  if (route === "assessing-agents") {
+    const isUnlocked = isAssessingAgentsUnlocked();
+
+    if (isUnlocked) {
+      // Ensure the unlocked template is swapped in on direct URL loads.
+      // Without this, we can end up stuck on the locked template UI
+      // even if unlock state is already present.
+      renderRoute(currentPath);
+    } else {
+      const passwordInput = document.querySelector(
+        "#assessing-agents-password-input",
+      );
+      passwordInput?.focus();
+      bindAssessingAgentsKeyTwitch();
+      startAssessingAgentsTwitch({
+        getIsBooted: () => isBooted,
+        getCurrentPath: () => currentPath,
+      });
+    }
+  }
 
   // If we landed directly on an article/system-health route, enable scroll-triggered
   // text re-rendering now that boot is complete.
-  const route = getRoute(currentPath);
   if (route === "system-health") {
     initSystemHealthFetch({ appEl: app });
   } else {
@@ -235,7 +263,7 @@ async function boot() {
 }
 
 app.addEventListener("submit", (event) => {
-  const unlockForm = event.target?.closest?.('form[data-ditto-auth="unlock"]');
+  const unlockForm = event.target?.closest?.('form[data-assessing-agents-auth="unlock"]');
   if (!unlockForm) return;
 
   event.preventDefault();
@@ -243,18 +271,21 @@ app.addEventListener("submit", (event) => {
   const inputEl = unlockForm.querySelector('input[name="password"]');
   const entered = (inputEl?.value ?? "").trim();
 
-  if (entered === DITTO_PITCH_80_PASSWORD) {
-    setDittoPitch80Unlocked(true);
+  const enteredNormalized = entered.toLowerCase();
+  const expectedNormalized = (ASSESSING_AGENTS_PASSWORD ?? "").toLowerCase();
+
+  if (enteredNormalized === expectedNormalized) {
+    setAssessingAgentsUnlocked(true);
     inputEl && (inputEl.value = "");
     renderRoute(currentPath);
     return;
   }
 
-  setDittoPitch80Unlocked(false);
+  setAssessingAgentsUnlocked(false);
   inputEl && (inputEl.value = "");
   renderRoute(currentPath);
 
-  const passwordInput = document.querySelector("#ditto-password-input");
+  const passwordInput = document.querySelector("#assessing-agents-password-input");
   passwordInput?.focus();
 });
 
@@ -273,15 +304,8 @@ app.addEventListener("click", (event) => {
 });
 
 window.addEventListener("popstate", () => {
-  const previousPath = currentPath;
-  trackTimeOnPage({ path: previousPath, pageEnteredAt });
   renderRoute(window.location.pathname);
   pageEnteredAt = Date.now();
-  trackPageView(currentPath);
-});
-
-window.addEventListener("pagehide", () => {
-  trackTimeOnPage({ path: currentPath, pageEnteredAt });
 });
 
 boot();

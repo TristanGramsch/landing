@@ -1,5 +1,13 @@
+/**
+ * Reads the visitor count from VITE_UMAMI_VISITORS and renders it
+ * with staggered firework bursts.  After the bursts finish the count
+ * glitch-fades away — it repeats every time you land on home.
+ */
+
+// ── helpers ─────────────────────────────────────────────────────
+
 function prefersReducedMotion() {
-  return window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+  return window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 }
 
 function formatVisitors(n) {
@@ -10,118 +18,88 @@ function formatVisitors(n) {
   }
 }
 
-function spawnFireworksBurst({
-  containerEl,
-  originEl,
-  sparkCount = 22,
-  originOffsetX = 0,
-  originOffsetY = 0,
-}) {
+// ── fireworks ───────────────────────────────────────────────────
+
+function spawnBurst({ containerEl, originEl, sparkCount, offsetX, offsetY }) {
   if (!containerEl) return;
 
   const containerRect = containerEl.getBoundingClientRect();
   const originRect = originEl?.getBoundingClientRect?.() ?? containerRect;
-
-  // Place the origin point relative to the container.
-  const originX =
-    originRect.left - containerRect.left + originRect.width / 2 + originOffsetX;
-  const originY =
-    originRect.top - containerRect.top + originRect.height / 2 + originOffsetY;
+  const ox =
+    originRect.left - containerRect.left + originRect.width / 2 + offsetX;
+  const oy =
+    originRect.top - containerRect.top + originRect.height / 2 + offsetY;
 
   for (let i = 0; i < sparkCount; i++) {
-    const spark = document.createElement('span');
-    spark.className = 'visitors-firework-spark';
-
-    const angle =
-      (Math.PI * 2 * i) / sparkCount + (Math.random() - 0.5) * 0.35;
+    const angle = (Math.PI * 2 * i) / sparkCount + (Math.random() - 0.5) * 0.35;
     const radius = 64 + Math.random() * 98;
 
-    const dx = Math.cos(angle) * radius;
-    const dy = Math.sin(angle) * radius;
-
-    spark.style.setProperty('--ox', `${originX}px`);
-    spark.style.setProperty('--oy', `${originY}px`);
-    spark.style.setProperty('--dx', `${dx}px`);
-    spark.style.setProperty('--dy', `${dy}px`);
-
-    // Stagger slightly so the burst feels more organic.
+    const spark = document.createElement("span");
+    spark.className = "visitors-firework-spark";
+    spark.style.setProperty("--ox", `${ox}px`);
+    spark.style.setProperty("--oy", `${oy}px`);
+    spark.style.setProperty("--dx", `${Math.cos(angle) * radius}px`);
+    spark.style.setProperty("--dy", `${Math.sin(angle) * radius}px`);
     spark.style.animationDelay = `${Math.random() * 160}ms`;
 
     containerEl.appendChild(spark);
   }
 }
 
-export async function initVisitors({ appEl } = {}) {
-  const countEl =
-    appEl?.querySelector?.('#visitors-count') ?? document.querySelector('#visitors-count');
-  const visitorsSuffixEl =
-    appEl?.querySelector?.('.visitors-suffix--header') ?? document.querySelector('.visitors-suffix--header');
-  const fireworksEl =
-    appEl?.querySelector?.('#visitors-fireworks') ?? document.querySelector('#visitors-fireworks');
-  const originEl =
-    appEl?.querySelector?.('.home-visitors-shell') ?? document.querySelector('.home-visitors-shell');
-  const visitorsWidgetEl =
-    originEl?.querySelector?.('.visitors-widget') ??
-    appEl?.querySelector?.('.visitors-widget') ??
-    document.querySelector('.visitors-widget');
+// ── public API ──────────────────────────────────────────────────
+
+export function initVisitors({ appEl } = {}) {
+  const root = appEl ?? document;
+  const countEl = root.querySelector("#visitors-count");
+  const fireworksEl = root.querySelector("#visitors-fireworks");
+  const originEl = root.querySelector(".home-visitors-shell");
+  const widgetEl =
+    originEl?.querySelector?.(".visitors-widget") ??
+    root.querySelector(".visitors-widget");
 
   if (!countEl) return;
 
-  // Ensure we start fresh for each home render.
-  visitorsWidgetEl?.classList?.remove?.('is-fireworks-ended');
-  visitorsWidgetEl?.classList?.add?.('is-loading');
-  countEl.textContent = '';
+  // Fresh start every time we land on home.
+  widgetEl?.classList?.remove?.("is-fireworks-ended");
+  widgetEl?.classList?.add?.("is-loading");
+  countEl.textContent = "";
 
-  // Reduced motion: still show the number, but skip fireworks.
   const reduced = prefersReducedMotion();
 
-  // Visitors count is fixed for now (instead of calling /api/umami-visitors).
-  const visitors = 100;
+  // Read from env; Vite inlines this at build time.
+  const raw = import.meta.env.VITE_UMAMI_VISITORS;
+  const visitors = raw ? Number(raw) : 0;
+
   countEl.textContent = formatVisitors(visitors);
-  visitorsWidgetEl?.classList?.remove?.('is-loading');
+  widgetEl?.classList?.remove?.("is-loading");
 
-  if (!reduced) {
-    // Fire 3–5 bursts so it feels like a cluster, and randomize origin
-    // offsets so they don't land on the same exact spot.
-    const burstCount = Math.floor(3 + Math.random() * 3); // 3..5
+  if (reduced || !visitors) return;
 
-    fireworksEl.innerHTML = '';
+  // 3–5 staggered bursts so it feels like a cluster.
+  fireworksEl.innerHTML = "";
 
-    for (let i = 0; i < burstCount; i++) {
-      // First burst fires immediately; subsequent bursts are delayed
-      // progressively with additional randomness.
-      const baseDelayMs = i * 640;
-      const jitterMs = Math.floor(Math.random() * 520); // 0..519
-      const delayMs = baseDelayMs + jitterMs;
+  const burstCount = Math.floor(3 + Math.random() * 3); // 3..5
+  for (let i = 0; i < burstCount; i++) {
+    const baseDelayMs = i * 640;
+    const jitterMs = Math.floor(Math.random() * 520);
+    const delayMs = baseDelayMs + jitterMs;
 
-      const originOffsetX = (Math.random() - 0.5) * 28;
-      const originOffsetY = (Math.random() - 0.5) * 22;
-      const sparkCount = 18 + Math.floor(Math.random() * 10);
-
-      window.setTimeout(() => {
-        spawnFireworksBurst({
-          containerEl: fireworksEl,
-          originEl,
-          sparkCount,
-          originOffsetX,
-          originOffsetY,
-        });
-      }, delayMs);
-    }
-
-    // Clear after the last burst finishes.
-    // Account for the maximum jitter on the last scheduled burst.
-    const maxJitterMs = 519;
     window.setTimeout(() => {
-      if (visitorsWidgetEl) {
-        visitorsWidgetEl.classList.add('is-fireworks-ended');
-      } else {
-        // Fallback: fade the individual nodes.
-        countEl?.classList?.add?.('is-fireworks-ended');
-        visitorsSuffixEl?.classList?.add?.('is-fireworks-ended');
-      }
-
-      if (fireworksEl) fireworksEl.innerHTML = '';
-    }, 1750 + (burstCount - 1) * 640 + 160 + maxJitterMs);
+      spawnBurst({
+        containerEl: fireworksEl,
+        originEl,
+        sparkCount: 18 + Math.floor(Math.random() * 10),
+        offsetX: (Math.random() - 0.5) * 28,
+        offsetY: (Math.random() - 0.5) * 22,
+      });
+    }, delayMs);
   }
+
+  // After the last burst finishes, glitch-fade the count away.
+  const maxJitterMs = 519;
+  const totalMs = 1750 + (burstCount - 1) * 640 + 160 + maxJitterMs;
+  window.setTimeout(() => {
+    widgetEl?.classList?.add?.("is-fireworks-ended");
+    if (fireworksEl) fireworksEl.innerHTML = "";
+  }, totalMs);
 }

@@ -1,7 +1,7 @@
 I worked at the Chicago Department of Public Health. In my free time, I would reflect on what makes a good organizations good. Here are those thoughts. 
 
 
-The pains of inflexibility at local public health
+## The pains of inflexibility at local public health
 I have been working in local public health for some time now. 
 
 And throughout these months, I have seen a plethora of organizational issues, hindering the efficiency of our organization and lowering morale of staff.  
@@ -58,7 +58,7 @@ Public health must reduce burnout. It's killing us. It is up to us to find the i
 
 I say we start by addressing the lingering issues I mention. Having honest, open discussions about our organizational practices. Identifying practices that are hurtful, and setting behavior expectations. At the same time, develop a better understanding of what good work means, empower the right staff, discourage bureaucratic behaviors, and request more out of the workforce.
 
-Incentivizing flexibility at local public health
+## Incentivizing flexibility at local public health
 I have recently covered how local public health is inflexible and why it hurts. Here I try to cover how to incentivize flexibility.
 
 The list of negatives is blunt and long. But I believe we can do plenty about it. It is up to the people at local public health to accept the challenge of culture change.

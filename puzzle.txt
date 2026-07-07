@@ -1,0 +1,37 @@
+This is the puzzle of Tristan.Systems.
+
+We have an objective: increase visitors. Because we want to get attention on important topics.
+
+And we have already proven that our website is successful. We want to continue this route and follow the logic that we have been following.
+
+This is a description of the website we want. The challenge is to move from the old version to the desired one. 
+
+--Desired Tristan.Systems: 
+
+From landing page, you can go into either Sociological or Technological. From Sociological, you can go into a book icon or into a needle icon. From Technological, you can go to Optoelectrónica Icalma or AssessingAgents. And from the needle, you can go into CDPH. And from Optoelectrónica Icalma, you can go into Computer fun.
+
+In Computer fun you are going to have the health assessment for the website, and on CDPH you are going to have government flexibility.
+
+More things to consider. Optoelectrónica Icalma is a text file, two images, and 2 links. AssessingAgents is a text file, an image and a private message. The needle and the book are a text file each. 
+
+The two Optoelectrónica Icalma links are to the Días sin accidentes app and the STI app.
+
+Part of the challenge is to make consistent: the aesthetic, the formatting, the file placement.
+
+Another challenge is the private message. This is a simple feature that needs a home.
+
+We also want mobile friendliness. And no bugs.
+
+--Current Tristan.Systems: 
+
+Currently, we have a working, growing application. 50 visitors. One animation that welcomes you to a landing page that, in a hacky manner, points you to two directions and celebrates the visitors with fireworks.
+
+If you go in the sociological path, you will find Government Flexibility and AssessingAgents.
+
+If you go in the technological route, you will find Optoelectrónica Icalma and Health Check.
+
+Currently, there is a bug in AssessingAgents as the text is not being rendered properly for phones or for computers. As comparison, the government flexibility text is rendered properly.
+
+--Rules.
+
+Each node in the binary tree represent content and offers routes. You are always going to have two routes forward.

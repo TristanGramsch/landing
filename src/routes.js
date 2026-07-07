@@ -1,7 +1,8 @@
-import { governmentArticle, optoelectronicaArticle, dittoPitch80Text } from "./content.js";
+import { governmentArticle, assessingAgentsArticle, optoelectronicaArticle, privateAssessingAgentsText } from "./content.js";
 
 import equipoImageSrc from "./assets/equipo.jpeg";
 import instalacionImageSrc from "./assets/instalación.jpeg";
+import hanoPngUrl from "./assets/44-hano.png?url";
 
 function escapeHtml(text) {
   return text.replace(/[&<>"']/g, (char) => {
@@ -27,10 +28,10 @@ export function homeTemplate() {
     <main class="home-shell">
       <section class="hero hero-centered" aria-label="Welcome">
         <div class="home-visitors-shell" aria-label="Visitors">
-          <h2 class="visitors-header visitors-widget is-loading" aria-label="Visitors">
+          <span class="visitors-widget">
             <span id="visitors-count" class="visitors-count" aria-live="polite">—</span>
-            <span class="visitors-suffix visitors-suffix--header">visitors</span>
-          </h2>
+            <span class="visitors-suffix">visitors</span>
+          </span>
           <div
             id="visitors-fireworks"
             class="visitors-fireworks"
@@ -44,7 +45,7 @@ export function homeTemplate() {
         </h1>
 
         <div class="home-paths" aria-label="Choose a path">
-          <p class="lede lede-home">Choose a path of your interest.</p>
+          <p class="lede lede-home">Choose your path.</p>
 
           <section class="bubble-grid" aria-label="Choose a path">
             <button class="bubble" type="button" data-nav="/sociological">
@@ -74,9 +75,9 @@ export function sociologicalTemplate() {
             <span class="bubble-label">Government flexibility</span>
           </span>
         </a>
-        <a class="bubble tech-box" href="/sociological/ditto-pitch-80" data-nav>
+        <a class="bubble tech-box" href="/sociological/assessing-agents" data-nav>
           <span class="bubble-frame">
-            <span class="bubble-label">Ditto-Pitch-80</span>
+            <span class="bubble-label">AssessingAgents</span>
           </span>
         </a>
       </section>
@@ -117,38 +118,59 @@ export function governmentFlexibilityRouteTemplate() {
   `;
 }
 
-export function dittoPitch80UnlockedTemplate() {
+function assessingAgentsArticleTemplate() {
+  const lead = assessingAgentsArticle.lead
+    .map((p) => `<p class="anim-text">${escapeHtml(p)}</p>`)
+    .join("");
+
+  const sections = assessingAgentsArticle.sections
+    .map(
+      (section) => `
+        <h2 class="article-title anim-text">${escapeHtml(section.title)}</h2>
+        ${section.paragraphs
+          .map((p) => `<p class="anim-text">${escapeHtml(p)}</p>`)
+          .join("")}
+      `,
+    )
+    .join("");
+
+  return `
+    <article class="article-shell" aria-label="Assessing Agents">
+      ${lead}
+      ${sections}
+      <img class="assessing-agents-hano-image" src="${hanoPngUrl}" alt="44 Hano (image)" loading="lazy" />
+      <p class="anim-text">${escapeHtml(privateAssessingAgentsText)}</p>
+    </article>
+  `;
+}
+
+export function assessingAgentsUnlockedTemplate() {
   return `
     <main class="section-shell">
       <a class="back-link" href="/sociological" data-nav>&lt; back</a>
-      <article class="article-shell" aria-label="Ditto-Pitch-80">
-        <div class="tech-content">
-          <pre class="anim-text">${escapeHtml(dittoPitch80Text)}</pre>
-        </div>
-      </article>
+      ${assessingAgentsArticleTemplate()}
     </main>
   `;
 }
 
-export function dittoPitch80LockedTemplate() {
+export function assessingAgentsLockedTemplate() {
   return `
     <main class="section-shell">
       <a class="back-link" href="/sociological" data-nav>&lt; back</a>
-      <article class="article-shell" aria-label="Ditto-Pitch-80 (locked)">
-        <div class="ditto-auth-shell">
-          <form class="ditto-auth-form" data-ditto-auth="unlock" autocomplete="off">
-            <input
-              id="ditto-password-input"
-              name="password"
-              class="ditto-auth-input"
-              type="password"
-              autocomplete="off"
-              spellcheck="false"
-              inputmode="text"
-            />
-          </form>
-        </div>
-      </article>
+      ${assessingAgentsArticleTemplate()}
+      <div class="assessing-agents-auth-shell">
+        <form class="assessing-agents-auth-form" data-assessing-agents-auth="unlock" autocomplete="off">
+          <input
+            id="assessing-agents-password-input"
+            name="password"
+            class="assessing-agents-auth-input"
+            type="password"
+            autocomplete="off"
+            spellcheck="false"
+            inputmode="text"
+          />
+        </form>
+      </div>
     </main>
   `;
 }

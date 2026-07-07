@@ -4,3 +4,4 @@ dist/
 # What is this
 *.bak.*
 .env
+error-log.txt
