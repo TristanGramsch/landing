@@ -15,7 +15,7 @@ CURRENT
    |   |         |   |
    v   v         v   v
 +--------+ +--------+ +--------+ +--------+
-| needle | |  book  | |   O    | |   AA   |
+| Government flexibility | |  AssessingAgents  | |   Optoelectrónica Icalma    | |   Health check   |
 +--------+ +--------+ +--------+ +--------+
 
 DESIRED
