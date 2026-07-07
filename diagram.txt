@@ -13,10 +13,10 @@ DESIRED:
 Hello Friends
 ├── Sociological
 │   ├── Needle Icon
-│   │   └── Thesis (new content)
-	└── Government Flexibility
+│   │   ├── Thesis (new content)
+│   │   └── Government Flexibility
 │   └── Book Icon
-        ├──Sociedad morbosa (new content)
+│       └── Sociedad morbosa (new content)
 └── Technological
     ├── Optoelectrónica Icalma
     │   └── Computer Fun (Health Assessment rework)
