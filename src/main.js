@@ -44,6 +44,89 @@ let currentPath = normalizePath(window.location.pathname);
 let pageEnteredAt = Date.now();
 let isBooted = false;
 
+// ── Route config ──────────────────────────────────────────────
+// Each route maps to { template, title?, onRender? }.
+// `onRender` is called after the template is injected into the DOM.
+
+const ROUTE_CONFIG = {
+  home: {
+    template: homeTemplate,
+    onRender() {
+      if (isBooted) {
+        const homeHelloText = document.querySelector("#home-hello-text");
+        const homeHelloCursor = document.querySelector("#home-hello-cursor");
+        if (homeHelloText) {
+          homeHelloText.textContent = BOOT_TEXT;
+        }
+        homeHelloCursor?.classList.remove("is-hidden");
+        initVisitors({ appEl: app });
+      }
+    },
+  },
+
+  sociological: {
+    template: sociologicalTemplate,
+    title: "tristan.systems — Sociological",
+    onRender() {
+      if (isBooted) setupScrollTextRerender({ appEl: app });
+    },
+  },
+
+  "government-flexibility": {
+    template: governmentFlexibilityRouteTemplate,
+    title: "tristan.systems — Government flexibility",
+    onRender() {
+      if (isBooted) setupScrollTextRerender({ appEl: app });
+    },
+  },
+
+  "assessing-agents": {
+    template() {
+      stopAssessingAgentsTwitch();
+      return isAssessingAgentsUnlocked()
+        ? assessingAgentsUnlockedTemplate()
+        : assessingAgentsLockedTemplate();
+    },
+    title: "tristan.systems — AssessingAgents",
+    onRender() {
+      if (isBooted && !isAssessingAgentsUnlocked()) {
+        const passwordInput = document.querySelector("#assessing-agents-password-input");
+        passwordInput?.focus();
+        bindAssessingAgentsKeyTwitch();
+        startAssessingAgentsTwitch({
+          getIsBooted: () => isBooted,
+          getCurrentPath: () => currentPath,
+        });
+      }
+    },
+  },
+
+  technological: {
+    template: technologicalTemplate,
+    title: "tristan.systems — Technological",
+    onRender() {
+      if (isBooted) setupScrollTextRerender({ appEl: app });
+    },
+  },
+
+  optoelectronica: {
+    template: optoelectronicaTemplate,
+    title: "tristan.systems — Optoelectrónica Icalma",
+    onRender() {
+      if (isBooted) setupScrollTextRerender({ appEl: app });
+    },
+  },
+
+  "system-health": {
+    template: systemHealthTemplate,
+    title: "tristan.systems — System Health",
+    onRender() {
+      if (isBooted) initSystemHealthFetch({ appEl: app });
+    },
+  },
+};
+
+// ── Render ─────────────────────────────────────────────────────
 
 function renderRoute(path) {
   currentPath = normalizePath(path);
@@ -51,79 +134,11 @@ function renderRoute(path) {
 
   disconnectScrollTextRerender();
 
-  if (route === "home") {
-    app.innerHTML = homeTemplate();
-
-    // When navigating back to home after boot, don't re-type.
-    // Just show the final text + blinking cursor.
-    if (isBooted) {
-      const homeHelloText = document.querySelector("#home-hello-text");
-      const homeHelloCursor = document.querySelector("#home-hello-cursor");
-      if (homeHelloText) {
-        homeHelloText.textContent = BOOT_TEXT;
-      }
-      homeHelloCursor?.classList.remove("is-hidden");
-    }
-
-    if (isBooted) {
-      initVisitors({ appEl: app });
-    }
-  } else if (route === "sociological") {
-    app.innerHTML = sociologicalTemplate();
-    document.title = "tristan.systems — Sociological";
-
-    if (isBooted) {
-      setupScrollTextRerender({ appEl: app });
-    }
-  } else if (route === "government-flexibility") {
-    app.innerHTML = governmentFlexibilityRouteTemplate();
-    document.title = "tristan.systems — Government flexibility";
-
-    if (isBooted) {
-      setupScrollTextRerender({ appEl: app });
-    }
-  } else if (route === "assessing-agents") {
-    stopAssessingAgentsTwitch();
-
-    const isUnlocked = isAssessingAgentsUnlocked();
-
-    if (isUnlocked) {
-      app.innerHTML = assessingAgentsUnlockedTemplate();
-    } else {
-      app.innerHTML = assessingAgentsLockedTemplate();
-    }
-    document.title = "tristan.systems — AssessingAgents";
-
-    if (isBooted && !isUnlocked) {
-      const passwordInput = document.querySelector("#assessing-agents-password-input");
-      passwordInput?.focus();
-      bindAssessingAgentsKeyTwitch();
-      startAssessingAgentsTwitch({
-        getIsBooted: () => isBooted,
-        getCurrentPath: () => currentPath,
-      });
-    }
-  } else if (route === "technological") {
-    app.innerHTML = technologicalTemplate();
-    document.title = "tristan.systems — Technological";
-
-    if (isBooted) {
-      setupScrollTextRerender({ appEl: app });
-    }
-  } else if (route === "optoelectronica") {
-    app.innerHTML = optoelectronicaTemplate();
-    document.title = "tristan.systems — Optoelectrónica Icalma";
-
-    if (isBooted) {
-      setupScrollTextRerender({ appEl: app });
-    }
-  } else if (route === "system-health") {
-    app.innerHTML = systemHealthTemplate();
-    document.title = "tristan.systems — System Health";
-
-    if (isBooted) {
-      initSystemHealthFetch({ appEl: app });
-    }
+  const config = ROUTE_CONFIG[route];
+  if (config) {
+    app.innerHTML = config.template();
+    if (config.title) document.title = config.title;
+    config.onRender?.();
   } else {
     app.innerHTML = notFoundTemplate();
     document.title = "tristan.systems — 404";
@@ -155,8 +170,7 @@ async function navigateTo(path, { replace = false } = {}) {
     return;
   }
 
-  // Prevent the home visitors widget from flashing while we wait to
-  // replace the DOM.
+  // Prevent the visitors widget from flashing during navigation.
   const homeVisitorsShell = document.querySelector('.home-visitors-shell');
   homeVisitorsShell?.classList?.add('is-nav-hiding');
 

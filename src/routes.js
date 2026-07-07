@@ -28,10 +28,10 @@ export function homeTemplate() {
     <main class="home-shell">
       <section class="hero hero-centered" aria-label="Welcome">
         <div class="home-visitors-shell" aria-label="Visitors">
-          <h2 class="visitors-header visitors-widget is-loading" aria-label="Visitors">
+          <span class="visitors-widget">
             <span id="visitors-count" class="visitors-count" aria-live="polite">—</span>
-            <span class="visitors-suffix visitors-suffix--header">visitors</span>
-          </h2>
+            <span class="visitors-suffix">visitors</span>
+          </span>
           <div
             id="visitors-fireworks"
             class="visitors-fireworks"

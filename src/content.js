@@ -3,40 +3,49 @@ import optoelectronicaText from "./content/optoelectronica.txt?raw";
 import assessingAgentsText from "./content/assessing-agents.txt?raw";
 import privateAssessingAgentsText from "./content/private-assessing-agents.txt?raw";
 
-const GOVERNMENT_TITLE_PAIN_POINTS =
-  "The pains of inflexibility at local public health";
-const GOVERNMENT_TITLE_INCENTIVIZE =
-  "Incentivizing flexibility at local public health";
+/**
+ * Parse a text file with `## Section Title` markers into { lead, sections }.
+ * Lines before the first `## ` marker become the lead.
+ * Each `## ` line starts a new section; everything until the next `## ` or EOF
+ * becomes that section's paragraphs.
+ */
+function parseMarkeredSections(text) {
+  const lines = text.split(/\r?\n/);
 
-function parseGovernmentFlexibility(text) {
-  const lines = text
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean);
+  const lead = [];
+  const sections = [];
+  let currentSection = null;
 
-  const idx1 = lines.indexOf(GOVERNMENT_TITLE_PAIN_POINTS);
-  const idx2 = lines.indexOf(GOVERNMENT_TITLE_INCENTIVIZE);
+  for (const rawLine of lines) {
+    const line = rawLine.trim();
 
-  if (idx1 === -1 || idx2 === -1 || idx2 <= idx1) {
-    return {
-      lead: lines,
-      sections: [],
-    };
+    if (line.startsWith("## ")) {
+      // Push the previous section if one was being collected.
+      if (currentSection) {
+        sections.push(currentSection);
+      }
+      currentSection = {
+        title: line.slice(3).trim(),
+        paragraphs: [],
+      };
+      continue;
+    }
+
+    if (!line) continue; // skip blank lines
+
+    if (currentSection) {
+      currentSection.paragraphs.push(line);
+    } else {
+      lead.push(line);
+    }
   }
 
-  return {
-    lead: lines.slice(0, idx1),
-    sections: [
-      {
-        title: GOVERNMENT_TITLE_PAIN_POINTS,
-        paragraphs: lines.slice(idx1 + 1, idx2),
-      },
-      {
-        title: GOVERNMENT_TITLE_INCENTIVIZE,
-        paragraphs: lines.slice(idx2 + 1),
-      },
-    ],
-  };
+  // Don't forget the last section.
+  if (currentSection) {
+    sections.push(currentSection);
+  }
+
+  return { lead, sections };
 }
 
 function parseOptoelectronica(text) {
@@ -48,6 +57,6 @@ function parseOptoelectronica(text) {
   return { paragraphs };
 }
 
-export const governmentArticle = parseGovernmentFlexibility(govFlexibilityText);
+export const governmentArticle = parseMarkeredSections(govFlexibilityText);
 export const optoelectronicaArticle = parseOptoelectronica(optoelectronicaText);
 export { assessingAgentsText, privateAssessingAgentsText };

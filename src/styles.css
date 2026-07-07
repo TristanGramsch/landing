@@ -165,77 +165,57 @@ body.boot-complete #app {
   font-size: clamp(1.2rem, 3.2vw, 1.55rem);
 }
 
+/* ── Visitors widget ─────────────────────────────────────────── */
+
 .home-visitors-shell {
   position: relative;
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-top: 0;
 }
 
 .home-visitors-shell.is-nav-hiding .visitors-widget,
-.home-visitors-shell.is-nav-hiding .visitors-count,
-.home-visitors-shell.is-nav-hiding .visitors-suffix--header {
-  opacity: 0 !important;
-}
-
-.home-visitors-shell.is-nav-hiding .visitors-widget * {
-  transition: none !important;
-  animation: none !important;
-}
-
 .home-visitors-shell.is-nav-hiding .visitors-fireworks {
-  display: none;
+  opacity: 0;
 }
 
 .visitors-widget {
-  z-index: 2;
   display: inline-flex;
-  gap: 0.55rem;
+  gap: 0.5rem;
   align-items: baseline;
-  padding: 0;
-  border: 0;
-  background: none;
-  box-shadow: none;
-  border-radius: 0;
-}
-
-.visitors-widget .visitors-count,
-.visitors-widget .visitors-suffix--header {
-  display: inline-block;
-  transition: opacity 720ms ease, transform 720ms ease;
 }
 
 .visitors-widget.is-loading .visitors-count,
-.visitors-widget.is-loading .visitors-suffix--header {
+.visitors-widget.is-loading .visitors-suffix {
   opacity: 0;
   transform: translateY(6px);
 }
 
 .visitors-widget.is-fireworks-ended .visitors-count,
-.visitors-widget.is-fireworks-ended .visitors-suffix--header,
-.visitors-count.is-fireworks-ended,
-.visitors-suffix--header.is-fireworks-ended {
+.visitors-widget.is-fireworks-ended .visitors-suffix {
   transition: none;
   animation: visitors-glitch-fade 520ms ease forwards;
 }
 
-.visitors-prefix,
+.visitors-count,
+.visitors-suffix {
+  display: inline-block;
+  transition: opacity 720ms ease, transform 720ms ease;
+}
+
+.visitors-count {
+  font-weight: 800;
+  font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+  text-shadow: 0 0 16px rgba(57, 255, 20, 0.35), 0 0 36px rgba(57, 255, 20, 0.14);
+}
+
 .visitors-suffix {
   color: var(--terminal-green-soft);
   font-size: clamp(0.8rem, 2vw, 1rem);
   text-shadow: 0 0 12px rgba(57, 255, 20, 0.25);
 }
 
-.visitors-count {
-  font-weight: 800;
-  letter-spacing: 0.01em;
-  font-size: clamp(1.05rem, 2.6vw, 1.35rem);
-  text-shadow: 0 0 16px rgba(57, 255, 20, 0.35), 0 0 36px rgba(57, 255, 20, 0.14);
-}
-
 .visitors-fireworks {
-  z-index: 1;
   position: absolute;
   inset: -1.2rem -1.2rem -2rem -1.2rem;
   pointer-events: none;
@@ -278,8 +258,6 @@ body.boot-complete #app {
     text-shadow: none;
     clip-path: inset(0 0 0 0);
   }
-
-  /* More shattered + faster: aggressive clip-path slicing */
   5% {
     opacity: 1;
     transform: translateY(-2px) translateX(3px);
@@ -289,7 +267,6 @@ body.boot-complete #app {
       -5px 0 rgba(57, 255, 20, 0.3);
     clip-path: inset(0 50% 60% 0);
   }
-
   10% {
     opacity: 0.98;
     transform: translateY(1px) translateX(-4px);
@@ -299,50 +276,42 @@ body.boot-complete #app {
       5px 0 rgba(57, 255, 20, 0.25);
     clip-path: inset(40% 0 38% 52%);
   }
-
   15% {
     opacity: 1;
     transform: translateY(-1px) translateX(2px);
     filter: hue-rotate(55deg) saturate(2);
     clip-path: inset(0 0 66% 30%);
   }
-
   20% {
     opacity: 0.88;
     transform: translateY(2px) translateX(-2px);
     filter: hue-rotate(-20deg) saturate(1.6);
     clip-path: inset(56% 34% 6% 0);
   }
-
   26% {
     opacity: 1;
     transform: translateY(-2px) translateX(5px);
     filter: hue-rotate(75deg) saturate(2.1);
     clip-path: inset(16% 0 50% 58%);
   }
-
   34% {
     opacity: 0.78;
     transform: translateY(3px) translateX(-1px);
     filter: hue-rotate(-35deg) saturate(1.5);
     clip-path: inset(44% 0 28% 18%);
   }
-
   46% {
-    /* Final kick into fade */
     opacity: 0.4;
     transform: translateY(6px) translateX(0);
     filter: none;
     text-shadow: none;
     clip-path: inset(0 0 0 0);
   }
-
   66% {
     opacity: 0.08;
     transform: translateY(9px) translateX(0);
     clip-path: inset(0 0 0 0);
   }
-
   100% {
     opacity: 0;
     transform: translateY(12px) translateX(0);
@@ -353,13 +322,11 @@ body.boot-complete #app {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .visitors-fireworks {
-    display: none;
-  }
   .visitors-firework-spark {
     animation: none !important;
   }
 }
+
 .home-paths {
   display: flex;
   flex-direction: column;
