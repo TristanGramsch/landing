@@ -174,9 +174,8 @@ body.boot-complete #app {
   width: 100%;
 }
 
-.home-visitors-shell.is-nav-hiding .visitors-widget,
-.home-visitors-shell.is-nav-hiding .visitors-fireworks {
-  opacity: 0;
+.home-visitors-shell.is-nav-hiding {
+  visibility: hidden;
 }
 
 .visitors-widget {
