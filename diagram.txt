@@ -1,45 +1,23 @@
-CURRENT
+CURRENT:
 
-+------------------+
-|        HF        |
-| (Hello Friends) |
-+------------------+
-          |
-          v
-     +----+----+
-     |         |
-     v         v
-+---------+  +---------+
-|    S    |  |    T    |
-+---------+  +---------+
-   |   |         |   |
-   v   v         v   v
-+--------+ +--------+ +--------+ +--------+
-| Government flexibility | |  AssessingAgents  | |   Optoelectrónica Icalma    | |   Health check   |
-+--------+ +--------+ +--------+ +--------+
+Hello Friends
+├── Sociological
+│   ├── Government Flexibility
+│   └── AssessingAgents
+└── Technological
+    ├── Optoelectrónica Icalma
+    └── Health Check
 
-DESIRED
+DESIRED:
 
-+------------------+
-|        HF        |
-| (Hello Friends) |
-+------------------+
-          |
-          v
-     +----+----+
-     |         |
-     v         v
-+---------+  +---------+
-|    S    |  |    T    |
-+---------+  +---------+
-   |   |         |   |
-   v   v         v   v
-+--------+ +--------+ +--------+ +--------+
-| needle | |  book  | |   O    | |   AA   |
-+--------+ +--------+ +--------+ +--------+
-     |                 |
-     v                 v
-+--------+            +------------------+
-|  CDPH  |            |    Computer fun |
-+--------+            +------------------+
-
+Hello Friends
+├── Sociological
+│   ├── Needle Icon
+│   │   └── Thesis (new content)
+	└── Government Flexibility
+│   └── Book Icon
+        ├──Sociedad morbosa (new content)
+└── Technological
+    ├── Optoelectrónica Icalma
+    │   └── Computer Fun (Health Assessment rework)
+    └── AssessingAgents

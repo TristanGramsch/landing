@@ -32,3 +32,6 @@ If you go in the technological route, you will find Optoelectrónica Icalma and 
 
 Currently, there is a bug in AssessingAgents as the text is not being rendered properly for phones or for computers. As comparison, the government flexibility text is rendered properly.
 
+--Rules.
+
+Each node in the binary tree represent content and offers routes. You are always going to have two routes forward.
