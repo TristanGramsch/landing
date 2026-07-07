@@ -1,7 +1,6 @@
 import { normalizePath, getRoute } from "./router.js";
 
-import { typeInto } from "./lib/animation.js";
-import { trackPageView, trackTimeOnPage } from "./lib/analytics.js";
+import { sleep, typeInto } from "./lib/animation.js";
 import { playSelectionSound } from "./lib/audio.js";
 import {
   disconnectScrollTextRerender,
@@ -44,11 +43,6 @@ const bootCursor = document.querySelector("#boot-cursor");
 let currentPath = normalizePath(window.location.pathname);
 let pageEnteredAt = Date.now();
 let isBooted = false;
-
-function sleep(ms) {
-  return new Promise((resolve) => window.setTimeout(resolve, ms));
-}
-
 
 
 function renderRoute(path) {
@@ -161,8 +155,6 @@ async function navigateTo(path, { replace = false } = {}) {
     return;
   }
 
-  trackTimeOnPage({ path: currentPath, pageEnteredAt });
-
   // Prevent the home visitors widget from flashing while we wait to
   // replace the DOM.
   const homeVisitorsShell = document.querySelector('.home-visitors-shell');
@@ -180,7 +172,6 @@ async function navigateTo(path, { replace = false } = {}) {
 
   renderRoute(nextRoute ? nextPath : "/");
   pageEnteredAt = Date.now();
-  trackPageView(currentPath);
   document.body.classList.remove("page-pulse");
 
   document.querySelector('.home-visitors-shell')?.classList?.remove('is-nav-hiding');
@@ -217,7 +208,6 @@ async function boot() {
   }
 
   isBooted = true;
-  trackPageView(currentPath);
 
   const route = getRoute(currentPath);
 
@@ -300,15 +290,8 @@ app.addEventListener("click", (event) => {
 });
 
 window.addEventListener("popstate", () => {
-  const previousPath = currentPath;
-  trackTimeOnPage({ path: previousPath, pageEnteredAt });
   renderRoute(window.location.pathname);
   pageEnteredAt = Date.now();
-  trackPageView(currentPath);
-});
-
-window.addEventListener("pagehide", () => {
-  trackTimeOnPage({ path: currentPath, pageEnteredAt });
 });
 
 boot();

@@ -134,9 +134,7 @@ body.boot-complete #app {
 }
 
 .hero-title,
-.section-title,
-.item-card h2,
-.item-card p {
+.section-title {
   margin: 0;
 }
 
@@ -449,30 +447,6 @@ body.page-pulse {
   text-shadow: 0 0 12px rgba(57, 255, 20, 0.35);
 }
 
-.item-list {
-  display: grid;
-  gap: 1rem;
-}
-
-.item-card {
-  padding: 1rem;
-  border: 1px solid var(--terminal-green-dim);
-  background: linear-gradient(135deg, rgba(57, 255, 20, 0.06), transparent 70%);
-  box-shadow: inset 0 0 0 1px rgba(57, 255, 20, 0.05), var(--shadow);
-}
-
-.item-card h2 {
-  margin-top: 0.45rem;
-  font-size: clamp(1.25rem, 2.8vw, 1.7rem);
-  letter-spacing: -0.04em;
-}
-
-.item-card p {
-  margin-top: 0.7rem;
-  color: var(--terminal-green-soft);
-  line-height: 1.55;
-}
-
 .tech-content {
   width: min(100%, var(--max-width));
   margin: 0 auto;
@@ -488,61 +462,6 @@ body.page-pulse {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   word-break: break-word;
-}
-
-.item-card-title {
-  margin: 0 0 0.8rem;
-  font-size: clamp(1.3rem, 2.5vw, 1.6rem);
-  letter-spacing: -0.02em;
-  text-shadow: 0 0 8px rgba(57, 255, 20, 0.35);
-}
-
-.tech-card-content {
-  display: grid;
-  gap: 0.8rem;
-}
-
-.system-health-content {
-  display: grid;
-  gap: 0.6rem;
-}
-
-.health-metric {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 0.7rem;
-  border-left: 2px solid var(--terminal-green-dim);
-  background: rgba(57, 255, 20, 0.03);
-}
-
-.health-label {
-  color: var(--terminal-green-dim);
-  font-size: 0.95rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.health-value {
-  color: var(--terminal-green-soft);
-  font-size: 1.1rem;
-  font-weight: bold;
-  text-shadow: 0 0 6px rgba(57, 255, 20, 0.25);
-}
-
-.health-running {
-  color: #39ff14;
-}
-
-.health-stopped {
-  color: #ff6b6b;
-}
-
-.system-health-error {
-  color: #ff6b6b;
-  padding: 0.7rem;
-  border-left: 2px solid #ff6b6b;
-  background: rgba(255, 107, 107, 0.08);
 }
 
 .article-shell {
@@ -611,14 +530,6 @@ body.page-pulse {
   line-height: 1.4;
 }
 
-.meta {
-  display: block;
-  color: var(--terminal-green-dim);
-  font-size: 0.9rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
 .noscript-shell {
   width: min(100% - 2rem, var(--max-width));
   min-height: 100vh;
@@ -672,52 +583,6 @@ body.page-pulse {
   display: grid;
   justify-items: center;
   width: 100%;
-}
-
-.assessing-agents-extra-txt {
-  width: min(100%, var(--max-width));
-  margin: 0.8rem auto 0;
-}
-
-.assessing-agents-extra-txt pre {
-  margin: 0;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-  font-size: 0.9rem;
-  line-height: 1.5;
-  color: var(--terminal-green-soft);
-}
-
-.assessing-agents-extra-txt .assessing-agents-hano-image {
-  display: block;
-  width: min(100%, 720px);
-  margin: 0.8rem auto 0.8rem;
-  border: 1px solid var(--terminal-green-dim);
-  box-shadow: var(--shadow);
-  image-rendering: auto;
-}
-
-/* AssessingAgents password gate */
-.assessing-agents-auth-box {
-  width: min(720px, 100%);
-  padding: 1.2rem;
-  border: 1px solid var(--terminal-green-dim);
-  background: linear-gradient(135deg, rgba(57, 255, 20, 0.06), transparent 70%);
-  box-shadow: var(--shadow);
-}
-
-.assessing-agents-auth-title {
-  margin: 0;
-  font-size: clamp(1.4rem, 3vw, 2rem);
-  letter-spacing: -0.04em;
-  text-shadow: 0 0 10px rgba(57, 255, 20, 0.45), 0 0 22px rgba(57, 255, 20, 0.2);
-}
-
-.assessing-agents-auth-lede {
-  margin: 0.7rem 0 1rem;
-  color: var(--terminal-green-soft);
-  line-height: 1.55;
 }
 
 .assessing-agents-auth-form {
@@ -787,36 +652,6 @@ body.page-pulse {
 
 .assessing-agents-auth-input.assessing-agents-auth-twitch {
   animation: assessing-agents-auth-twitch 180ms ease-in-out 1;
-}
-
-.assessing-agents-auth-actions {
-  display: flex;
-  gap: 0.8rem;
-  justify-content: flex-end;
-}
-
-.assessing-agents-auth-button {
-  border: 1px solid var(--terminal-green-dim);
-  background: rgba(57, 255, 20, 0.06);
-  color: var(--terminal-green);
-  padding: 0.55rem 0.9rem;
-  border-radius: 0.25rem;
-  box-shadow: inset 0 0 0 1px rgba(57, 255, 20, 0.04), var(--shadow);
-  transition:
-    transform 180ms ease,
-    border-color 180ms ease,
-    box-shadow 180ms ease,
-    background-color 180ms ease;
-}
-
-.assessing-agents-auth-button:hover {
-  transform: translateY(-1px);
-  border-color: var(--terminal-green-soft);
-  box-shadow: 0 0 30px rgba(57, 255, 20, 0.14), var(--shadow);
-}
-
-.assessing-agents-auth-button-primary {
-  background: linear-gradient(135deg, rgba(57, 255, 20, 0.14), rgba(57, 255, 20, 0.05));
 }
 
 @media (max-width: 760px) {

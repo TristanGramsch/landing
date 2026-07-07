@@ -1,26 +1,6 @@
 import { defineConfig } from 'vite'
 import fs from 'fs'
 import path from 'path'
-import { execFile } from 'child_process'
-
-function parseEnvFile(filePath) {
-  try {
-    const raw = fs.readFileSync(filePath, 'utf8')
-    const out = {}
-    for (const line of raw.split(/\r?\n/)) {
-      const trimmed = line.trim()
-      if (!trimmed || trimmed.startsWith('#')) continue
-      const idx = trimmed.indexOf('=')
-      if (idx === -1) continue
-      const key = trimmed.slice(0, idx).trim()
-      const value = trimmed.slice(idx + 1).trim()
-      out[key] = value
-    }
-    return out
-  } catch {
-    return {}
-  }
-}
 
 export default defineConfig({
   server: {
