@@ -8,7 +8,7 @@ AssessingAgents is open source. Meant for everyday assessors. People who want to
 
 This is my contribution to equality. I hope to impact property assessment. Fairer tax rolls for all. 
 
--- In more detail. 
+## In more detail 
 
 It all started working at the Cook County Assessor's Office, CCAO. I hold a great memory of it. The CCAO is modern and transparent Assessor's office. And even they show errors in fairness. Their tax roll is one of the best, and still regressive (CCAO fails in the exemption process, not in appraisal, see more at https://www.cookcountyassessoril.gov/news/assessors-office-releases-2024-chicago-reassessment-report).
 
@@ -32,7 +32,7 @@ There are plnety of small Assessors'. MA has around 350. Many potential clients.
 
 Finally, there is no open source solution. I think it's a great time for it. 
 
---Going deeper.
+## Going deeper
 
 AssessingAgents offers appraisal and exemption. You just feed it data. AssessingAgents looks at the data. describes a plan, runs calculations, and outputs a tax roll. Focusing on fairness and client notes. 
 
@@ -46,7 +46,7 @@ Tralaland can be expressed in standard languages. .gml (including citygml), .geo
 
 There is no standard for social conditions. That's a challenge. Ownership and sale history is a .yalm. 
 
---More research
+## More research
 
 In my effort to understand the world of assessment I stumbled into .ifc and into regressivity in Allston. .ifc is a file format representing the Industry Foundation Classes. Allston is where I live. 
 

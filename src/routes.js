@@ -1,4 +1,4 @@
-import { governmentArticle, optoelectronicaArticle, assessingAgentsText, privateAssessingAgentsText } from "./content.js";
+import { governmentArticle, assessingAgentsArticle, optoelectronicaArticle, privateAssessingAgentsText } from "./content.js";
 
 import equipoImageSrc from "./assets/equipo.jpeg";
 import instalacionImageSrc from "./assets/instalación.jpeg";
@@ -45,7 +45,7 @@ export function homeTemplate() {
         </h1>
 
         <div class="home-paths" aria-label="Choose a path">
-          <p class="lede lede-home">Choose a path of your interest.</p>
+          <p class="lede lede-home">Choose your path.</p>
 
           <section class="bubble-grid" aria-label="Choose a path">
             <button class="bubble" type="button" data-nav="/sociological">
@@ -118,19 +118,37 @@ export function governmentFlexibilityRouteTemplate() {
   `;
 }
 
+function assessingAgentsArticleTemplate() {
+  const lead = assessingAgentsArticle.lead
+    .map((p) => `<p class="anim-text">${escapeHtml(p)}</p>`)
+    .join("");
+
+  const sections = assessingAgentsArticle.sections
+    .map(
+      (section) => `
+        <h2 class="article-title anim-text">${escapeHtml(section.title)}</h2>
+        ${section.paragraphs
+          .map((p) => `<p class="anim-text">${escapeHtml(p)}</p>`)
+          .join("")}
+      `,
+    )
+    .join("");
+
+  return `
+    <article class="article-shell" aria-label="Assessing Agents">
+      ${lead}
+      ${sections}
+      <img class="assessing-agents-hano-image" src="${hanoPngUrl}" alt="44 Hano (image)" loading="lazy" />
+      <p class="anim-text">${escapeHtml(privateAssessingAgentsText)}</p>
+    </article>
+  `;
+}
+
 export function assessingAgentsUnlockedTemplate() {
   return `
     <main class="section-shell">
       <a class="back-link" href="/sociological" data-nav>&lt; back</a>
-      <article class="article-shell" aria-label="AssessingAgents">
-        <div class="tech-content">
-          <pre class="anim-text">${escapeHtml(assessingAgentsText)}</pre>
-        </div>
-        <img class="assessing-agents-hano-image" src="${hanoPngUrl}" alt="44 Hano (image)" loading="lazy" />
-        <div class="tech-content">
-          <pre class="anim-text">${escapeHtml(privateAssessingAgentsText)}</pre>
-        </div>
-      </article>
+      ${assessingAgentsArticleTemplate()}
     </main>
   `;
 }
@@ -139,25 +157,20 @@ export function assessingAgentsLockedTemplate() {
   return `
     <main class="section-shell">
       <a class="back-link" href="/sociological" data-nav>&lt; back</a>
-      <article class="article-shell" aria-label="AssessingAgents (locked)">
-        <div class="tech-content">
-          <pre class="anim-text">${escapeHtml(assessingAgentsText)}</pre>
-        </div>
-        <img class="assessing-agents-hano-image" src="${hanoPngUrl}" alt="44 Hano (image)" loading="lazy" />
-        <div class="assessing-agents-auth-shell">
-          <form class="assessing-agents-auth-form" data-assessing-agents-auth="unlock" autocomplete="off">
-            <input
-              id="assessing-agents-password-input"
-              name="password"
-              class="assessing-agents-auth-input"
-              type="password"
-              autocomplete="off"
-              spellcheck="false"
-              inputmode="text"
-            />
-          </form>
-        </div>
-      </article>
+      ${assessingAgentsArticleTemplate()}
+      <div class="assessing-agents-auth-shell">
+        <form class="assessing-agents-auth-form" data-assessing-agents-auth="unlock" autocomplete="off">
+          <input
+            id="assessing-agents-password-input"
+            name="password"
+            class="assessing-agents-auth-input"
+            type="password"
+            autocomplete="off"
+            spellcheck="false"
+            inputmode="text"
+          />
+        </form>
+      </div>
     </main>
   `;
 }

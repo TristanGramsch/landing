@@ -87,7 +87,7 @@ const ROUTE_CONFIG = {
         ? assessingAgentsUnlockedTemplate()
         : assessingAgentsLockedTemplate();
     },
-    title: "tristan.systems — AssessingAgents",
+    title: "tristan.systems — Assessing Agents",
     onRender() {
       if (isBooted && !isAssessingAgentsUnlocked()) {
         const passwordInput = document.querySelector("#assessing-agents-password-input");

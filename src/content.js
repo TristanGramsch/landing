@@ -58,5 +58,6 @@ function parseOptoelectronica(text) {
 }
 
 export const governmentArticle = parseMarkeredSections(govFlexibilityText);
+export const assessingAgentsArticle = parseMarkeredSections(assessingAgentsText);
 export const optoelectronicaArticle = parseOptoelectronica(optoelectronicaText);
-export { assessingAgentsText, privateAssessingAgentsText };
+export { privateAssessingAgentsText };
