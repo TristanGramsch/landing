@@ -23,6 +23,10 @@ function escapeHtml(text) {
   });
 }
 
+function linkifyText(text) {
+  return text.replace(/(https?:\/\/[^\s<>]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+}
+
 export function homeTemplate() {
   return `
     <main class="home-shell">
@@ -120,26 +124,33 @@ export function governmentFlexibilityRouteTemplate() {
 
 function assessingAgentsArticleTemplate() {
   const lead = assessingAgentsArticle.lead
-    .map((p) => `<p class="anim-text">${escapeHtml(p)}</p>`)
+    .map((p) => `<p class="anim-text">${linkifyText(escapeHtml(p))}</p>`)
     .join("");
 
-  const sections = assessingAgentsArticle.sections
-    .map(
-      (section) => `
+  // Insert PDF link between the last two sections (Research → More research).
+  const sectionsArr = assessingAgentsArticle.sections;
+  const allButLast = sectionsArr.slice(0, -1);
+  const lastSection = sectionsArr[sectionsArr.length - 1];
+
+  function renderSection(section) {
+    return `
         <h2 class="article-title anim-text">${escapeHtml(section.title)}</h2>
         ${section.paragraphs
-          .map((p) => `<p class="anim-text">${escapeHtml(p)}</p>`)
+          .map((p) => `<p class="anim-text">${linkifyText(escapeHtml(p))}</p>`)
           .join("")}
-      `,
-    )
-    .join("");
+      `;
+  }
 
   return `
     <article class="article-shell" aria-label="Assessing Agents">
       ${lead}
-      ${sections}
+      ${allButLast.map(renderSection).join("")}
+      <p class="pdf-link-wrapper">
+        <a href="/sociological/assessing-agents/comparison-report.pdf" target="_blank" rel="noopener" class="pdf-link">View full comparison report (PDF)</a>
+      </p>
+      ${lastSection ? renderSection(lastSection) : ""}
       <img class="assessing-agents-hano-image" src="${hanoPngUrl}" alt="44 Hano (image)" loading="lazy" />
-      <p class="anim-text">${escapeHtml(privateAssessingAgentsText)}</p>
+      <p class="anim-text">${linkifyText(escapeHtml(privateAssessingAgentsText))}</p>
     </article>
   `;
 }

@@ -503,6 +503,15 @@ body.page-pulse {
   box-shadow: var(--shadow);
 }
 
+.pdf-link {
+  color: var(--terminal-green-soft);
+  text-decoration: underline;
+}
+
+.pdf-link:hover {
+  color: var(--terminal-green);
+}
+
 .noscript-shell {
   width: min(100% - 2rem, var(--max-width));
   min-height: 100vh;

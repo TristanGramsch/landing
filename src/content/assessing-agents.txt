@@ -46,6 +46,10 @@ Tralaland can be expressed in standard languages. .gml (including citygml), .geo
 
 There is no standard for social conditions. That's a challenge. Ownership and sale history is a .yalm. 
 
+## Research
+
+I ran AssessingAgents against the City of Boston's FY2025 D-4 Allston assessment on six properties. Full comparison report available below.
+
 ## More research
 
 In my effort to understand the world of assessment I stumbled into .ifc and into regressivity in Allston. .ifc is a file format representing the Industry Foundation Classes. Allston is where I live. 
