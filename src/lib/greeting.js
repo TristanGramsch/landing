@@ -7,16 +7,19 @@ const VARIANTS = [
     hello: "Bienvenido, compañero",
     lede: "Escoja.",
     bubbles: ["Sociología", "Tecnología"],
+    visitors: "usuarios",
   },
   {
     hello: "Bienvenida, compañera",
     lede: "Escoja.",
     bubbles: ["Sociología", "Tecnología"],
+    visitors: "usuarias",
   },
   {
     hello: "Hello friend",
     lede: "Choose your path.",
     bubbles: ["Sociological", "Technological"],
+    visitors: "visitors",
   },
 ];
 

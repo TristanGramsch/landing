@@ -35,7 +35,7 @@ export function homeTemplate() {
         <div class="home-visitors-shell" aria-label="Visitors">
           <span class="visitors-widget">
             <span id="visitors-count" class="visitors-count" aria-live="polite">—</span>
-            <span class="visitors-suffix">visitors</span>
+            <span class="visitors-suffix">${greeting.visitors}</span>
           </span>
           <div
             id="visitors-fireworks"
