@@ -1,4 +1,5 @@
 import { governmentArticle, assessingAgentsArticle, optoelectronicaArticle, mantenerseAbiertoArticle, privateAssessingAgentsText } from "./content.js";
+import { greeting } from "./lib/greeting.js";
 
 import equipoImageSrc from "./assets/equipo.jpeg";
 import instalacionImageSrc from "./assets/instalación.jpeg";
@@ -49,17 +50,17 @@ export function homeTemplate() {
         </h1>
 
         <div class="home-paths" aria-label="Choose a path">
-          <p class="lede lede-home">Choose your path.</p>
+          <p class="lede lede-home">${greeting.lede}</p>
 
           <section class="bubble-grid" aria-label="Choose a path">
             <button class="bubble" type="button" data-nav="/sociological">
               <span class="bubble-frame">
-                <span class="bubble-label">Sociological</span>
+                <span class="bubble-label">${greeting.bubbles[0]}</span>
               </span>
             </button>
             <button class="bubble" type="button" data-nav="/technological">
               <span class="bubble-frame">
-                <span class="bubble-label">Technological</span>
+                <span class="bubble-label">${greeting.bubbles[1]}</span>
               </span>
             </button>
           </section>

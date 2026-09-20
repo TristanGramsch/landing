@@ -8,6 +8,7 @@ import {
 } from "./lib/scrollTextRerender.js";
 import { initSystemHealthFetch } from "./lib/health.js";
 import { initVisitors } from "./lib/visitors.js";
+import { greeting } from "./lib/greeting.js";
 
 import {
   ASSESSING_AGENTS_PASSWORD,
@@ -31,7 +32,6 @@ import {
   notFoundTemplate,
 } from "./routes.js";
 
-const BOOT_TEXT = "Hello friend";
 const BOOT_TYPE_SPEED_MS = 92;
 const BOOT_HOLD_MS = 900;
 const PULSE_MS = 760;
@@ -57,7 +57,7 @@ const ROUTE_CONFIG = {
         const homeHelloText = document.querySelector("#home-hello-text");
         const homeHelloCursor = document.querySelector("#home-hello-cursor");
         if (homeHelloText) {
-          homeHelloText.textContent = BOOT_TEXT;
+          homeHelloText.textContent = greeting.hello;
         }
         homeHelloCursor?.classList.remove("is-hidden");
         initVisitors({ appEl: app });
@@ -208,9 +208,9 @@ async function boot() {
   const homeHelloCursor = document.querySelector("#home-hello-cursor");
 
   await Promise.all([
-    typeInto(bootText, BOOT_TEXT, BOOT_TYPE_SPEED_MS),
+    typeInto(bootText, greeting.hello, BOOT_TYPE_SPEED_MS),
     homeHelloText
-      ? typeInto(homeHelloText, BOOT_TEXT, BOOT_TYPE_SPEED_MS)
+      ? typeInto(homeHelloText, greeting.hello, BOOT_TYPE_SPEED_MS)
       : Promise.resolve(),
   ]);
 
