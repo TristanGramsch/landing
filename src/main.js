@@ -24,6 +24,7 @@ import {
   governmentFlexibilityRouteTemplate,
   assessingAgentsUnlockedTemplate,
   assessingAgentsLockedTemplate,
+  mantenerseAbiertoRouteTemplate,
   technologicalTemplate,
   optoelectronicaTemplate,
   systemHealthTemplate,
@@ -98,6 +99,14 @@ const ROUTE_CONFIG = {
           getCurrentPath: () => currentPath,
         });
       }
+    },
+  },
+
+  "mantenerse-abierto": {
+    template: mantenerseAbiertoRouteTemplate,
+    title: "tristan.systems — Mantenerse abierto",
+    onRender() {
+      if (isBooted) setupScrollTextRerender({ appEl: app });
     },
   },
 

@@ -2,12 +2,16 @@ import govFlexibilityText from "./content/government-flexibility.txt?raw";
 import optoelectronicaText from "./content/optoelectronica.txt?raw";
 import assessingAgentsText from "./content/assessing-agents.txt?raw";
 import privateAssessingAgentsText from "./content/private-assessing-agents.txt?raw";
+import mantenerseAbiertoText from "./content/mantenerse-abierto.txt?raw";
 
 /**
  * Parse a text file with `## Section Title` markers into { lead, sections }.
  * Lines before the first `## ` marker become the lead.
  * Each `## ` line starts a new section; everything until the next `## ` or EOF
  * becomes that section's paragraphs.
+ *
+ * A blank line ends the current paragraph; consecutive non-blank lines join
+ * into a single paragraph, keeping the original line breaks intact.
  */
 function parseMarkeredSections(text) {
   const lines = text.split(/\r?\n/);
@@ -15,12 +19,14 @@ function parseMarkeredSections(text) {
   const lead = [];
   const sections = [];
   let currentSection = null;
+  let paragraphOpen = false;
+
+  const target = () => (currentSection ? currentSection.paragraphs : lead);
 
   for (const rawLine of lines) {
     const line = rawLine.trim();
 
     if (line.startsWith("## ")) {
-      // Push the previous section if one was being collected.
       if (currentSection) {
         sections.push(currentSection);
       }
@@ -28,15 +34,21 @@ function parseMarkeredSections(text) {
         title: line.slice(3).trim(),
         paragraphs: [],
       };
+      paragraphOpen = false;
       continue;
     }
 
-    if (!line) continue; // skip blank lines
+    if (!line) {
+      paragraphOpen = false;
+      continue;
+    }
 
-    if (currentSection) {
-      currentSection.paragraphs.push(line);
+    const list = target();
+    if (paragraphOpen && list.length > 0) {
+      list[list.length - 1] += "\n" + line;
     } else {
-      lead.push(line);
+      list.push(line);
+      paragraphOpen = true;
     }
   }
 
@@ -48,16 +60,8 @@ function parseMarkeredSections(text) {
   return { lead, sections };
 }
 
-function parseOptoelectronica(text) {
-  const paragraphs = text
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean);
-
-  return { paragraphs };
-}
-
 export const governmentArticle = parseMarkeredSections(govFlexibilityText);
 export const assessingAgentsArticle = parseMarkeredSections(assessingAgentsText);
-export const optoelectronicaArticle = parseOptoelectronica(optoelectronicaText);
+export const optoelectronicaArticle = parseMarkeredSections(optoelectronicaText);
+export const mantenerseAbiertoArticle = parseMarkeredSections(mantenerseAbiertoText);
 export { privateAssessingAgentsText };

@@ -1,4 +1,4 @@
-import { governmentArticle, assessingAgentsArticle, optoelectronicaArticle, privateAssessingAgentsText } from "./content.js";
+import { governmentArticle, assessingAgentsArticle, optoelectronicaArticle, mantenerseAbiertoArticle, privateAssessingAgentsText } from "./content.js";
 
 import equipoImageSrc from "./assets/equipo.jpeg";
 import instalacionImageSrc from "./assets/instalación.jpeg";
@@ -73,7 +73,7 @@ export function sociologicalTemplate() {
   return `
     <main class="home-shell">
       <a class="back-link" href="/" data-nav>&lt; back</a>
-      <section class="bubble-grid" aria-label="Sociological routes">
+      <section class="bubble-grid triangle" aria-label="Sociological routes">
         <a class="bubble tech-box" href="/sociological/government-flexibility" data-nav>
           <span class="bubble-frame">
             <span class="bubble-label">Government flexibility</span>
@@ -82,6 +82,11 @@ export function sociologicalTemplate() {
         <a class="bubble tech-box" href="/sociological/assessing-agents" data-nav>
           <span class="bubble-frame">
             <span class="bubble-label">AssessingAgents</span>
+          </span>
+        </a>
+        <a class="bubble tech-box" href="/sociological/mantenerse-abierto" data-nav>
+          <span class="bubble-frame">
+            <span class="bubble-label">Mantenerse abierto</span>
           </span>
         </a>
       </section>
@@ -186,6 +191,27 @@ export function assessingAgentsLockedTemplate() {
   `;
 }
 
+function mantenerseAbiertoArticleTemplate() {
+  const paragraphs = mantenerseAbiertoArticle.lead
+    .map((p) => `<p class="anim-text">${escapeHtml(p)}</p>`)
+    .join("");
+
+  return `
+    <article class="article-shell" aria-label="Mantenerse abierto">
+      ${paragraphs}
+    </article>
+  `;
+}
+
+export function mantenerseAbiertoRouteTemplate() {
+  return `
+    <main class="section-shell">
+      <a class="back-link" href="/sociological" data-nav>&lt; back</a>
+      ${mantenerseAbiertoArticleTemplate()}
+    </main>
+  `;
+}
+
 export function technologicalTemplate() {
   return `
     <main class="home-shell">
@@ -209,7 +235,7 @@ export function technologicalTemplate() {
 function optoelectronicaArticleTemplate() {
   return `
     <article class="article-shell" aria-label="Optoelectronica">
-      ${optoelectronicaArticle.paragraphs
+      ${optoelectronicaArticle.lead
         .map((p) => `<p class="anim-text">${escapeHtml(p)}</p>`)
         .join("")}
 
