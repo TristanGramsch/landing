@@ -1,3 +1,11 @@
-Tristan.Systems is a personal site for sharing investigations and discoveries at the intersection of sociology and technology. It is hand-built with vanilla JavaScript on Vite, uses client-side routing, and renders essays from plain text files with a terminal-inspired aesthetic. The site map lives in diagram.txt and the design rationale in puzzle.txt.
+This repository strives for the following:
+Mobile friendliness.
+Reusable animations.
+Consistent titles naming.
+Anti-bot defenses.
+Copyrighted.
+Simple and primitive code. No redundancy.
+Quick to add content to.
 
-To run locally: npm install, then npm run dev.
+
+npm run dev.
