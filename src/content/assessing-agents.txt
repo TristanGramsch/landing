@@ -1,4 +1,10 @@
-Hello family and friends, I bring a topic of technology. I'm hoping to hear your voices on this. This is my (hand written) adventure with AssessingAgents, and where I think it can reach. 
+Hello family and friends, I bring a topic of technology. I'm hoping to hear your voices on this. This is my (hand written and voice translated) adventure with AssessingAgents, and where I think it can reach. 
+
+Assessing agents is software to help homeowners abate their properties. Consisting of a data pipeline, a database, an agentic workflow, and a front-end. Properties represented in data come in, and a property valuation comes out. The valuation is an opinion after a deep study of the property. Using this valuation opinion, we judge if the property could win an abatement against the assessor's office of Boston. And profit a percentage of the win.
+
+In the beginning, AssessingAgents was meant for government assessors office. They were the clients. And though the project has changed, here is the past approach. This is still fertile ground, it's just a slower time frame.
+
+# AssessingAgents for gov.
 
 AssessingAgents is a series of instructions ran by computer agents. To appraise and exempt properties. Just as a real Assessor's Office would do. 
 
@@ -58,24 +64,5 @@ In my effort to understand the world of assessment I stumbled into .ifc and into
 
 Below, an image of an .ifc 3d model of my house (abstract as you can note). Easy to make. 
 
-I also stumbled and I tried fixing the (slightly) regressive assessment in Allston.
+Regarding Allston, it is not regressive. Allston clears industry standard metrics while valuing below market.
 
-I downloaded and parsed real assessment data of Boston. Sales of 2024, and assessed values of 2025. I filtered for Allston. 
-I removed Boston's official assessment values (most importantly TOTAL_VALUE of the property). And calculated my own in a clean slate. I inferred an almost flat tax rate (but this step can be simplified). 
-
-Then I (with gpt) measured whether properties with higher sale prices tend to have lower (or higher) effective tax rate. corr(log(sale_price), effective_tax_rate)
-
-A negative correlation means that as log(sale_price) increases (i.e., as sale price gets larger),the effective tax rate tends to be lower on average.
-
-REAL assessor data:
-corr(log(sale_price), effective_tax_rate): -0.03550
-Slightly regressive. 
-
-My version (Ridge regression predicted total value and recomputed tax):
-corr(log(sale_price), effective_tax_rate): -0.35899 
-Regressive!
-
-We are to iterate until we beat this. We can:
--Add more data.
--Model in a simpler way.
--Reduce the scope (only worrying about assessed values, and not taxation). 
