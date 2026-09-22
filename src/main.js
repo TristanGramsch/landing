@@ -26,6 +26,7 @@ import {
   assessingAgentsUnlockedTemplate,
   assessingAgentsLockedTemplate,
   mantenerseAbiertoRouteTemplate,
+  perfectAssessorsOfficeRouteTemplate,
   technologicalTemplate,
   optoelectronicaTemplate,
   systemHealthTemplate,
@@ -105,6 +106,14 @@ const ROUTE_CONFIG = {
   "mantenerse-abierto": {
     template: mantenerseAbiertoRouteTemplate,
     title: "tristan.systems — Mantenerse abierto",
+    onRender() {
+      if (isBooted) setupScrollTextRerender({ appEl: app });
+    },
+  },
+
+  "perfect-assessors-office": {
+    template: perfectAssessorsOfficeRouteTemplate,
+    title: "tristan.systems — The perfect assessor's office",
     onRender() {
       if (isBooted) setupScrollTextRerender({ appEl: app });
     },

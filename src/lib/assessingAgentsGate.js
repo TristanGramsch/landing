@@ -7,7 +7,7 @@ const ASSESSING_AGENTS_UNLOCK_KEY = "assessing-agents-unlocked";
 // we treat localStorage as a fallback and write to both.
 const ASSESSING_AGENTS_UNLOCK_STORAGE = ["sessionStorage", "localStorage"];
 
-const ASSESSING_AGENTS_PATH = "/sociological/assessing-agents";
+const ASSESSING_AGENTS_PATH = "/technological/assessing-agents";
 
 let assessingAgentsTwitchTimeout = null;
 

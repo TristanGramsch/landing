@@ -1,4 +1,11 @@
-import { governmentArticle, assessingAgentsArticle, optoelectronicaArticle, mantenerseAbiertoArticle, privateAssessingAgentsText } from "./content.js";
+import {
+  governmentArticle,
+  assessingAgentsArticle,
+  optoelectronicaArticle,
+  mantenerseAbiertoArticle,
+  perfectAssessorsOfficeArticle,
+  privateAssessingAgentsText,
+} from "./content.js";
 import { greeting } from "./lib/greeting.js";
 
 import equipoImageSrc from "./assets/equipo.jpeg";
@@ -80,14 +87,14 @@ export function sociologicalTemplate() {
             <span class="bubble-label">Government flexibility</span>
           </span>
         </a>
-        <a class="bubble tech-box" href="/sociological/assessing-agents" data-nav>
-          <span class="bubble-frame">
-            <span class="bubble-label">AssessingAgents</span>
-          </span>
-        </a>
         <a class="bubble tech-box" href="/sociological/mantenerse-abierto" data-nav>
           <span class="bubble-frame">
             <span class="bubble-label">Mantenerse abierto</span>
+          </span>
+        </a>
+        <a class="bubble tech-box" href="/sociological/the-perfect-assessors-office" data-nav>
+          <span class="bubble-frame">
+            <span class="bubble-label">The perfect assessor's office</span>
           </span>
         </a>
       </section>
@@ -152,7 +159,7 @@ function assessingAgentsArticleTemplate() {
       ${lead}
       ${allButLast.map(renderSection).join("")}
       <p class="pdf-link-wrapper">
-        <a href="/sociological/assessing-agents/comparison-report.pdf" target="_blank" rel="noopener" class="pdf-link">View full comparison report (PDF)</a>
+        <a href="/technological/assessing-agents/comparison-report.pdf" target="_blank" rel="noopener" class="pdf-link">View full comparison report (PDF)</a>
       </p>
       ${lastSection ? renderSection(lastSection) : ""}
       <img class="assessing-agents-hano-image" src="${hanoPngUrl}" alt="44 Hano (image)" loading="lazy" />
@@ -164,7 +171,7 @@ function assessingAgentsArticleTemplate() {
 export function assessingAgentsUnlockedTemplate() {
   return `
     <main class="section-shell">
-      <a class="back-link" href="/sociological" data-nav>&lt; back</a>
+      <a class="back-link" href="/technological" data-nav>&lt; back</a>
       ${assessingAgentsArticleTemplate()}
     </main>
   `;
@@ -173,7 +180,7 @@ export function assessingAgentsUnlockedTemplate() {
 export function assessingAgentsLockedTemplate() {
   return `
     <main class="section-shell">
-      <a class="back-link" href="/sociological" data-nav>&lt; back</a>
+      <a class="back-link" href="/technological" data-nav>&lt; back</a>
       ${assessingAgentsArticleTemplate()}
       <div class="assessing-agents-auth-shell">
         <form class="assessing-agents-auth-form" data-assessing-agents-auth="unlock" autocomplete="off">
@@ -213,11 +220,32 @@ export function mantenerseAbiertoRouteTemplate() {
   `;
 }
 
+function perfectAssessorsOfficeArticleTemplate() {
+  const paragraphs = perfectAssessorsOfficeArticle.lead
+    .map((p) => `<p class="anim-text">${escapeHtml(p)}</p>`)
+    .join("");
+
+  return `
+    <article class="article-shell" aria-label="The perfect assessor's office">
+      ${paragraphs}
+    </article>
+  `;
+}
+
+export function perfectAssessorsOfficeRouteTemplate() {
+  return `
+    <main class="section-shell">
+      <a class="back-link" href="/sociological" data-nav>&lt; back</a>
+      ${perfectAssessorsOfficeArticleTemplate()}
+    </main>
+  `;
+}
+
 export function technologicalTemplate() {
   return `
     <main class="home-shell">
       <a class="back-link" href="/" data-nav>&lt; back</a>
-      <section class="bubble-grid" aria-label="Technological routes">
+      <section class="bubble-grid triangle" aria-label="Technological routes">
         <a class="bubble tech-box" href="/technological/optoelectronica" data-nav>
           <span class="bubble-frame">
             <span class="bubble-label">Optoelectrónica Icalma</span>
@@ -226,6 +254,11 @@ export function technologicalTemplate() {
         <a class="bubble tech-box" href="/technological/system-health" data-nav>
           <span class="bubble-frame">
             <span class="bubble-label">System Health</span>
+          </span>
+        </a>
+        <a class="bubble tech-box" href="/technological/assessing-agents" data-nav>
+          <span class="bubble-frame">
+            <span class="bubble-label">AssessingAgents</span>
           </span>
         </a>
       </section>

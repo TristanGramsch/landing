@@ -1,10 +1,11 @@
 export const ROUTES = {
   "/": "home",
   "/sociological": "sociological",
-  "/sociological/assessing-agents": "assessing-agents",
   "/sociological/government-flexibility": "government-flexibility",
   "/sociological/mantenerse-abierto": "mantenerse-abierto",
+  "/sociological/the-perfect-assessors-office": "perfect-assessors-office",
   "/technological": "technological",
+  "/technological/assessing-agents": "assessing-agents",
   "/technological/optoelectronica": "optoelectronica",
   "/technological/system-health": "system-health",
 };
