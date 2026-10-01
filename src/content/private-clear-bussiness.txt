@@ -1,0 +1,17 @@
+No one's selling Gogs.
+They have 50,000 stars on github and a popular docker image.
+Become an autoscaler of Gogs.
+And you have incredible business.
+Key point, Gogs is the more primitive machine of Gitea that do offer paid services.
+
+In this case, you are scaling a computational unit, and a computational unit is a section of resources provided by a hardware servicer.
+Those units have entry points. To the services offered by the software.
+Computations happen on our side and we charge you per usage.
+We output the outputs of Gogs.
+
+Look for sellers who are primitive, kind, easy to work with, who provide minimal yet reliable services.
+We are looking to fulfill a very core operation.
+We pursue long-term stability. And trust gogs wherever they go.
+
+I call this a not out of the box opportunity.
+

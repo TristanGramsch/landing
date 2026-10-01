@@ -4,6 +4,7 @@ import assessingAgentsText from "./content/assessing-agents.txt?raw";
 import privateAssessingAgentsText from "./content/private-assessing-agents.txt?raw";
 import mantenerseAbiertoText from "./content/mantenerse-abierto.txt?raw";
 import perfectAssessorsOfficeText from "./content/the-perfect-assessor's-office.txt?raw";
+import serText from "./content/ser.txt?raw";
 
 /**
  * Parse a text file with `## Section Title` markers into { lead, sections }.
@@ -66,4 +67,5 @@ export const assessingAgentsArticle = parseMarkeredSections(assessingAgentsText)
 export const optoelectronicaArticle = parseMarkeredSections(optoelectronicaText);
 export const mantenerseAbiertoArticle = parseMarkeredSections(mantenerseAbiertoText);
 export const perfectAssessorsOfficeArticle = parseMarkeredSections(perfectAssessorsOfficeText);
+export const serArticle = parseMarkeredSections(serText);
 export { privateAssessingAgentsText };

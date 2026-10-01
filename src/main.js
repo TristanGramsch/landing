@@ -27,6 +27,7 @@ import {
   assessingAgentsLockedTemplate,
   mantenerseAbiertoRouteTemplate,
   perfectAssessorsOfficeRouteTemplate,
+  serRouteTemplate,
   technologicalTemplate,
   optoelectronicaTemplate,
   systemHealthTemplate,
@@ -114,6 +115,14 @@ const ROUTE_CONFIG = {
   "perfect-assessors-office": {
     template: perfectAssessorsOfficeRouteTemplate,
     title: "tristan.systems — The perfect assessor's office",
+    onRender() {
+      if (isBooted) setupScrollTextRerender({ appEl: app });
+    },
+  },
+
+  ser: {
+    template: serRouteTemplate,
+    title: "tristan.systems — Ser",
     onRender() {
       if (isBooted) setupScrollTextRerender({ appEl: app });
     },

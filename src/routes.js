@@ -4,6 +4,7 @@ import {
   optoelectronicaArticle,
   mantenerseAbiertoArticle,
   perfectAssessorsOfficeArticle,
+  serArticle,
   privateAssessingAgentsText,
 } from "./content.js";
 import { greeting } from "./lib/greeting.js";
@@ -81,7 +82,7 @@ export function sociologicalTemplate() {
   return `
     <main class="home-shell">
       <a class="back-link" href="/" data-nav>&lt; back</a>
-      <section class="bubble-grid triangle" aria-label="Sociological routes">
+      <section class="bubble-grid" aria-label="Sociological routes">
         <a class="bubble tech-box" href="/sociological/government-flexibility" data-nav>
           <span class="bubble-frame">
             <span class="bubble-label">Government flexibility</span>
@@ -95,6 +96,11 @@ export function sociologicalTemplate() {
         <a class="bubble tech-box" href="/sociological/the-perfect-assessors-office" data-nav>
           <span class="bubble-frame">
             <span class="bubble-label">The perfect assessor's office</span>
+          </span>
+        </a>
+        <a class="bubble tech-box" href="/sociological/ser" data-nav>
+          <span class="bubble-frame">
+            <span class="bubble-label">Ser</span>
           </span>
         </a>
       </section>
@@ -237,6 +243,27 @@ export function perfectAssessorsOfficeRouteTemplate() {
     <main class="section-shell">
       <a class="back-link" href="/sociological" data-nav>&lt; back</a>
       ${perfectAssessorsOfficeArticleTemplate()}
+    </main>
+  `;
+}
+
+function serArticleTemplate() {
+  const paragraphs = serArticle.lead
+    .map((p) => `<p class="anim-text">${escapeHtml(p)}</p>`)
+    .join("");
+
+  return `
+    <article class="article-shell" aria-label="Ser">
+      ${paragraphs}
+    </article>
+  `;
+}
+
+export function serRouteTemplate() {
+  return `
+    <main class="section-shell">
+      <a class="back-link" href="/sociological" data-nav>&lt; back</a>
+      ${serArticleTemplate()}
     </main>
   `;
 }

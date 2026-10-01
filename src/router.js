@@ -4,6 +4,7 @@ export const ROUTES = {
   "/sociological/government-flexibility": "government-flexibility",
   "/sociological/mantenerse-abierto": "mantenerse-abierto",
   "/sociological/the-perfect-assessors-office": "perfect-assessors-office",
+  "/sociological/ser": "ser",
   "/technological": "technological",
   "/technological/assessing-agents": "assessing-agents",
   "/technological/optoelectronica": "optoelectronica",
