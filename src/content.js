@@ -5,6 +5,7 @@ import privateAssessingAgentsText from "./content/private-assessing-agents.txt?r
 import mantenerseAbiertoText from "./content/mantenerse-abierto.txt?raw";
 import perfectAssessorsOfficeText from "./content/the-perfect-assessor's-office.txt?raw";
 import serText from "./content/ser.txt?raw";
+import escalafonLiterarioText from "./content/escalafon-literario.txt?raw";
 
 /**
  * Parse a text file with `## Section Title` markers into { lead, sections }.
@@ -68,4 +69,16 @@ export const optoelectronicaArticle = parseMarkeredSections(optoelectronicaText)
 export const mantenerseAbiertoArticle = parseMarkeredSections(mantenerseAbiertoText);
 export const perfectAssessorsOfficeArticle = parseMarkeredSections(perfectAssessorsOfficeText);
 export const serArticle = parseMarkeredSections(serText);
+
+/**
+ * Parse a flat, line-oriented text into { lines }, where each entry is a
+ * single visual line preserved exactly (including trailing content), and
+ * blank lines are kept so the caller can render paragraphs faithfully.
+ */
+function parsePlainLines(text) {
+  const lines = text.split(/\r?\n/);
+  return { lines };
+}
+
+export const escalafonLiterarioArticle = parsePlainLines(escalafonLiterarioText);
 export { privateAssessingAgentsText };

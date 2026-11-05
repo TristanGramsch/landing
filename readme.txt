@@ -6,6 +6,7 @@ Anti-bot defenses.
 Copyrighted.
 Simple and primitive code. No redundancy.
 Quick to add content to.
+Avoid deterrants to enter (currently cookies trigger a warning message in mobile browsers, I believe)
 
 # Not for bots.
 npm run dev.

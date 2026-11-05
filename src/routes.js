@@ -5,6 +5,7 @@ import {
   mantenerseAbiertoArticle,
   perfectAssessorsOfficeArticle,
   serArticle,
+  escalafonLiterarioArticle,
   privateAssessingAgentsText,
 } from "./content.js";
 import { greeting } from "./lib/greeting.js";
@@ -101,6 +102,11 @@ export function sociologicalTemplate() {
         <a class="bubble tech-box" href="/sociological/ser" data-nav>
           <span class="bubble-frame">
             <span class="bubble-label">Ser</span>
+          </span>
+        </a>
+        <a class="bubble tech-box" href="/sociological/escalafon-literario" data-nav>
+          <span class="bubble-frame">
+            <span class="bubble-label">Escalafón literario</span>
           </span>
         </a>
       </section>
@@ -264,6 +270,27 @@ export function serRouteTemplate() {
     <main class="section-shell">
       <a class="back-link" href="/sociological" data-nav>&lt; back</a>
       ${serArticleTemplate()}
+    </main>
+  `;
+}
+
+function escalafonLiterarioArticleTemplate() {
+  const lines = escalafonLiterarioArticle.lines
+    .map((line) => `<p class="anim-text">${escapeHtml(line)}</p>`)
+    .join("");
+
+  return `
+    <article class="article-shell" aria-label="Escalafón literario">
+      ${lines}
+    </article>
+  `;
+}
+
+export function escalafonLiterarioRouteTemplate() {
+  return `
+    <main class="section-shell">
+      <a class="back-link" href="/sociological" data-nav>&lt; back</a>
+      ${escalafonLiterarioArticleTemplate()}
     </main>
   `;
 }

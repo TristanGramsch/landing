@@ -28,6 +28,7 @@ import {
   mantenerseAbiertoRouteTemplate,
   perfectAssessorsOfficeRouteTemplate,
   serRouteTemplate,
+  escalafonLiterarioRouteTemplate,
   technologicalTemplate,
   optoelectronicaTemplate,
   systemHealthTemplate,
@@ -123,6 +124,14 @@ const ROUTE_CONFIG = {
   ser: {
     template: serRouteTemplate,
     title: "tristan.systems — Ser",
+    onRender() {
+      if (isBooted) setupScrollTextRerender({ appEl: app });
+    },
+  },
+
+  "escalafon-literario": {
+    template: escalafonLiterarioRouteTemplate,
+    title: "tristan.systems — Escalafón literario",
     onRender() {
       if (isBooted) setupScrollTextRerender({ appEl: app });
     },
